@@ -8,21 +8,29 @@ import { observer } from 'mobx-react-lite';
 // import { AUTHORS_ROUTE } from '../utils/consts';
 // import ModalCountry from './Modals/ModalCountry';
 
-interface CUAuthorProps {
+interface CUAutoProps {
     id: number;
-    name: string;
-    description: string;
-    file: string;
-    setName: (name: string) => void;
-    setDescription: (description: string) => void;
-    setFile: (file: File) => void;
-    handler: (id: number, author: FormData) => Promise<unknown>;
+    stamp: string;
+    model: string;
+    year?: number;
+    vin?: string;
+    stateNumber: string;
+    owner: string;
+    phone: string;
+    setStamp: (stamp: string) => void;
+    setModel: (model: string) => void;
+    setYear: (year: number) => void;
+    setVin: (vin: string) => void;
+    setStateNumber: (stateNumber: string) => void;
+    setOwner: (owner: string) => void;
+    setPhone: (phone: string) => void;
+    handler: (id: number, auto: FormData) => Promise<unknown>;
     title: string;
     btnName: string;
 };
 
 
-const CUAuthor: React.FC<CUAuthorProps> = observer(({id, name, description, file, setName, setDescription, setFile, handler, title, btnName}) => {
+const CUAuto: React.FC<CUAutoProps> = observer(({id, stamp, model, year, vin, stateNumber, owner, phone, setStamp, setModel, setYear, setVin, setStateNumber, setOwner, setPhone, handler, title, btnName}) => {
     // const {library} = useContext(Context);
     const navigate = useNavigate();
     const [visible, setVisible] = useState<boolean>(false);
@@ -31,12 +39,6 @@ const CUAuthor: React.FC<CUAuthorProps> = observer(({id, name, description, file
     //     fetchCountries().then(data => library.setCountries(data));
     // }, [visible]);
 
-    const selectFile = (e: React.ChangeEvent<HTMLInputElement>) => { 
-        const files: FileList | null = e.target.files;
-        if (files) {
-            setFile(files[0]);
-        }        
-    };
 
     const onClick = () => {
         // if (!name.trim() || !description.trim()) {
@@ -87,22 +89,47 @@ const CUAuthor: React.FC<CUAuthorProps> = observer(({id, name, description, file
                 <Form>
                     <Form.Control
                         className="mt-3"
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                        placeholder="Введите автора"
+                        value={stamp}
+                        onChange={e => setStamp(e.target.value)}
+                        placeholder="Введите марку авто"
                     />
-                    <Form.Control as="textarea"
+                    <Form.Control
                         className="mt-3"
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
-                        placeholder="Введите описание"
-                        maxLength={700}
-                    />              
-                    <label htmlFor="file" className="mt-3">Загрузите фото автора</label>       
-                    <Form.Control                        
-                        type="file"
-                        onChange={selectFile}
-                    />                    
+                        value={model}
+                        onChange={e => setModel(e.target.value)}
+                        placeholder="Введите модель авто"
+                    />  
+                    <Form.Control
+                        className="mt-3"
+                        value={year}
+                        onChange={e => setYear(+e.target.value)}
+                        placeholder="Введите год выпуска авто"
+                    />
+                    <Form.Control
+                        className="mt-3"
+                        value={vin}
+                        onChange={e => setVin(e.target.value)}
+                        placeholder="Введите VIN авто"
+                    /> 
+                    <Form.Control
+                        className="mt-3"
+                        value={stateNumber}
+                        onChange={e => setStateNumber(e.target.value)}
+                        placeholder="Введите гос.номер авто"
+                    />
+                    <Form.Control
+                        className="mt-3"
+                        value={owner}
+                        onChange={e => setOwner(e.target.value)}
+                        placeholder="Введите владеьца авто"
+                    />    
+                    <Form.Control
+                        className="mt-3"
+                        value={phone}
+                        onChange={e => setPhone(e.target.value)}
+                        placeholder="Введите телефон владеьца"
+                    />           
+                                      
                     <Dropdown className="mt-3 mb-3">
                         {/* <Dropdown.Toggle variant={"outline-dark"}>{library.selectedCountry.name || 'Выберите страну'}</Dropdown.Toggle>
                         <Dropdown.Menu>
@@ -124,4 +151,4 @@ const CUAuthor: React.FC<CUAuthorProps> = observer(({id, name, description, file
     );
 });
 
-export default CUAuthor;
+export default CUAuto;

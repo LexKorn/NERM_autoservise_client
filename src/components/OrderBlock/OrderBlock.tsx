@@ -5,7 +5,7 @@ import { Spinner, Button } from 'react-bootstrap';
 import {Helmet} from "react-helmet";
 
 import { IOrder, IAuto } from '../../types/types';
-import { AUTOS_ROUTE, NOTFOUND_ROUTE } from '../../utils/consts';
+import { AUTO_ROUTE, AUTOS_ROUTE, NOTFOUND_ROUTE } from '../../utils/consts';
 // import { deleteOrder, fetchOneOrder } from '../../http/orderAPI';
 // import { fetchCountries } from '../../http/countryAPI';
 // import {Context} from '../../index';
@@ -75,7 +75,7 @@ const OrderBlock: React.FunctionComponent = () => {
     // const countryOrder: ICountry[] = library.countries.filter(country => country.id === order.countryId);
 
     const removeOrder = () => {
-        if (window.confirm('Вы действительно хотите удалить автора? Все книги, связанные с ним, будут удалены.')) {
+        if (window.confirm('Вы действительно хотите заказ?')) {
             // deleteOrder(order.id);
             // navigate(AUTHORS_ROUTE);
         }        
@@ -93,7 +93,12 @@ const OrderBlock: React.FunctionComponent = () => {
             </Helmet>
 
             <div className="order">
-                    <div className="order__name">{auto.stamp} {auto.model} {auto.stateNumber}</div>
+                    <div 
+                        className="order__name"
+                        onClick={() => {navigate(AUTO_ROUTE + `/${order.autoId}`)}}  // (AUTO_ROUTE + `/${authorBook[0].id}`)
+                    >
+                        {auto.stamp} {auto.model} {auto.stateNumber}
+                    </div>
                     <div className="order__description">заказ открыт: {order.opened}</div>
                     {order.closed && <div className="order__description">заказ закрыт: {order.closed}</div>}
                     {order.cost && <div className="order__description">стоимость: {order.cost}p</div>}

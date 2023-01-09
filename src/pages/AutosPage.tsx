@@ -5,7 +5,7 @@ import {observer} from 'mobx-react-lite';
 import {Helmet} from "react-helmet";
 
 import List from '../components/List/List';
-import AutoItem from '../components/AutoItem';
+import AutoItem from '../components/AutoItem/AutoItem';
 import { IAuto } from '../types/types';
 
 // import FilterPanel from '../components/FilterPanel/FilterPanel';
