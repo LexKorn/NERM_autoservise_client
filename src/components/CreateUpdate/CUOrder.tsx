@@ -8,29 +8,27 @@ import { observer } from 'mobx-react-lite';
 // import { AUTHORS_ROUTE } from '../utils/consts';
 // import ModalCountry from './Modals/ModalCountry';
 
-interface CUAutoProps {
+interface CUOrderProps {
     id: number;
-    stamp: string;
-    model: string;
-    year?: number;
-    vin?: string;
-    stateNumber: string;
-    owner: string;
-    phone: string;
-    setStamp: (stamp: string) => void;
-    setModel: (model: string) => void;
-    setYear: (year: number) => void;
-    setVin: (vin: string) => void;
-    setStateNumber: (stateNumber: string) => void;
-    setOwner: (owner: string) => void;
-    setPhone: (phone: string) => void;
+    opened: string;
+    closed?: string;
+    cost?: number;
+    income?: number;
+    profit?: number;
+    comment: string;
+    setOpened: (opened: string) => void;
+    setClosed: (closed: string) => void;
+    setCost: (cost: number) => void;
+    setIncome: (income: number) => void;
+    setProfit: (profit: number) => void;
+    setComment: (comment: string) => void;
     handler: (id: number, auto: FormData) => Promise<unknown>;
     title: string;
     btnName: string;
 };
 
 
-const CUAuto: React.FC<CUAutoProps> = observer(({id, stamp, model, year, vin, stateNumber, owner, phone, setStamp, setModel, setYear, setVin, setStateNumber, setOwner, setPhone, handler, title, btnName}) => {
+const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, cost, income, profit, comment, setOpened, setClosed, setCost, setIncome, setProfit, setComment, handler, title, btnName}) => {
     // const {library} = useContext(Context);
     const navigate = useNavigate();
     const [visible, setVisible] = useState<boolean>(false);
@@ -89,47 +87,43 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, stamp, model, year, vin, st
                 <Form>
                     <Form.Control
                         className="mt-3"
-                        value={stamp}
-                        onChange={e => setStamp(e.target.value)}
-                        placeholder="Марка авто"
+                        value={opened}
+                        onChange={e => setOpened(e.target.value)}
+                        placeholder="Когда открыт заказ"
                     />
                     <Form.Control
                         className="mt-3"
-                        value={model}
-                        onChange={e => setModel(e.target.value)}
-                        placeholder="Модель авто"
+                        value={closed}
+                        onChange={e => setClosed(e.target.value)}
+                        placeholder="Когда закрыт заказ"
                     />  
                     <Form.Control
                         className="mt-3"
-                        value={year}
+                        value={cost}
                         type="number"
-                        onChange={e => setYear(+e.target.value)}
-                        placeholder="Год выпуска"
+                        onChange={e => setCost(+e.target.value)}
+                        placeholder="Стоимость"
                     />
                     <Form.Control
                         className="mt-3"
-                        value={vin}
-                        onChange={e => setVin(e.target.value)}
-                        placeholder="VIN номер"
+                        value={income}
+                        type="number"
+                        onChange={e => setIncome(+e.target.value)}
+                        placeholder="Оплачено"
+                    />
+                    <Form.Control
+                        className="mt-3"
+                        value={profit}
+                        type="number"
+                        onChange={e => setProfit(+e.target.value)}
+                        placeholder="Прибыль"
+                    />
+                    <Form.Control
+                        className="mt-3"
+                        value={comment}
+                        onChange={e => setComment(e.target.value)}
+                        placeholder="Комментарий"
                     /> 
-                    <Form.Control
-                        className="mt-3"
-                        value={stateNumber}
-                        onChange={e => setStateNumber(e.target.value)}
-                        placeholder="гос.номер авто"
-                    />
-                    <Form.Control
-                        className="mt-3"
-                        value={owner}
-                        onChange={e => setOwner(e.target.value)}
-                        placeholder="Владелец авто"
-                    />    
-                    <Form.Control
-                        className="mt-3"
-                        value={phone}
-                        onChange={e => setPhone(e.target.value)}
-                        placeholder="Телефон владельца"
-                    />           
                                       
                     <Dropdown className="mt-3 mb-3">
                         {/* <Dropdown.Toggle variant={"outline-dark"}>{library.selectedCountry.name || 'Выберите страну'}</Dropdown.Toggle>
@@ -152,4 +146,4 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, stamp, model, year, vin, st
     );
 });
 
-export default CUAuto;
+export default CUOrder;

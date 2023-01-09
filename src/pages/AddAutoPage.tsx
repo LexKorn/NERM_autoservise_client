@@ -1,38 +1,48 @@
 import React, { useState } from 'react';
 import {Helmet} from "react-helmet";
 
-// import CUAuthor from '../components/CUAuthor';
+import CUAuto from '../components/CreateUpdate/CUAuto';
 // import { createAuthor } from '../http/authorAPI';
-
+const createAuto = (auto: FormData) => {};
 
 const AddAutoPage: React.FC = () => {
-    const [name, setName] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
-    const [file, setFile] = useState<string>('');
+    const [stamp, setStamp] = useState<string>('');
+    const [model, setModel] = useState<string>('');
+    // @ts-ignore
+    const [year, setYear] = useState<number>(null);
+    const [vin, setVin] = useState<string>('');
+    const [stateNumber, setStateNumber] = useState<string>('');
+    const [owner, setOwner] = useState<string>('');
+    const [phone, setPhone] = useState<string>('');
     
     return (
         <>
             <Helmet>
-                <title>Добавить авто</title>
-                <meta name="description" content="Добавить авто" />
+                <title>Добавить автомобиль</title>
+                <meta name="description" content="Добавить автомобиль" />
             </Helmet>
             
-            {/* <CUAuthor 
+            <CUAuto 
                 id={0}
-                name={name}
-                description={description}
-                file={file}
-                setName={setName}
-                setDescription={setDescription}
+                stamp={stamp}
+                model={model}
+                year={year}
+                vin={vin}
+                stateNumber={stateNumber}
+                owner={owner}
+                phone={phone}
+                setStamp={setStamp}
+                setModel={setModel}
+                setYear={setYear}
+                setVin={setVin}
+                setStateNumber={setStateNumber}
+                setOwner={setOwner}
+                setPhone={setPhone}
                 // @ts-ignore
-                setFile={setFile}
-                // @ts-ignore
-                handler={createAuthor}
-                title='Добавить автора'
+                handler={createAuto}
+                title='Добавить автомобиль'
                 btnName='Добавить'
-            /> */}
-
-            Add auto
+            />
         </>
     );
 };

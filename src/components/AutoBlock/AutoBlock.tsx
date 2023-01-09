@@ -9,7 +9,7 @@ import { AUTOS_ROUTE, NOTFOUND_ROUTE } from '../../utils/consts';
 // import { deleteAuto, fetchOneAuto } from '../../http/autoAPI';
 // import { fetchCountries } from '../../http/countryAPI';
 // import {Context} from '../../index';
-// import ModalAuto from '../Modals/ModalAuto';
+import ModalAutoUpdate from '../Modals/ModalAutoUpdate';
 
 import './autoBlock.sass';
 
@@ -49,7 +49,7 @@ const AutoBlock: React.FunctionComponent = () => {
     // const countryAuto: ICountry[] = library.countries.filter(country => country.id === auto.countryId);
 
     const removeAuto = () => {
-        if (window.confirm('Вы действительно хотите удалить автора? Все книги, связанные с ним, будут удалены.')) {
+        if (window.confirm('Вы действительно хотите удалить автомобиль? Все заказы, связанные с ним, будут удалены.')) {
             // deleteAuto(auto.id);
             // navigate(AUTHORS_ROUTE);
         }        
@@ -76,11 +76,12 @@ const AutoBlock: React.FunctionComponent = () => {
                     <Button className="auto__button" variant={"outline-primary"} onClick={() => setVisible(true)}>Редактировать</Button>
                     <Button className="auto__button" variant={"outline-danger"} onClick={removeAuto}>Удалить</Button>
             </div>
-            {/* <ModalAuto 
+
+            <ModalAutoUpdate
                 show={visible} 
                 onHide={() => setVisible(false)} 
                 auto={auto}
-            /> */}
+            />
         </div>
     );
 };
