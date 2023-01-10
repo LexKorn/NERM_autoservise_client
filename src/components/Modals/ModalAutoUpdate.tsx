@@ -17,10 +17,8 @@ const updateAuto = (id: number, auto: FormData) => {};
 const ModalAutoUpdate: React.FC<ModalAutoUpdateProps> = ({show, onHide, auto}) => {
     const [stamp, setStamp] = useState<string>(auto.stamp);
     const [model, setModel] = useState<string>(auto.model);
-    // @ts-ignore
-    const [year, setYear] = useState<number>(auto.year);
-    // @ts-ignore
-    const [vin, setVin] = useState<string>(auto.vin);
+    const [year, setYear] = useState<number | undefined>(auto.year);
+    const [vin, setVin] = useState<string | undefined>(auto.vin);
     const [stateNumber, setStateNumber] = useState<string>(auto.stateNumber);
     const [owner, setOwner] = useState<string>(auto.owner);
     const [phone, setPhone] = useState<string>(auto.phone);
@@ -29,7 +27,8 @@ const ModalAutoUpdate: React.FC<ModalAutoUpdateProps> = ({show, onHide, auto}) =
         <Modal
             show={show}
             onHide={onHide}
-            size="lg"
+            // @ts-ignore
+            size="md"
             centered
             >
             <Modal.Body>

@@ -10,12 +10,16 @@ const OrderPage: React.FC = () => {
         {
             id: 1,
             name: 'ремонт тормоза',
-            price: 1000
+            price: 1000,
+            orderId: 1,
+            userId: 1
         },
         {
             id: 2,
             name: 'замена колодки',
-            price: 500
+            price: 500,
+            orderId: 1,
+            userId: 1
         },
     ];
 
@@ -23,20 +27,24 @@ const OrderPage: React.FC = () => {
         {
             id: 1,
             name: 'тормоз',
-            price: 800
+            price: 800,
+            orderId: 1,
+            userId: 1
         },
         {
             id: 2,
             name: '2 колодки',
-            price: 1000
+            price: 1000,
+            orderId: 1,
+            userId: 1
         },
     ];
 
     return (
         <div>
             <OrderBlock />
-            <OrderList title="Работы :" orderItem={activities} />
-            <OrderList title="Запчасти :" orderItem={autoparts} />
+            <OrderList title="Работы:" orderItem={activities} />
+            <OrderList title="Запчасти:" orderItem={autoparts} />
         </div>
     );
 };

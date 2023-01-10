@@ -14,20 +14,24 @@ export interface IActivity {
     id: number;
     name: string;
     price: number;
+    orderId: number;
+    userId: number;
 };
 
 export interface IAutopart {
     id: number;
     name: string;
     price: number;
+    orderId: number;
+    userId: number;
 };
 
 export interface IOrder {
     id: number;
     opened: string;
     closed?: string;
-    activities?: IActivity[];
-    autoparts?: IAutopart[];
+    // activities?: IActivity[];
+    // autoparts?: IAutopart[];
     cost?: number;
     income?: number;
     profit?: number;

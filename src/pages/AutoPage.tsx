@@ -11,20 +11,20 @@ const AuthorPage: React.FC = () => {
             id: 1,
             opened: '07.01.2023',
             closed: '09.01.2023',
-            activities: [
-                {
-                    id: 1,
-                    name: 'ремонт тормаза',
-                    price: 1000
-                }
-            ],
-            autoparts: [
-                {
-                    id: 1,
-                    name: 'колодка',
-                    price: 700
-                }
-            ],
+            // activities: [
+            //     {
+            //         id: 1,
+            //         name: 'ремонт тормаза',
+            //         price: 1000
+            //     }
+            // ],
+            // autoparts: [
+            //     {
+            //         id: 1,
+            //         name: 'колодка',
+            //         price: 700
+            //     }
+            // ],
             cost: 2000,
             income: 2000,
             profit: 1300,
@@ -35,20 +35,20 @@ const AuthorPage: React.FC = () => {
         {
             id: 2,
             opened: '05.01.2023',
-            activities: [
-                {
-                    id: 2,
-                    name: 'ремонт генератора',
-                    price: 2000
-                }
-            ],
-            autoparts: [
-                {
-                    id: 1,
-                    name: 'ремень',
-                    price: 500
-                }
-            ],
+            // activities: [
+            //     {
+            //         id: 2,
+            //         name: 'ремонт генератора',
+            //         price: 2000
+            //     }
+            // ],
+            // autoparts: [
+            //     {
+            //         id: 1,
+            //         name: 'ремень',
+            //         price: 500
+            //     }
+            // ],
             cost: 2500,
             income: 2500,
             profit: 2000,
@@ -66,7 +66,7 @@ const AuthorPage: React.FC = () => {
     return (
         <div>
             <AutoBlock />
-            <OrderList2 title="Заказы :" orderItem={orders} />
+            <OrderList2 title="Заказы:" orderItem={orders} />
         </div>
     );
 };

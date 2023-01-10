@@ -9,7 +9,7 @@ import { AUTO_ROUTE, AUTOS_ROUTE, NOTFOUND_ROUTE } from '../../utils/consts';
 // import { deleteOrder, fetchOneOrder } from '../../http/orderAPI';
 // import { fetchCountries } from '../../http/countryAPI';
 // import {Context} from '../../index';
-// import ModalOrder from '../Modals/ModalOrder';
+import ModalOrderUpdate from '../Modals/ModalOrderUpdate';
 
 import './orderBlock.sass';
 
@@ -26,20 +26,20 @@ const OrderBlock: React.FunctionComponent = () => {
         id: 1,
         opened: '07.01.2023',
         closed: '09.01.2023',
-        activities: [
-            {
-                id: 1,
-                name: 'ремонт тормаза',
-                price: 1000
-            }
-        ],
-        autoparts: [
-            {
-                id: 1,
-                name: 'колодка',
-                price: 700
-            }
-        ],
+        // activities: [
+        //     {
+        //         id: 1,
+        //         name: 'ремонт тормаза',
+        //         price: 1000
+        //     }
+        // ],
+        // autoparts: [
+        //     {
+        //         id: 1,
+        //         name: 'колодка',
+        //         price: 700
+        //     }
+        // ],
         cost: 2000,
         income: 2000,
         profit: 1300,
@@ -109,11 +109,12 @@ const OrderBlock: React.FunctionComponent = () => {
                     <Button className="order__button" variant={"outline-primary"} onClick={() => setVisible(true)}>Редактировать</Button>
                     <Button className="order__button" variant={"outline-danger"} onClick={removeOrder}>Удалить</Button>
             </div>
-            {/* <ModalOrder 
+            
+            <ModalOrderUpdate 
                 show={visible} 
                 onHide={() => setVisible(false)} 
                 order={order}
-            /> */}
+            />
         </div>
     );
 };

@@ -8,8 +8,7 @@ const createAuto = (auto: FormData) => {};
 const AddAutoPage: React.FC = () => {
     const [stamp, setStamp] = useState<string>('');
     const [model, setModel] = useState<string>('');
-    // @ts-ignore
-    const [year, setYear] = useState<number>(null);
+    const [year, setYear] = useState<number | undefined>(undefined);
     const [vin, setVin] = useState<string>('');
     const [stateNumber, setStateNumber] = useState<string>('');
     const [owner, setOwner] = useState<string>('');

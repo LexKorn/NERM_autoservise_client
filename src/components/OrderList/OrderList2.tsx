@@ -6,15 +6,14 @@ import { IOrder, IActivity, IAutopart } from '../../types/types';
 // import { fetchActivitys, deleteActivity } from '../../http/activityAPI';
 // import { fetchOneOrder } from '../../http/orderAPI';
 import List from '../List/List';
-// import ListItem from '../ListItem/ListItem';
 import ListItemOrder from '../ListItem/ListItemOrder';
-// import ModalActivityUpdate from '../Modals/ModalActivityUpdate';
-// import ModalActivityAdd from '../Modals/ModalActivityAdd';
+import ModalOrderAdd from '../Modals/ModalOrderAdd';
 
 import './orderList.sass';
 
 // interface OrderListProps {
-//     orderItem: (IActivity | IAutopart)[];
+    // title: string;
+//     orderItem: (IOrder)[];
 // };
 
 // @ts-ignore
@@ -25,7 +24,6 @@ export default function OrderList2<T> ({title, orderItem}) {
     const [toggle, setToggle] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [visible, setVisible] = useState<boolean>(false);
-    const [visibleActivity, setVisibleActivity] = useState<boolean>(false);
     const {id} = useParams();
     const navigate = useNavigate();
 
@@ -46,48 +44,26 @@ export default function OrderList2<T> ({title, orderItem}) {
     // const orderActivitys: IActivity[] = activitys.filter(activity => activity.orderId === order.id);
 
 
-    const removeItem = (item: IOrder) => {
-        if (window.confirm('Вы действительно хотите удалить цитату?')) {
-            // deleteActivity(item.id);
-            setToggle(!toggle);
-        }
-    };
-
-    const editItem = (item: IOrder) => {
-        // setActivity(item);
-        setVisible(true);
-    };
-
-
     return (
         <Container className="activities">
             {!loading && <div className="activities__title">
                 <h3>{title}</h3>
-                <i className="bi bi-plus-circle activities__title_icon" onClick={() => setVisibleActivity(true)}></i>
+                <i className="bi bi-plus-circle activities__title_icon" onClick={() => setVisible(true)}></i>
             </div>}
             <List 
                 items={orderItem}
                 renderItem={(item: IOrder) => 
-                    <ListItemOrder 
-                        onDelete={() => removeItem(item)} 
-                        onEdit={() => editItem(item)}
+                    <ListItemOrder
                         onClick={(item) => navigate('/order/' + item.id)} 
                         item={item} 
                         key={item.id} 
                     />
                 } 
             />
-            {/* <ModalActivityAdd
-                show={visibleActivity} 
-                onHide={() => setVisibleActivity(false)} 
-                orderId={order.id}
-            />
-            <ModalActivityUpdate
+            <ModalOrderAdd
                 show={visible} 
-                onHide={() => setVisible(false)} 
-                orderId={order.id}
-                activityInit={activity}
-            /> */}
+                onHide={() => setVisible(false)}
+            />
         </Container> 
     );
 };

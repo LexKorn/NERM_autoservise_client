@@ -87,45 +87,45 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, stamp, model, year, vin, st
             <div>
                 <h1>{title}</h1>
                 <Form>
+                    <label htmlFor="stamp" className="mt-3">Марка</label> 
                     <Form.Control
-                        className="mt-3"
                         value={stamp}
                         onChange={e => setStamp(e.target.value)}
                         placeholder="Марка авто"
                     />
+                    <label htmlFor="model" className="mt-3">Модель</label> 
                     <Form.Control
-                        className="mt-3"
                         value={model}
                         onChange={e => setModel(e.target.value)}
                         placeholder="Модель авто"
                     />  
+                    <label htmlFor="year" className="mt-3">Год выпуска</label> 
                     <Form.Control
-                        className="mt-3"
                         value={year}
                         type="number"
                         onChange={e => setYear(+e.target.value)}
                         placeholder="Год выпуска"
                     />
+                    <label htmlFor="vin" className="mt-3">VIN номер</label> 
                     <Form.Control
-                        className="mt-3"
                         value={vin}
                         onChange={e => setVin(e.target.value)}
                         placeholder="VIN номер"
                     /> 
+                    <label htmlFor="stateNumber" className="mt-3">гос.номер</label> 
                     <Form.Control
-                        className="mt-3"
                         value={stateNumber}
                         onChange={e => setStateNumber(e.target.value)}
                         placeholder="гос.номер авто"
                     />
+                    <label htmlFor="owner" className="mt-3">Владелец</label> 
                     <Form.Control
-                        className="mt-3"
                         value={owner}
                         onChange={e => setOwner(e.target.value)}
                         placeholder="Владелец авто"
                     />    
+                    <label htmlFor="phone" className="mt-3">Телефон</label> 
                     <Form.Control
-                        className="mt-3"
                         value={phone}
                         onChange={e => setPhone(e.target.value)}
                         placeholder="Телефон владельца"

@@ -8,8 +8,8 @@ import { IOrder, IActivity, IAutopart } from '../../types/types';
 import List from '../List/List';
 import ListItem from '../ListItem/ListItem';
 import ListItemOrder from '../ListItem/ListItemOrder';
-// import ModalActivityUpdate from '../Modals/ModalActivityUpdate';
-// import ModalActivityAdd from '../Modals/ModalActivityAdd';
+import ModalActivityUpdate from '../Modals/ModalActivityUpdate';
+import ModalActivityAdd from '../Modals/ModalActivityAdd';
 
 import './orderList.sass';
 
@@ -53,15 +53,27 @@ export default function OrderList<T> ({title, orderItem}) {
 
     const editItem = (item: IAutopart | IActivity) => {
         // setActivity(item);
-        setVisible(true);
+        if (title === "Работы:") {
+            setVisible(true);
+        } else if (title === "Запчасти:") {
+            alert('Модалка с запчастями')
+        }
     };
+
+    const handler = () => {
+        if (title === "Работы:") {
+            setVisibleActivity(true);
+        } else if (title === "Запчасти:") {
+            alert('Модалка с запчастями')
+        }
+    }
 
 
     return (
         <Container className="activities">
             {!loading && <div className="activities__title">
                 <h3>{title}</h3>
-                <i className="bi bi-plus-circle activities__title_icon" onClick={() => setVisibleActivity(true)}></i>
+                <i className="bi bi-plus-circle activities__title_icon" onClick={handler}></i>
             </div>}
             <List 
                 items={orderItem}
@@ -74,7 +86,7 @@ export default function OrderList<T> ({title, orderItem}) {
                     />
                 } 
             />
-            {/* <ModalActivityAdd
+            <ModalActivityAdd
                 show={visibleActivity} 
                 onHide={() => setVisibleActivity(false)} 
                 orderId={order.id}
@@ -83,8 +95,8 @@ export default function OrderList<T> ({title, orderItem}) {
                 show={visible} 
                 onHide={() => setVisible(false)} 
                 orderId={order.id}
-                activityInit={activity}
-            /> */}
+                activity={activity}
+            />
         </Container> 
     );
 };

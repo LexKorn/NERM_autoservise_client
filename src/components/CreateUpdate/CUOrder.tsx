@@ -15,7 +15,7 @@ interface CUOrderProps {
     cost?: number;
     income?: number;
     profit?: number;
-    comment: string;
+    comment?: string;
     setOpened: (opened: string) => void;
     setClosed: (closed: string) => void;
     setCost: (cost: number) => void;
@@ -85,44 +85,45 @@ const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, cost, inc
             <div>
                 <h1>{title}</h1>
                 <Form>
+                    <label htmlFor="opened" className="mt-3">Открытие</label> 
                     <Form.Control
-                        className="mt-3"
                         value={opened}
                         onChange={e => setOpened(e.target.value)}
                         placeholder="Когда открыт заказ"
                     />
+                    <label htmlFor="closed" className="mt-3">Закрытие</label> 
                     <Form.Control
-                        className="mt-3"
                         value={closed}
                         onChange={e => setClosed(e.target.value)}
                         placeholder="Когда закрыт заказ"
                     />  
+                    <label htmlFor="cost" className="mt-3">Стоимость</label> 
                     <Form.Control
-                        className="mt-3"
                         value={cost}
                         type="number"
                         onChange={e => setCost(+e.target.value)}
                         placeholder="Стоимость"
                     />
+                    <label htmlFor="income" className="mt-3">Оплачено</label> 
                     <Form.Control
-                        className="mt-3"
                         value={income}
                         type="number"
                         onChange={e => setIncome(+e.target.value)}
                         placeholder="Оплачено"
                     />
+                    <label htmlFor="profit" className="mt-3">Прибыль</label> 
                     <Form.Control
-                        className="mt-3"
                         value={profit}
                         type="number"
                         onChange={e => setProfit(+e.target.value)}
                         placeholder="Прибыль"
                     />
-                    <Form.Control
-                        className="mt-3"
+                    <label htmlFor="comment" className="mt-3">Комментарий</label> 
+                    <Form.Control as="textarea"
                         value={comment}
                         onChange={e => setComment(e.target.value)}
                         placeholder="Комментарий"
+                        maxLength={700}
                     /> 
                                       
                     <Dropdown className="mt-3 mb-3">
