@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Button, Form } from 'react-bootstrap';
 
-interface CUNameProps {
+interface CUItemProps {
     id: number;
     name: string;
     price: number;
@@ -15,7 +15,7 @@ interface CUNameProps {
 };
 
 
-const CUName: React.FC<CUNameProps> = ({id, name, setName, price, setPrice, orderId, handler, title, btnName, onHide}) => {
+const CUItem: React.FC<CUItemProps> = ({id, name, setName, price, setPrice, orderId, handler, title, btnName, onHide}) => {
     const onClick = () => {
         if (!name.trim() || !price) {
             return alert('Поля обязательны для заполнения');
@@ -41,22 +41,28 @@ const CUName: React.FC<CUNameProps> = ({id, name, setName, price, setPrice, orde
         }
     };
 
+    let toggle: boolean = false;
+
+    if (title === 'Добавить работу' || title === 'Обновить работу') {
+        toggle = true;
+    }
+
 
     return (
         <Container className="d-flex flex-column justify-content-center">
             <h1 style={{textAlign: 'center'}}>{title}</h1>
             <Form>
-                <label htmlFor="name" className="mt-3">Работа</label> 
+                <label htmlFor="name" className="mt-3">{toggle ? 'Работа' : 'Запчасть'}</label> 
                 <Form.Control
                     value={name}
                     onChange={e => setName(e.target.value)}
-                    placeholder="Введите название работы"
+                    placeholder={toggle ? 'Введите название работы' : 'Введите название запчасти'}
                 />
                 <label htmlFor="name" className="mt-3">Стоимость</label> 
                 <Form.Control
                     value={price}
                     onChange={e => setPrice(+e.target.value)}
-                    placeholder="Введите стоимость работы"
+                    placeholder={toggle ? 'Введите стоимость работы' : 'Введите стоимость запчасти'}
                 />
             </Form>
             <Button variant={"outline-dark"} onClick={onClick} className="mt-3" style={{width: 100}}>{btnName}</Button>
@@ -64,4 +70,4 @@ const CUName: React.FC<CUNameProps> = ({id, name, setName, price, setPrice, orde
     );
 };
 
-export default CUName;
+export default CUItem;

@@ -8,8 +8,8 @@ import { IOrder, IActivity, IAutopart } from '../../types/types';
 import List from '../List/List';
 import ListItem from '../ListItem/ListItem';
 import ListItemOrder from '../ListItem/ListItemOrder';
-import ModalActivityUpdate from '../Modals/ModalActivityUpdate';
-import ModalActivityAdd from '../Modals/ModalActivityAdd';
+import ModalItemAdd from '../Modals/ModalItemAdd';
+import ModalItemUpdate from '../Modals/ModalItemUpdate';
 
 import './orderList.sass';
 
@@ -53,27 +53,21 @@ export default function OrderList<T> ({title, orderItem}) {
 
     const editItem = (item: IAutopart | IActivity) => {
         // setActivity(item);
-        if (title === "Работы:") {
-            setVisible(true);
-        } else if (title === "Запчасти:") {
-            alert('Модалка с запчастями')
-        }
-    };
+        setVisible(true);
 
-    const handler = () => {
-        if (title === "Работы:") {
-            setVisibleActivity(true);
-        } else if (title === "Запчасти:") {
-            alert('Модалка с запчастями')
-        }
-    }
+        // if (title === "Работы:") {
+        //     setVisible(true);
+        // } else if (title === "Запчасти:") {
+        //     alert('Модалка с запчастями')
+        // }
+    };
 
 
     return (
         <Container className="activities">
             {!loading && <div className="activities__title">
                 <h3>{title}</h3>
-                <i className="bi bi-plus-circle activities__title_icon" onClick={handler}></i>
+                <i className="bi bi-plus-circle activities__title_icon" onClick={() => setVisibleActivity(true)}></i>
             </div>}
             <List 
                 items={orderItem}
@@ -86,16 +80,18 @@ export default function OrderList<T> ({title, orderItem}) {
                     />
                 } 
             />
-            <ModalActivityAdd
+            <ModalItemAdd
                 show={visibleActivity} 
                 onHide={() => setVisibleActivity(false)} 
                 orderId={order.id}
+                title={title}
             />
-            <ModalActivityUpdate
+            <ModalItemUpdate
                 show={visible} 
                 onHide={() => setVisible(false)} 
                 orderId={order.id}
                 activity={activity}
+                title={title}
             />
         </Container> 
     );

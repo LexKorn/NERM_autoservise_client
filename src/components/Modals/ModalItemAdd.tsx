@@ -2,20 +2,29 @@ import React, {useState} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 
 // import { createName } from '../../http/nameAPI';
-import CUActivity from '../CreateUpdate/CUActivity';
+import CUItem from '../CreateUpdate/CUItem';
 
-interface ModalActivityAddProps {
+interface ModalItemAddProps {
     show: boolean;
     onHide: () => void;
     orderId: number;
+    title: string;
 };
 
-const createActivity = () => {};
+const createActivity = () => {console.log('сработал РАбота')};
 
 
-const ModalActivityAdd: React.FC<ModalActivityAddProps> = ({show, onHide, orderId}) => {
+const ModalItemAdd: React.FC<ModalItemAddProps> = ({show, onHide, orderId, title}) => {
     const [name, setName] = useState<string>('');
     const [price, setPrice] = useState<number>(0);
+
+    const handler = () => {
+        if (title === 'Работы:') {
+            createActivity();
+        } else if (title === 'Заказы:') {
+            alert('Тут должны быть заказы');
+        }
+    }
     
     return (
         <Modal
@@ -26,7 +35,7 @@ const ModalActivityAdd: React.FC<ModalActivityAddProps> = ({show, onHide, orderI
             centered
             >
             <Modal.Body>
-                <CUActivity 
+                <CUItem 
                     id={0}
                     name={name}
                     price={price}
@@ -34,8 +43,8 @@ const ModalActivityAdd: React.FC<ModalActivityAddProps> = ({show, onHide, orderI
                     setPrice={setPrice}
                     orderId={orderId}
                     // @ts-ignore
-                    handler={createActivity}
-                    title='Добавить работу'
+                    handler={handler}
+                    title={title === 'Работы:' ? 'Добавить работу' : 'Добавить запчасть'}
                     btnName='Добавить'
                     onHide={onHide}
                 />
@@ -47,4 +56,4 @@ const ModalActivityAdd: React.FC<ModalActivityAddProps> = ({show, onHide, orderI
     );
 };
 
-export default ModalActivityAdd;
+export default ModalItemAdd;

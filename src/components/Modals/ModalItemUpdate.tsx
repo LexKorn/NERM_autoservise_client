@@ -2,22 +2,32 @@ import React, {useState} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 
 // import { createName } from '../../http/nameAPI';
-import CUActivity from '../CreateUpdate/CUActivity';
+import CUItem from '../CreateUpdate/CUItem';
 import { IActivity } from '../../types/types';
 
-interface ModalActivityUpdateProps {
+interface ModalItemUpdateProps {
     show: boolean;
     onHide: () => void;
     orderId: number;
     activity: IActivity;
+    title: string;
 };
 
 const updateActivity = () => {};
 
 
-const ModalActivityUpdate: React.FC<ModalActivityUpdateProps> = ({show, onHide, orderId, activity}) => {
+const ModalItemUpdate: React.FC<ModalItemUpdateProps> = ({show, onHide, orderId, activity, title}) => {
     const [name, setName] = useState<string>(activity.name);
     const [price, setPrice] = useState<number>(activity.price);
+
+    const handler = () => {
+        if (title === 'Работы:') {
+            updateActivity();
+        } else if (title === 'Заказы:') {
+            alert('Тут должны быть заказы');
+        }
+    }
+
     
     return (
         <Modal
@@ -28,7 +38,7 @@ const ModalActivityUpdate: React.FC<ModalActivityUpdateProps> = ({show, onHide, 
             centered
             >
             <Modal.Body>
-                <CUActivity 
+                <CUItem 
                     id={activity.id}
                     name={name}
                     price={price}
@@ -36,8 +46,8 @@ const ModalActivityUpdate: React.FC<ModalActivityUpdateProps> = ({show, onHide, 
                     setPrice={setPrice}
                     orderId={orderId}
                     // @ts-ignore
-                    handler={updateActivity}
-                    title='Обновить работу'
+                    handler={handler}
+                    title={title === 'Работы:' ? 'Обновить работу' : 'Обновить запчасть'}
                     btnName='Обновить'
                     onHide={onHide}
                 />
@@ -49,4 +59,4 @@ const ModalActivityUpdate: React.FC<ModalActivityUpdateProps> = ({show, onHide, 
     );
 };
 
-export default ModalActivityUpdate;
+export default ModalItemUpdate;

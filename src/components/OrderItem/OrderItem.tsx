@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import { Card } from 'react-bootstrap';
 import {observer} from 'mobx-react-lite';
 
-import { IAuto, IOrder } from '../../types/types';
+import { IAuto, IOrder, IActivity } from '../../types/types';
 // import { Context } from '../index';
 
 import './orderItem.sass';
@@ -31,15 +31,32 @@ const OrderItem: React.FC<OrderItemProps> = observer(({order, onClick}) => {
         }
     ];
 
+    const activitiesOrder: IActivity[] = [
+        {
+            id: 1,
+            name: 'ремонт тормоза',
+            price: 1000,
+            orderId: 1,
+            userId: 1
+        },
+        {
+            id: 2,
+            name: 'замена колодки',
+            price: 500,
+            orderId: 1,
+            userId: 1
+        },
+    ];
+
     if (autoOrder.length > 0) {
         return (
             <Card 
                 className="order-card shadow"
                 onClick={() => onClick(order)}
             >
-                {/* {order.opened} - {autoOrder[0].stamp} {autoOrder[0].model} - {Array.isArray(order.activities) && order.activities[0].name}...  */}
-                {order.opened} - {autoOrder[0].stamp} {autoOrder[0].model} - {autoOrder[0].owner} <b>{order.closed}</b>
-                {/* {order.opened} - {autoOrder[0].stamp} {autoOrder[0].model} - {autoOrder[0].owner} <b>{order.closed}</b> */}
+                {order.opened} - {autoOrder[0].stamp} {autoOrder[0].model} - {Array.isArray(activitiesOrder) && activitiesOrder[0].name}... 
+                <b>{order.closed}</b>
+                {/* {autoOrder[0].owner} */}
             </Card>        
         );
     } else {
