@@ -7,7 +7,7 @@ import {Helmet} from "react-helmet";
 import List from '../components/List/List';
 import OrderItem from '../components/OrderItem/OrderItem';
 // import FilterPanel from '../components/FilterPanel/FilterPanel';
-// import Statistics from '../components/Statistics/Statistics';
+import Statistics from '../components/Statistics/Statistics';
 import { IOrder } from '../types/types';
 // import { fetchOrders } from '../http/orderAPI';
 // import { fetchAuthors } from '../http/authorAPI';
@@ -98,7 +98,7 @@ const MainPage: React.FC = observer(() => {
                 <meta name="description" content="Список заказов" />
             </Helmet>
 
-            {/* <Statistics /> */}
+            <Statistics />
             {/* <FilterPanel value={value} setValue={setValue} filter={filter} setFilter={setFilter} elems={library.orders} /> */}
             <h1 style={{textAlign: 'center'}}>Список заказов:</h1>
             {loading ? <Spinner animation={"border"}/> :

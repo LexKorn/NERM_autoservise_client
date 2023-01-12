@@ -9,7 +9,7 @@ import AutoItem from '../components/AutoItem/AutoItem';
 import { IAuto } from '../types/types';
 
 // import FilterPanel from '../components/FilterPanel/FilterPanel';
-// import Statistics from '../components/Statistics/Statistics';
+import Statistics from '../components/Statistics/Statistics';
 // import { fetchAuthors } from '../http/authorAPI';
 // import { Context } from '../index';
 
@@ -75,7 +75,7 @@ const AuthorsPage: React.FC = observer(() => {
                 <meta name="description" content="Список автомобилей" />
             </Helmet>
 
-            {/* <Statistics /> */}
+            <Statistics />
             {/* <FilterPanel value={value} setValue={setValue} filter={filter} setFilter={setFilter} elems={authors} /> */}
             <h1 style={{textAlign: 'center'}}>Список автомобилей:</h1>
             {loading ? <Spinner animation={"border"}/> :
