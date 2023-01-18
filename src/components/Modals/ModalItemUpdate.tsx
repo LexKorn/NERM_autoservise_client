@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 
 // import { createName } from '../../http/nameAPI';
@@ -17,8 +17,13 @@ const updateActivity = () => {};
 
 
 const ModalItemUpdate: React.FC<ModalItemUpdateProps> = ({show, onHide, orderId, activity, title}) => {
-    const [name, setName] = useState<string>(activity.name);
-    const [price, setPrice] = useState<number>(activity.price);
+    const [name, setName] = useState<string>('');
+    const [price, setPrice] = useState<number>(0);
+
+    useEffect(() => {
+        setName(activity.name);
+        setPrice(activity.price);
+    }, [show]);
 
     const handler = () => {
         if (title === 'Работы:') {

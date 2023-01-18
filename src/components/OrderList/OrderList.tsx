@@ -52,7 +52,7 @@ export default function OrderList<T> ({title, orderItem}) {
     };
 
     const editItem = (item: IAutopart | IActivity) => {
-        // setActivity(item);
+        setActivity(item);
         setVisible(true);
 
         // if (title === "Работы:") {

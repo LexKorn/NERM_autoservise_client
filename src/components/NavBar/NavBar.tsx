@@ -4,7 +4,7 @@ import {Navbar, Container, Button} from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 
 // import {Context} from '../../index';
-import { MAIN_ROUTE, ADD_AUTO_ROUTE, ADD_ORDER_ROUTE, AUTOS_ROUTE } from "../../utils/consts";
+import { MAIN_ROUTE, ADD_AUTO_ROUTE, AUTOS_ROUTE, CALC_ROUTE } from "../../utils/consts";
 
 import './navBar.sass';
 
@@ -30,18 +30,6 @@ const NavBar = observer(() => {
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav" className='justify-content-around'>
                                 <div className='buttons'>
-                                    {/* <Button
-                                        variant={"outline-light"}
-                                        className="me-2 nav-btn"
-                                        onClick={() => navigate(AUTOS_ROUTE)}
-                                        >Список авто
-                                    </Button> */}
-                                    {/* <Button
-                                        variant={"outline-light"}
-                                        className="me-2 nav-btn"
-                                        onClick={() => navigate(ADD_ORDER_ROUTE)}
-                                        >Добавить заказ
-                                    </Button> */}
                                     <Button
                                         variant={"outline-light"}
                                         className="me-2 nav-btn"
@@ -51,7 +39,7 @@ const NavBar = observer(() => {
                                     <Button
                                         variant={"outline-light"}
                                         className="me-2 nav-btn"
-                                        onClick={() => navigate(MAIN_ROUTE)}
+                                        onClick={() => navigate(CALC_ROUTE)}
                                         >Калькулятор
                                     </Button>          
                                 </div> 

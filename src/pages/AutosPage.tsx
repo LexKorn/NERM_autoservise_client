@@ -10,6 +10,7 @@ import { IAuto } from '../types/types';
 
 // import FilterPanel from '../components/FilterPanel/FilterPanel';
 import Statistics from '../components/Statistics/Statistics';
+import SearchPanel from '../components/SearchPanel/SearchPanel';
 // import { fetchAuthors } from '../http/authorAPI';
 // import { Context } from '../index';
 
@@ -77,6 +78,7 @@ const AuthorsPage: React.FC = observer(() => {
 
             <Statistics />
             {/* <FilterPanel value={value} setValue={setValue} filter={filter} setFilter={setFilter} elems={authors} /> */}
+            <SearchPanel value={value} setValue={setValue} elems={autos} />
             <h1 style={{textAlign: 'center'}}>Список автомобилей:</h1>
             {loading ? <Spinner animation={"border"}/> :
                 <List

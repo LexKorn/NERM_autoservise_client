@@ -30,8 +30,6 @@ export interface IOrder {
     id: number;
     opened: string;
     closed?: string;
-    // activities?: IActivity[];
-    // autoparts?: IAutopart[];
     cost?: number;
     income?: number;
     profit?: number;
