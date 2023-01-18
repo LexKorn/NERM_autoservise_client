@@ -8,14 +8,14 @@ import { IAuto } from '../../types/types';
 import { AUTOS_ROUTE, NOTFOUND_ROUTE } from '../../utils/consts';
 // import { deleteAuto, fetchOneAuto } from '../../http/autoAPI';
 // import { fetchCountries } from '../../http/countryAPI';
-// import {Context} from '../../index';
+import {Context} from '../../index';
 import ModalAutoUpdate from '../Modals/ModalAutoUpdate';
 
 import './autoBlock.sass';
 
 
 const AutoBlock: React.FunctionComponent = () => {
-    // const {library} = useContext(Context);
+    const {service} = useContext(Context);
     // const [auto, setAuto] = useState<IAuto>({} as IAuto);    
     const [loading, setLoading] = useState<boolean>(true);
     const {id} = useParams<{id: string}>();

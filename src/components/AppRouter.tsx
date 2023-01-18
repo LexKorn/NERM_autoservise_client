@@ -4,16 +4,15 @@ import {observer} from "mobx-react-lite";
 
 import { authRoutes, publicRoutes } from '../routes';
 import { REGISTER_ROUTE, MAIN_ROUTE } from '../utils/consts';
-// import { Context } from '../index';
+import { Context } from '../index';
 
 
 const AppRouter: React.FC = observer(() => { 
-    // const {user} = useContext(Context);
-    const isAuth: boolean = true;
+    const {user} = useContext(Context);
 
     return (
         <Routes>
-            {isAuth ? 
+            {user.isAuth ? 
                 authRoutes.map(({path, Component}) => 
                     <Route key={path} path={path} element={<Component />} />
                 ):
@@ -21,7 +20,7 @@ const AppRouter: React.FC = observer(() => {
                     <Route key={path} path={path} element={<Component />} />
                 )
             }
-            {isAuth ?
+            {user.isAuth ?
                 <Route path='*' element={<Navigate to={MAIN_ROUTE} />} />
                 :
                 <Route path='*' element={<Navigate to={REGISTER_ROUTE} />} />

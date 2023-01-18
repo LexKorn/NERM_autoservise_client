@@ -5,12 +5,12 @@ import { Spinner } from "react-bootstrap";
 
 import AppRouter from "./components/AppRouter";
 import NavBar from "./components/NavBar/NavBar";
-// import { Context } from "./index";
+import { Context } from "./index";
 // import { check } from "./http/userAPI";
 
 
 const App = observer(() => {
-    // const {user} = useContext(Context);
+    const {user} = useContext(Context);
     // const [loading, setLoading] = useState<boolean>(true);
 
     // useEffect(() => {

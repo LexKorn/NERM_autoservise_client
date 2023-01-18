@@ -6,19 +6,18 @@ import {Helmet} from "react-helmet";
 
 import List from '../components/List/List';
 import OrderItem from '../components/OrderItem/OrderItem';
-// import FilterPanel from '../components/FilterPanel/FilterPanel';
 import Statistics from '../components/Statistics/Statistics';
+import SearchPanel from '../components/SearchPanel/SearchPanel';
 import { IOrder } from '../types/types';
+import { Context } from '../index';
 // import { fetchOrders } from '../http/orderAPI';
-// import { fetchAuthors } from '../http/authorAPI';
-// import { Context } from '../index';
+// import { fetchAutos } from '../http/autoAPI';
 
 
 const MainPage: React.FC = observer(() => {
-    // const {library} = useContext(Context);
+    const {service} = useContext(Context);
     const [loading, setLoading] = useState<boolean>(false);
     const [value, setValue] = useState<string>('');
-    const [filter, setFilter] = useState<string>('Все');
     const navigate = useNavigate();
 
     const orders: IOrder[] = [
@@ -26,20 +25,6 @@ const MainPage: React.FC = observer(() => {
             id: 1,
             opened: '07.01.2023',
             closed: '09.01.2023',
-            // activities: [
-            //     {
-            //         id: 1,
-            //         name: 'ремонт тормаза',
-            //         price: 1000
-            //     }
-            // ],
-            // autoparts: [
-            //     {
-            //         id: 1,
-            //         name: 'колодка',
-            //         price: 700
-            //     }
-            // ],
             cost: 2000,
             income: 2000,
             profit: 1300,
@@ -50,20 +35,6 @@ const MainPage: React.FC = observer(() => {
         {
             id: 2,
             opened: '05.01.2023',
-            // activities: [
-            //     {
-            //         id: 2,
-            //         name: 'ремонт генератора',
-            //         price: 2000
-            //     }
-            // ],
-            // autoparts: [
-            //     {
-            //         id: 1,
-            //         name: 'ремень',
-            //         price: 500
-            //     }
-            // ],
             cost: 2500,
             income: 2500,
             profit: 2000,
@@ -77,6 +48,10 @@ const MainPage: React.FC = observer(() => {
             autoId: 3
         }
     ];
+
+    useEffect(() => {
+        service.setOrders(orders);
+    }, []);
 
     // useEffect(() => {
     //     getOrders();
@@ -99,7 +74,8 @@ const MainPage: React.FC = observer(() => {
             </Helmet>
 
             <Statistics />
-            {/* <FilterPanel value={value} setValue={setValue} filter={filter} setFilter={setFilter} elems={library.orders} /> */}
+            {/* @ts-ignore */}
+            <SearchPanel value={value} setValue={setValue} elems={orders} />
             <h1 style={{textAlign: 'center'}}>Список заказов:</h1>
             {loading ? <Spinner animation={"border"}/> :
                 <List 

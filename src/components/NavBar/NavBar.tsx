@@ -3,26 +3,25 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {Navbar, Container, Button} from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 
-// import {Context} from '../../index';
+import {Context} from '../../index';
 import { MAIN_ROUTE, ADD_AUTO_ROUTE, AUTOS_ROUTE, CALC_ROUTE } from "../../utils/consts";
 
 import './navBar.sass';
 
 
 const NavBar = observer(() => {
-    // const {user} = useContext(Context);
-    const isAuth: boolean = true;
+    const {user} = useContext(Context);
     const navigate = useNavigate();
 
     const logOut = () => {
-        // user.setIsAuth(false);
+        user.setIsAuth(false);
         localStorage.clear();
     };
 
 
     return (
         <>
-            {isAuth ?
+            {user.isAuth ?
                 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top" >
                     <Container >
                         <NavLink className="active" to={MAIN_ROUTE}>ЗАКАЗЫ</NavLink>

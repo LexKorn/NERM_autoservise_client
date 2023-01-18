@@ -7,11 +7,11 @@ import {Helmet} from "react-helmet";
 
 import { LOGIN_ROUTE, REGISTER_ROUTE, MAIN_ROUTE } from '../utils/consts';
 // import { login, registration } from '../http/userAPI';
-// import {Context} from '../index';
+import {Context} from '../index';
 
 
 const AuthPage: React.FC = observer(() => {
-    // const {user} = useContext(Context);
+    const {user} = useContext(Context);
     const location = useLocation();
     const navigate = useNavigate();
     const isLogin = location.pathname === LOGIN_ROUTE;
@@ -27,7 +27,7 @@ const AuthPage: React.FC = observer(() => {
             //     data = await registration(username, password);
             // }
 
-            // user.setIsAuth(true);
+            user.setIsAuth(true);
             navigate(MAIN_ROUTE);
         } catch(err: unknown) {
             const error = err as AxiosError;

@@ -64,12 +64,12 @@ const SearchPanel: React.FC<SearchPanelProps> = ({value, setValue, elems}) => {
         <>
             <div className='sort'>
                 <button className='sort__btn' onClick={() => setCondition('stamp')}>Марка авто</button>
-                <button className='sort__btn' onClick={() => setCondition('createdAt')}>Добавление авто</button>
+                <button className='sort__btn' onClick={() => setCondition('createdAt')}>Время добавления</button>
             </div>
             <input 
                 className='search' 
                 type='text' 
-                placeholder='Начните вводить искомое слово' 
+                placeholder='Начните вводить марку, модель или гос.номер' 
                 value={value}
                 onChange={e => setValue(e.target.value)}
             />            
