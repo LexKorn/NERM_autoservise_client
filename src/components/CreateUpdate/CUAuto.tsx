@@ -3,15 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import {Container, Button, Form, Dropdown} from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 
-// import { Context } from '../index';
+import { Context } from '../../index';
+import { IStamp, IModel } from '../../types/types';
 // import { fetchCountries } from '../http/countryAPI';
 // import { AUTHORS_ROUTE } from '../utils/consts';
-// import ModalCountry from './Modals/ModalCountry';
+import ModalStamp from '../Modals/ModalStamp';
+import ModalModel from '../Modals/ModalModel';
+import ModalStampModel from '../Modals/ModalStampModel';
 
 interface CUAutoProps {
     id: number;
-    stamp: string;
-    model: string;
     year?: number;
     vin?: string;
     stateNumber: string;
@@ -30,14 +31,57 @@ interface CUAutoProps {
 };
 
 
-const CUAuto: React.FC<CUAutoProps> = observer(({id, stamp, model, year, vin, stateNumber, owner, phone, setStamp, setModel, setYear, setVin, setStateNumber, setOwner, setPhone, handler, title, btnName}) => {
-    // const {library} = useContext(Context);
+const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, owner, phone, setStamp, setModel, setYear, setVin, setStateNumber, setOwner, setPhone, handler, title, btnName}) => {
+    const {service} = useContext(Context);
     const navigate = useNavigate();
+    // const [visibleStamp, setVisibleStamp] = useState<boolean>(false);
+    // const [visibleModel, setVisibleModel] = useState<boolean>(false);
     const [visible, setVisible] = useState<boolean>(false);
+    const [item, setItem] = useState<string>('');
 
-    // useEffect(() => {
-    //     fetchCountries().then(data => library.setCountries(data));
-    // }, [visible]);
+    const stamps: IStamp[] = [
+        {
+            id: 1,
+            stamp: 'Reno',
+            userId: 1
+        },
+        {
+            id: 2,
+            stamp: 'Toyota',
+            userId: 1
+        },
+        {
+            id: 3,
+            stamp: 'Лада',
+            userId: 1
+        },
+    ];
+
+    const models: IModel[] = [
+        {
+            id: 1,
+            model: 'Logan',
+            userId: 1
+        },
+        {
+            id: 2,
+            model: 'Camrry',
+            userId: 1
+        },
+        {
+            id: 3,
+            model: 'Калина',
+            userId: 1
+        },
+    ];
+
+    useEffect(() => {
+        // fetchStamps().then(data => service.setStamps(data));
+        // fetchModels().then(data => service.setModels(data));
+        service.setStamps(stamps);
+        service.setModels(models);
+    }, [visible]);
+// }, [visibleStamp, visibleModel]);
 
 
     const onClick = () => {
@@ -81,25 +125,49 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, stamp, model, year, vin, st
         // }
     };
 
+    const showStamp = () => {
+        setVisible(true);
+        setItem('stamp');
+    };
+
+    const showModel = () => {
+        setVisible(true);
+        setItem('model');
+    };
+
 
     return (
         <Container className="d-flex justify-content-center">
             <div>
                 <h1>{title}</h1>
                 <Form>
-                    <label htmlFor="stamp" className="mt-3">Марка</label> 
-                    <Form.Control
-                        value={stamp}
-                        onChange={e => setStamp(e.target.value)}
-                        placeholder="Марка авто"
-                    />
-                    <label htmlFor="model" className="mt-3">Модель</label> 
-                    <Form.Control
-                        value={model}
-                        onChange={e => setModel(e.target.value)}
-                        placeholder="Модель авто"
-                    />  
-                    <label htmlFor="year" className="mt-3">Год выпуска</label> 
+                    <Dropdown className="mt-3 mb-3">
+                        <Dropdown.Toggle variant={"outline-dark"}>{service.selectedStamp.stamp || 'Выберите марку'}</Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {service.stamps.map(stamp => 
+                                <Dropdown.Item 
+                                    onClick={() => service.setSelectedStamp(stamp)} 
+                                    key={stamp.id} >
+                                        {stamp.stamp}
+                                </Dropdown.Item>                                
+                            )}
+                            <Dropdown.Item onClick={showStamp} >Добавить / удалить марку</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>  
+                    <Dropdown className="mt-3 mb-3">
+                        <Dropdown.Toggle variant={"outline-dark"}>{service.selectedModel.model || 'Выберите модель'}</Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {service.models.map(model => 
+                                <Dropdown.Item 
+                                    onClick={() => service.setSelectedModel(model)} 
+                                    key={model.id} >
+                                        {model.model}
+                                </Dropdown.Item>                                
+                            )}
+                            <Dropdown.Item onClick={showModel} >Добавить / удалить модель</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <label htmlFor="year" className="mt-2">Год выпуска</label> 
                     <Form.Control
                         value={year}
                         type="number"
@@ -129,25 +197,13 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, stamp, model, year, vin, st
                         value={phone}
                         onChange={e => setPhone(e.target.value)}
                         placeholder="Телефон владельца"
-                    />           
-                                      
-                    <Dropdown className="mt-3 mb-3">
-                        {/* <Dropdown.Toggle variant={"outline-dark"}>{library.selectedCountry.name || 'Выберите страну'}</Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {library.countries.map(country => 
-                                <Dropdown.Item 
-                                    onClick={() => library.setSelectedCountry(country)} 
-                                    key={country.id} >
-                                        {country.name}
-                                </Dropdown.Item>                                
-                            )}
-                            <Dropdown.Item onClick={() => setVisible(true)} >Добавить / удалить страну</Dropdown.Item>
-                        </Dropdown.Menu> */}
-                    </Dropdown>            
+                    />        
                 </Form>
                 <Button variant={"outline-dark"} onClick={onClick} className="mt-3">{btnName}</Button>           
             </div>   
-            {/* <ModalCountry show={visible} onHide={() => setVisible(false)} /> */}
+            {/* <ModalStamp show={visibleStamp} onHide={() => setVisibleStamp(false)} />
+            <ModalModel show={visibleModel} onHide={() => setVisibleModel(false)} /> */}
+            <ModalStampModel show={visible} onHide={() => setVisible(false)} item={item} />
         </Container>
     );
 });

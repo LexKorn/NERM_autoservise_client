@@ -1,7 +1,19 @@
-export interface IAuto {
+export interface IStamp {
     id: number;
     stamp: string;
+    userId: number;
+};
+
+export interface IModel {
+    id: number;
     model: string;
+    userId: number;
+};
+
+export interface IAuto {
+    id: number;
+    stampId: number;
+    modelId: number;
     year?: number;
     vin?: string;
     stateNumber: string;
