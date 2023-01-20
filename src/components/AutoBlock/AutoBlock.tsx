@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Spinner, Button } from 'react-bootstrap';
 import {Helmet} from "react-helmet";
 
-import { IAuto } from '../../types/types';
+import { IAuto, IStamp, IModel } from '../../types/types';
 import { AUTOS_ROUTE, NOTFOUND_ROUTE } from '../../utils/consts';
 // import { deleteAuto, fetchOneAuto } from '../../http/autoAPI';
 // import { fetchCountries } from '../../http/countryAPI';
@@ -24,8 +24,8 @@ const AutoBlock: React.FunctionComponent = () => {
 
     const auto: IAuto = {
             id: 1,
-            stamp: "Reno",
-            model: "Logan",
+            stampId: 1,
+            modelId: 1,
             year: 2006,
             vin: "XXLSRAG00276SRAG222",
             stateNumber: "АБ123В190",
@@ -33,20 +33,43 @@ const AutoBlock: React.FunctionComponent = () => {
             phone: '+7 123 456 78 90',
             userId: 1
     };
+
+    const stamps: IStamp[] = [{
+        id: 1,
+        stamp: "Reno",
+        userId: 1
+    }];
+
+    const models: IModel[] = [{
+        id: 1,
+        model: "Logan",
+        userId: 1
+    }];
     
-    // useEffect(() => {
-    //     fetchCountries().then(data => library.setCountries(data));
-    //     fetchOneAuto(id)
-    //         .then(data => setAuto(data))
-    //         .catch(() => navigate(NOTFOUND_ROUTE))
-    //         .finally(() => setLoading(false));
-    // }, []);
+    useEffect(() => {
+        // fetchStamps().then(data => service.setStamps(data));
+        // fetchModels().then(data => service.setModels(data));
+        service.setStamps(stamps);
+        service.setModels(models);
+
+        // fetchOneAuto(id)
+        //     .then(data => setAuto(data))
+        //     .catch(() => navigate(NOTFOUND_ROUTE))
+        //     .finally(() => setLoading(false));
+    }, []);
 
     // useEffect(() => {
-    //     library.setSelectedCountry(countryAuto[0]);
-    // }, [auto]);
+    //     service.setSelectedStamp(stampAuto[0]);
+    //     service.setSelectedModel(modelAuto[0]);
+    // }, []);  //[auto]
 
-    // const countryAuto: ICountry[] = library.countries.filter(country => country.id === auto.countryId);
+    const stampAuto: IStamp[] = service.stamps.filter(stamp => stamp.id === auto.stampId);
+    const modelAuto: IModel[] = service.models.filter(model => model.id === auto.modelId);
+
+    useEffect(() => {
+        service.setSelectedStamp(stampAuto[0]);
+        service.setSelectedModel(modelAuto[0]);
+    }, [stampAuto, modelAuto]);  //[auto]
 
     const removeAuto = () => {
         if (window.confirm('Вы действительно хотите удалить автомобиль? Все заказы, связанные с ним, будут удалены.')) {
@@ -62,17 +85,16 @@ const AutoBlock: React.FunctionComponent = () => {
     return (
         <div>
             <Helmet>
-                <title>{auto.stamp} {auto.model}</title>
-                <meta name="description" content={`Страничка ${auto.stamp} ${auto.model}`} />
+                <title>{`${service.selectedStamp && service.selectedStamp.stamp} ${service.selectedModel && service.selectedModel.model}`}</title>
+                <meta name="description" content={`Страничка ${service.selectedStamp && service.selectedStamp.stamp} ${service.selectedModel && service.selectedModel.model}`} />
             </Helmet>
 
             <div className="auto">
-                    <div className="auto__name">{auto.stamp} {auto.model} {auto.year ? auto.year : ''}</div>
+                    <div className="auto__name">{`${service.selectedStamp && service.selectedStamp.stamp} ${service.selectedModel && service.selectedModel.model} ${auto.year ? auto.year : ''}`}</div>
                     <div className="auto__description">гос.номер: {auto.stateNumber}</div>
                     {auto.vin && <div className="auto__description">VIN: {auto.vin}</div>}
                     <div className="auto__description">владелец: {auto.owner}</div>
                     <div className="auto__description">телефон: {auto.phone}</div>
-                    {/* <div className="auto__country">{countryAuto.length > 0 ? countryAuto[0].name : ''}</div> */}
                     <Button className="auto__button" variant={"outline-primary"} onClick={() => setVisible(true)}>Редактировать</Button>
                     <Button className="auto__button" variant={"outline-danger"} onClick={removeAuto}>Удалить</Button>
             </div>

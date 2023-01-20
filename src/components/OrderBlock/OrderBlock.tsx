@@ -4,18 +4,18 @@ import { useParams } from 'react-router-dom';
 import { Spinner, Button } from 'react-bootstrap';
 import {Helmet} from "react-helmet";
 
-import { IOrder, IAuto } from '../../types/types';
+import { IOrder, IAuto, IStamp, IModel } from '../../types/types';
 import { AUTO_ROUTE, AUTOS_ROUTE, NOTFOUND_ROUTE } from '../../utils/consts';
 // import { deleteOrder, fetchOneOrder } from '../../http/orderAPI';
 // import { fetchCountries } from '../../http/countryAPI';
-// import {Context} from '../../index';
+import {Context} from '../../index';
 import ModalOrderUpdate from '../Modals/ModalOrderUpdate';
 
 import './orderBlock.sass';
 
 
 const OrderBlock: React.FunctionComponent = () => {
-    // const {library} = useContext(Context);
+    const {service} = useContext(Context);
     // const [order, setOrder] = useState<IOrder>({} as IOrder);    
     const [loading, setLoading] = useState<boolean>(true);
     const {id} = useParams<{id: string}>();
@@ -26,20 +26,6 @@ const OrderBlock: React.FunctionComponent = () => {
         id: 1,
         opened: '07.01.2023',
         closed: '09.01.2023',
-        // activities: [
-        //     {
-        //         id: 1,
-        //         name: 'ремонт тормаза',
-        //         price: 1000
-        //     }
-        // ],
-        // autoparts: [
-        //     {
-        //         id: 1,
-        //         name: 'колодка',
-        //         price: 700
-        //     }
-        // ],
         cost: 2000,
         income: 2000,
         profit: 1300,
@@ -50,8 +36,8 @@ const OrderBlock: React.FunctionComponent = () => {
 
     const auto: IAuto = {
             id: 1,
-            stamp: "Reno",
-            model: "Logan",
+            stampId: 1,
+            modelId: 1,
             year: 2006,
             vin: "XXLSRAG00276SRAG222",
             stateNumber: "АБ123В190",
@@ -74,6 +60,14 @@ const OrderBlock: React.FunctionComponent = () => {
 
     // const countryOrder: ICountry[] = library.countries.filter(country => country.id === order.countryId);
 
+    const stampAuto: IStamp[] = service.stamps.filter(stamp => stamp.id === auto.stampId);
+    const modelAuto: IModel[] = service.models.filter(model => model.id === auto.modelId);
+
+    useEffect(() => {
+        service.setSelectedStamp(stampAuto[0]);
+        service.setSelectedModel(modelAuto[0]);
+    }, [stampAuto, modelAuto]); 
+
     const removeOrder = () => {
         if (window.confirm('Вы действительно хотите заказ?')) {
             // deleteOrder(order.id);
@@ -88,8 +82,8 @@ const OrderBlock: React.FunctionComponent = () => {
     return (
         <div>
             <Helmet>
-                <title>{order.opened} {auto.stamp} {auto.model}</title>
-                <meta name="description" content={`${order.opened} ${auto.stamp} ${auto.model}`} />
+                <title>{`${order.opened} ${service.selectedStamp && service.selectedStamp.stamp} ${service.selectedModel && service.selectedModel.model}`}</title>
+                <meta name="description" content={`${order.opened} ${service.selectedStamp && service.selectedStamp.stamp} ${service.selectedModel && service.selectedModel.model}`} />
             </Helmet>
 
             <div className="order">
@@ -97,7 +91,7 @@ const OrderBlock: React.FunctionComponent = () => {
                         className="order__name"
                         onClick={() => {navigate(AUTO_ROUTE + `/${order.autoId}`)}}  // (AUTO_ROUTE + `/${authorBook[0].id}`)
                     >
-                        {auto.stamp} {auto.model} {auto.stateNumber}
+                        {`${service.selectedStamp && service.selectedStamp.stamp} ${service.selectedModel && service.selectedModel.model} ${auto.stateNumber}`}
                     </div>
                     <div className="order__description">заказ открыт: {order.opened}</div>
                     {order.closed && <div className="order__description">заказ закрыт: {order.closed}</div>}

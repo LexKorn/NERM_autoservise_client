@@ -8,14 +8,16 @@ import List from '../components/List/List';
 import AutoItem from '../components/AutoItem/AutoItem';
 import Statistics from '../components/Statistics/Statistics';
 import SearchPanel from '../components/SearchPanel/SearchPanel';
-import { IAuto } from '../types/types';
+import { IAuto, IStamp, IModel } from '../types/types';
 import { Context } from '../index';
 // import { fetchAuthors } from '../http/authorAPI';
 
 
 const AuthorsPage: React.FC = observer(() => {
     const {service} = useContext(Context);
-    // const [authors, setAuthors] = useState<IAuthor[]>([]);
+    // const [autos, setAutos] = useState<IAuto[]>([]);
+    // const [stamps, setStamps] = useState<IStamp[]>([]);
+    // const [models, setModels] = useState<IModel[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [value, setValue] = useState<string>('');
     const navigate = useNavigate();
@@ -23,8 +25,8 @@ const AuthorsPage: React.FC = observer(() => {
     const autos: IAuto[] = [
         {
             id: 1,
-            stamp: "Reno",
-            model: "Logan",
+            stampId: 1,
+            modelId: 1,
             year: 2006,
             vin: "XXLSRAG",
             stateNumber: "АБ123В190",
@@ -34,8 +36,8 @@ const AuthorsPage: React.FC = observer(() => {
         },
         {
             id: 2,
-            stamp: "Toyota",
-            model: "Camrry",
+            stampId: 2,
+            modelId: 2,
             year: 2011,
             vin: "XXLSRAG",
             stateNumber: "МН456К190",
@@ -45,8 +47,8 @@ const AuthorsPage: React.FC = observer(() => {
         },
         {
             id: 3,
-            stamp: "Лада",
-            model: "Калина",
+            stampId: 3,
+            modelId: 3,
             stateNumber: "ЛК789К150",
             owner: "Саня",
             phone: '+7 903 123 78 94',
@@ -54,8 +56,46 @@ const AuthorsPage: React.FC = observer(() => {
         },
     ];
 
+    const stamps: IStamp[] = [
+        {
+            id: 1,
+            stamp: "Reno",
+            userId: 1
+        },
+        {
+            id: 2,
+            stamp: "Toyota",
+            userId: 1
+        },
+        {
+            id: 3,
+            stamp: "Лада",
+            userId: 1
+        }
+    ];
+
+    const models: IModel[] = [
+        {
+            id: 1,
+            model: "Logan",
+            userId: 1
+        },
+        {
+            id: 2,
+            model: "Camrry",
+            userId: 1
+        },
+        {
+            id: 3,
+            model: "Калина",
+            userId: 1
+        }
+    ];
+
     useEffect(() => {
         service.setAutos(autos);
+        service.setStamps(stamps);
+        service.setModels(models);
     }, []);
 
     // useEffect(() => {
@@ -85,7 +125,7 @@ const AuthorsPage: React.FC = observer(() => {
                     renderItem={(auto: IAuto) => 
                         <AutoItem 
                             onClick={(auto) => navigate('/auto/' + auto.id)} 
-                            auto={auto} 
+                            auto={auto}
                             key={auto.id} 
                         />
                     } 

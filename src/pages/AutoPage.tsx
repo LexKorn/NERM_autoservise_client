@@ -5,7 +5,7 @@ import OrderList2 from '../components/OrderList/OrderList2';
 import { IOrder } from '../types/types';
 
 
-const AuthorPage: React.FC = () => {
+const AutoPage: React.FC = () => {
     const orders: IOrder[] = [
         {
             id: 1,
@@ -43,4 +43,4 @@ const AuthorPage: React.FC = () => {
     );
 };
 
-export default AuthorPage;
+export default AutoPage;

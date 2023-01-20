@@ -15,8 +15,6 @@ const updateAuto = (id: number, auto: FormData) => {};
 
 
 const ModalAutoUpdate: React.FC<ModalAutoUpdateProps> = ({show, onHide, auto}) => {
-    const [stamp, setStamp] = useState<string>(auto.stamp);
-    const [model, setModel] = useState<string>(auto.model);
     const [year, setYear] = useState<number | undefined>(auto.year);
     const [vin, setVin] = useState<string | undefined>(auto.vin);
     const [stateNumber, setStateNumber] = useState<string>(auto.stateNumber);
@@ -34,15 +32,11 @@ const ModalAutoUpdate: React.FC<ModalAutoUpdateProps> = ({show, onHide, auto}) =
             <Modal.Body>
                 <CUAuto 
                     id={auto.id}
-                    stamp={stamp}
-                    model={model}
                     year={year}
                     vin={vin}
                     stateNumber={stateNumber}
                     owner={owner}
                     phone={phone}
-                    setStamp={setStamp}
-                    setModel={setModel}
                     setYear={setYear}
                     setVin={setVin}
                     setStateNumber={setStateNumber}

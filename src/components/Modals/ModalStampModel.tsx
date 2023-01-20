@@ -18,8 +18,6 @@ const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) =
     const [value, setValue] = useState<string>('');
     const [autos, setAutos] = useState<IAuto[]>([]);
     const [items, setItems] = useState<(IStamp | IModel)[]>([]);
-    // const [models, setModels] = useState<IModel[]>([]);
-    // const [models, setModels] = useState<IModel[]>([]);
     const navigate = useNavigate();
 
     // useEffect(() => {

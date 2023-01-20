@@ -7,8 +7,6 @@ import { Context } from '../../index';
 import { IStamp, IModel } from '../../types/types';
 // import { fetchCountries } from '../http/countryAPI';
 // import { AUTHORS_ROUTE } from '../utils/consts';
-import ModalStamp from '../Modals/ModalStamp';
-import ModalModel from '../Modals/ModalModel';
 import ModalStampModel from '../Modals/ModalStampModel';
 
 interface CUAutoProps {
@@ -18,8 +16,6 @@ interface CUAutoProps {
     stateNumber: string;
     owner: string;
     phone: string;
-    setStamp: (stamp: string) => void;
-    setModel: (model: string) => void;
     setYear: (year: number) => void;
     setVin: (vin: string) => void;
     setStateNumber: (stateNumber: string) => void;
@@ -31,11 +27,9 @@ interface CUAutoProps {
 };
 
 
-const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, owner, phone, setStamp, setModel, setYear, setVin, setStateNumber, setOwner, setPhone, handler, title, btnName}) => {
+const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, owner, phone, setYear, setVin, setStateNumber, setOwner, setPhone, handler, title, btnName}) => {
     const {service} = useContext(Context);
     const navigate = useNavigate();
-    // const [visibleStamp, setVisibleStamp] = useState<boolean>(false);
-    // const [visibleModel, setVisibleModel] = useState<boolean>(false);
     const [visible, setVisible] = useState<boolean>(false);
     const [item, setItem] = useState<string>('');
 
@@ -81,7 +75,6 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, own
         service.setStamps(stamps);
         service.setModels(models);
     }, [visible]);
-// }, [visibleStamp, visibleModel]);
 
 
     const onClick = () => {
@@ -142,7 +135,7 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, own
                 <h1>{title}</h1>
                 <Form>
                     <Dropdown className="mt-3 mb-3">
-                        <Dropdown.Toggle variant={"outline-dark"}>{service.selectedStamp.stamp || 'Выберите марку'}</Dropdown.Toggle>
+                        <Dropdown.Toggle variant={"outline-dark"}>{service.selectedStamp.stamp || 'Марка'}</Dropdown.Toggle>
                         <Dropdown.Menu>
                             {service.stamps.map(stamp => 
                                 <Dropdown.Item 
@@ -155,7 +148,7 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, own
                         </Dropdown.Menu>
                     </Dropdown>  
                     <Dropdown className="mt-3 mb-3">
-                        <Dropdown.Toggle variant={"outline-dark"}>{service.selectedModel.model || 'Выберите модель'}</Dropdown.Toggle>
+                        <Dropdown.Toggle variant={"outline-dark"}>{service.selectedModel.model || 'Модель'}</Dropdown.Toggle>
                         <Dropdown.Menu>
                             {service.models.map(model => 
                                 <Dropdown.Item 
@@ -201,8 +194,6 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, own
                 </Form>
                 <Button variant={"outline-dark"} onClick={onClick} className="mt-3">{btnName}</Button>           
             </div>   
-            {/* <ModalStamp show={visibleStamp} onHide={() => setVisibleStamp(false)} />
-            <ModalModel show={visibleModel} onHide={() => setVisibleModel(false)} /> */}
             <ModalStampModel show={visible} onHide={() => setVisible(false)} item={item} />
         </Container>
     );

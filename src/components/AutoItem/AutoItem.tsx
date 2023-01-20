@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Card } from 'react-bootstrap';
 
-import { IAuto } from '../../types/types';
+import { IAuto, IStamp, IModel } from '../../types/types';
+import { Context } from '../../index';
 
 import './autoItem.sass';
 
@@ -12,14 +13,24 @@ interface AutoItemProps {
 
 
 const AutoItem: React.FC<AutoItemProps> = ({auto, onClick}) => {    
-    return (
-        <Card 
-            className="auto-card shadow"
-            onClick={() => onClick(auto)}
-        >
-            <b>{auto.stamp} {auto.model} {auto.stateNumber}</b> {auto.owner}
-        </Card>
-    );
+    const {service} = useContext(Context);
+    const stampAuto: IStamp[] = service.stamps.filter(stamp => stamp.id === auto.stampId);
+    const modelAuto: IModel[] = service.models.filter(model => model.id === auto.modelId);
+
+    if (stampAuto.length && modelAuto.length) {
+        return (
+            <Card 
+                className="auto-card shadow"
+                onClick={() => onClick(auto)}
+            >
+                <b>{stampAuto[0].stamp} {modelAuto[0].model} {auto.stateNumber}</b> {auto.owner}
+            </Card>
+        );
+    } else {
+        return (
+            <div></div>
+        );
+    }
 };
 
 export default AutoItem;

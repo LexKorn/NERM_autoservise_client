@@ -2,8 +2,8 @@ import React, {useContext} from 'react';
 import { Card } from 'react-bootstrap';
 import {observer} from 'mobx-react-lite';
 
-import { IAuto, IOrder, IActivity } from '../../types/types';
-// import { Context } from '../index';
+import { IAuto, IOrder, IActivity, IStamp, IModel } from '../../types/types';
+import { Context } from '../../index';
 
 import './orderItem.sass';
 
@@ -14,14 +14,15 @@ interface OrderItemProps {
 
 
 const OrderItem: React.FC<OrderItemProps> = observer(({order, onClick}) => {    
-    // const {library} = useContext(Context);
-    // const autoOrder: IAuto[] = library.autos.filter(auto => auto.id === order.autoId);
+    const {service} = useContext(Context);
+    // const autoOrder: IAuto[] = service.autos.filter(auto => auto.id === order.autoId);
+    
 
     const autoOrder: IAuto[] = [
         {
             id: 1,
-            stamp: "Reno",
-            model: "Logan",
+            stampId: 1,
+            modelId: 1,
             year: 2006,
             vin: "XXLSRAG00276SRAG222",
             stateNumber: "АБ123В190",
@@ -48,13 +49,16 @@ const OrderItem: React.FC<OrderItemProps> = observer(({order, onClick}) => {
         },
     ];
 
-    if (autoOrder.length > 0) {
+    const stampAuto: IStamp[] = service.stamps.filter(stamp => stamp.id === autoOrder[0].stampId);
+    const modelAuto: IModel[] = service.models.filter(model => model.id === autoOrder[0].modelId);
+
+    if (stampAuto.length && modelAuto.length) {
         return (
             <Card 
                 className="order-card shadow"
                 onClick={() => onClick(order)}
             >
-                {order.opened} - {autoOrder[0].stamp} {autoOrder[0].model} - {Array.isArray(activitiesOrder) && activitiesOrder[0].name}... 
+                {order.opened} - {stampAuto[0].stamp} {modelAuto[0].model} - {Array.isArray(activitiesOrder) && activitiesOrder[0].name}... 
                 <b>{order.closed}</b>
                 {/* {autoOrder[0].owner} */}
             </Card>        
