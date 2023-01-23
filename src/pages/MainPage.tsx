@@ -8,7 +8,7 @@ import List from '../components/List/List';
 import OrderItem from '../components/OrderItem/OrderItem';
 import Statistics from '../components/Statistics/Statistics';
 import SearchPanelOrders from '../components/SearchPanel/SearchPanelOrders';
-import { IOrder } from '../types/types';
+import { IOrder, IStamp, IModel } from '../types/types';
 import { Context } from '../index';
 // import { fetchOrders } from '../http/orderAPI';
 // import { fetchAutos } from '../http/autoAPI';
@@ -49,6 +49,42 @@ const MainPage: React.FC = observer(() => {
         }
     ];
 
+    const stamps: IStamp[] = [
+        {
+            id: 1,
+            stamp: "Reno",
+            userId: 1
+        },
+        {
+            id: 2,
+            stamp: "Toyota",
+            userId: 1
+        },
+        {
+            id: 3,
+            stamp: "Лада",
+            userId: 1
+        }
+    ];
+
+    const models: IModel[] = [
+        {
+            id: 1,
+            model: "Logan",
+            userId: 1
+        },
+        {
+            id: 2,
+            model: "Camrry",
+            userId: 1
+        },
+        {
+            id: 3,
+            model: "Калина",
+            userId: 1
+        }
+    ];
+
     useEffect(() => {
         service.setOrders(orders);
     }, []);
@@ -75,11 +111,11 @@ const MainPage: React.FC = observer(() => {
 
             <Statistics />
             {/* @ts-ignore */}
-            <SearchPanelOrders orders={orders} stamps={orders} models={orders} />
+            <SearchPanelOrders orders={orders} stamps={stamps} models={models} />
             <h1 style={{textAlign: 'center'}}>Список заказов:</h1>
             {loading ? <Spinner animation={"border"}/> :
                 <List 
-                    items={orders} 
+                    items={service.visibleOrders} 
                     renderItem={(order: IOrder) => 
                         <OrderItem 
                             order={order} 

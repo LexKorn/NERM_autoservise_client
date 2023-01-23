@@ -35,7 +35,7 @@ const ListItemOrder: React.FC<ListItemOrderProps> = ({item, onClick}) => {
             className="list-item order-card shadow"
             onClick={() => onClick(item)}
         >
-            {item.opened} - {Array.isArray(activitiesOrder) && activitiesOrder[0].name}... - {item.cost}  <b>{item.closed}</b>
+            {item.opened} - {Array.isArray(activitiesOrder) && activitiesOrder[0].name}... - {item.cost} / {item.profit}  <b>{item.closed}</b>
             {/* <div>{item.opened} - {Array.isArray(item.activities) && item.activities[0].name}... {item.cost}</div> */}
         </Card>      
     );

@@ -16,13 +16,47 @@ interface SearchPanelOrdersProps {
 const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = ({orders, stamps, models}) => { 
     const {service} = useContext(Context);
     const [directionSort, setDirectionSort] = useState<boolean>(true);
-    const [condition, setCondition] = useState<string>('stampId');
+    const [condition, setCondition] = useState<string>('createdAt');
     const [value, setValue] = useState<string>('');
+    const [filter, setFilter] = useState<string>('Все');
 
     useEffect(() => {
-        service.setVisibleOrders(sortHandler(search(orders, value)));
-    }, [value, directionSort]);
+        service.setVisibleOrders(sortHandler(filterPost(search(orders, value), filter)));
+        }, [value, directionSort, filter]);
 
+    const autos: IAuto[] = [
+        {
+            id: 1,
+            stampId: 1,
+            modelId: 1,
+            year: 2006,
+            vin: "XXLSRAG",
+            stateNumber: "АБ123В190",
+            owner: "Лёха",
+            phone: '+7 123 456 78 90',
+            userId: 1
+        },
+        {
+            id: 2,
+            stampId: 2,
+            modelId: 2,
+            year: 2011,
+            vin: "XXLSRAG",
+            stateNumber: "МН456К190",
+            owner: "Иван",
+            phone: '+7 985 766 78 90',
+            userId: 1
+        },
+        {
+            id: 3,
+            stampId: 3,
+            modelId: 3,
+            stateNumber: "ЛК789К150",
+            owner: "Саня",
+            phone: '+7 903 123 78 94',
+            userId: 1
+        },
+    ];
 
     function search(items: (IOrder)[], term: string) {   
         if (term.length === 0) {
@@ -30,13 +64,14 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = ({orders, stamps, mo
         }
 
         return items.filter(item => {
+            const orderAuto: IAuto[] = autos.filter(auto => auto.id === item.autoId);
+
             return (
-                service.stamps.filter(stamp => stamp.id === item.autoId)[0].stamp.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
-                service.models.filter(model => model.id === item.autoId)[0].model.toLowerCase().indexOf(term.toLowerCase()) > -1
+                stamps.filter(stamp => stamp.id === orderAuto[0].stampId)[0].stamp.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
+                models.filter(model => model.id === orderAuto[0].modelId)[0].model.toLowerCase().indexOf(term.toLowerCase()) > -1
             )
         }); 
     };
-
 
     function sortHandler(items: IOrder[]) {
         let sortElems: IOrder[] = [];
@@ -53,6 +88,19 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = ({orders, stamps, mo
             });
         }
         return sortElems;
+    };
+
+    function filterPost(items: IOrder[], filter: string) {
+        switch (filter) {
+            case 'closed':
+                return items.filter(item => item.closed);
+            case 'no-closed':
+                return items.filter(item => !item.closed);
+            case 'All':
+                return items;
+            default:
+                return items;
+        }
     };
 
     const sortStamp = () => {
@@ -73,9 +121,10 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = ({orders, stamps, mo
                 <div className="sort__btns">
                     <button className='sort__btn' onClick={sortStamp}>Марка авто</button>
                     <button className='sort__btn' onClick={sortDate}>Время добавления</button>
-                    <button className='sort__btn' onClick={sortDate}>закрыт</button>
-                    <button className='sort__btn' onClick={sortDate}>не закрыт</button>
-                    <button className='sort__btn' onClick={sortDate}>все</button>
+
+                    <button className='sort__btn' onClick={() => setFilter('closed')}>закрыт</button>
+                    <button className='sort__btn' onClick={() => setFilter('no-closed')}>не закрыт</button>
+                    <button className='sort__btn' onClick={() => setFilter('All')}>Все</button>
                 </div>                
             </div>
             <input 

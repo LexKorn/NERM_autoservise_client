@@ -58,7 +58,7 @@ const OrderItem: React.FC<OrderItemProps> = observer(({order, onClick}) => {
                 className="order-card shadow"
                 onClick={() => onClick(order)}
             >
-                {order.opened} - {stampAuto[0].stamp} {modelAuto[0].model} - {Array.isArray(activitiesOrder) && activitiesOrder[0].name}... 
+                {order.opened} - {stampAuto[0].stamp} {modelAuto[0].model} - {Array.isArray(activitiesOrder) && activitiesOrder[0].name}... ..  {order.cost} / {order.profit}
                 <b>{order.closed}</b>
                 {/* {autoOrder[0].owner} */}
             </Card>        
