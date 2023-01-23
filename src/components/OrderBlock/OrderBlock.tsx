@@ -87,21 +87,21 @@ const OrderBlock: React.FunctionComponent = () => {
             </Helmet>
 
             <div className="order">
-                    <div 
-                        className="order__name"
-                        onClick={() => {navigate(AUTO_ROUTE + `/${order.autoId}`)}}  // (AUTO_ROUTE + `/${authorBook[0].id}`)
-                    >
-                        {`${service.selectedStamp && service.selectedStamp.stamp} ${service.selectedModel && service.selectedModel.model} ${auto.stateNumber}`}
-                    </div>
-                    <div className="order__description">заказ открыт: {order.opened}</div>
-                    {order.closed && <div className="order__description">заказ закрыт: {order.closed}</div>}
-                    {order.cost && <div className="order__description">стоимость: {order.cost}p</div>}
-                    {order.income && <div className="order__description">оплачено: {order.income}p</div>}
-                    {order.profit && <div className="order__description">прибыль: {order.profit}p</div>}
-                    {order.comment && <div className="order__description">комментарий: {order.comment}</div>}
-                    
-                    <Button className="order__button" variant={"outline-primary"} onClick={() => setVisible(true)}>Редактировать</Button>
-                    <Button className="order__button" variant={"outline-danger"} onClick={removeOrder}>Удалить</Button>
+                <div 
+                    className="order__name"
+                    onClick={() => {navigate(AUTO_ROUTE + `/${order.autoId}`)}}  // (AUTO_ROUTE + `/${authorBook[0].id}`)
+                >
+                    {`${service.selectedStamp && service.selectedStamp.stamp} ${service.selectedModel && service.selectedModel.model} ${auto.stateNumber}`}
+                </div>
+                <div className="order__description">заказ открыт: {order.opened}</div>
+                {order.closed && <div className="order__description">заказ закрыт: {order.closed}</div>}
+                {order.cost && <div className="order__description">стоимость: {order.cost}p</div>}
+                {order.income && <div className="order__description">оплачено: {order.income}p</div>}
+                {order.profit && <div className="order__description">прибыль: {order.profit}p</div>}
+                {order.comment && <div className="order__description">комментарий: {order.comment}</div>}
+                
+                <Button className="order__button" variant={"outline-primary"} onClick={() => setVisible(true)}>Редактировать</Button>
+                <Button className="order__button" variant={"outline-danger"} onClick={removeOrder}>Удалить</Button>
             </div>
             
             <ModalOrderUpdate 

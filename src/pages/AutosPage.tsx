@@ -19,7 +19,6 @@ const AuthorsPage: React.FC = observer(() => {
     // const [stamps, setStamps] = useState<IStamp[]>([]);
     // const [models, setModels] = useState<IModel[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [value, setValue] = useState<string>('');
     const navigate = useNavigate();
 
     const autos: IAuto[] = [
@@ -109,6 +108,7 @@ const AuthorsPage: React.FC = observer(() => {
     //         .finally(() => setLoading(false));
     // }
 
+
     return (
         <Container>
             <Helmet>
@@ -117,11 +117,11 @@ const AuthorsPage: React.FC = observer(() => {
             </Helmet>
 
             <Statistics />
-            <SearchPanel value={value} setValue={setValue} elems={autos} />
+            <SearchPanel autos={autos} stamps={stamps} models={models} />
             <h1 style={{textAlign: 'center'}}>Список автомобилей:</h1>
             {loading ? <Spinner animation={"border"}/> :
                 <List
-                    items={autos} 
+                    items={service.visibleAutos} 
                     renderItem={(auto: IAuto) => 
                         <AutoItem 
                             onClick={(auto) => navigate('/auto/' + auto.id)} 

@@ -7,7 +7,7 @@ import {Helmet} from "react-helmet";
 import List from '../components/List/List';
 import OrderItem from '../components/OrderItem/OrderItem';
 import Statistics from '../components/Statistics/Statistics';
-import SearchPanel from '../components/SearchPanel/SearchPanel';
+import SearchPanelOrders from '../components/SearchPanel/SearchPanelOrders';
 import { IOrder } from '../types/types';
 import { Context } from '../index';
 // import { fetchOrders } from '../http/orderAPI';
@@ -17,7 +17,7 @@ import { Context } from '../index';
 const MainPage: React.FC = observer(() => {
     const {service} = useContext(Context);
     const [loading, setLoading] = useState<boolean>(false);
-    const [value, setValue] = useState<string>('');
+    // const [value, setValue] = useState<string>('');
     const navigate = useNavigate();
 
     const orders: IOrder[] = [
@@ -75,7 +75,7 @@ const MainPage: React.FC = observer(() => {
 
             <Statistics />
             {/* @ts-ignore */}
-            <SearchPanel value={value} setValue={setValue} elems={orders} />
+            <SearchPanelOrders orders={orders} stamps={orders} models={orders} />
             <h1 style={{textAlign: 'center'}}>Список заказов:</h1>
             {loading ? <Spinner animation={"border"}/> :
                 <List 

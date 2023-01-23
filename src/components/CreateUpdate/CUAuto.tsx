@@ -177,13 +177,13 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, own
                     <Form.Control
                         value={stateNumber}
                         onChange={e => setStateNumber(e.target.value)}
-                        placeholder="гос.номер авто"
+                        placeholder="гос.номер"
                     />
                     <label htmlFor="owner" className="mt-3">Владелец</label> 
                     <Form.Control
                         value={owner}
                         onChange={e => setOwner(e.target.value)}
-                        placeholder="Владелец авто"
+                        placeholder="Владелец"
                     />    
                     <label htmlFor="phone" className="mt-3">Телефон</label> 
                     <Form.Control
