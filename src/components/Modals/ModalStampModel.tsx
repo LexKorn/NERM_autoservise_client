@@ -2,8 +2,9 @@ import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {Modal, Button, Form} from 'react-bootstrap';
 
-// import {createStamp, deleteStamp, fetchStamps} from '../../http/stampAPI';
-// import { fetchAuthors } from '../../http/authorAPI';
+import { createStamp, deleteStamp, fetchStamps } from '../../http/stampsAPI';
+import { createModel, deleteModel, fetchModels } from '../../http/modelsAPI';
+import { fetchAutos } from '../../http/autosAPI';
 import { ADD_AUTO_ROUTE } from '../../utils/consts';
 import { IAuto, IStamp, IModel } from '../../types/types';
 
@@ -16,8 +17,8 @@ interface ModalStampModelProps {
 
 const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) => {
     const [value, setValue] = useState<string>('');
-    const [autos, setAutos] = useState<IAuto[]>([]);
-    const [items, setItems] = useState<(IStamp | IModel)[]>([]);
+    // const [autos, setAutos] = useState<IAuto[]>([]);
+    // const [items, setItems] = useState<(IStamp | IModel)[]>([]);
     const navigate = useNavigate();
 
     // useEffect(() => {
@@ -30,13 +31,23 @@ const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) =
 			return alert('Поле обязательно для заполнения');
 		}
 
-        // createStamp(value)
-        //     .then(() => {
-        //         setValue('');
-        //         onHide();
-        //         navigate(ADD_AUTO_ROUTE);
-        //     })
-        //     .catch(err => alert(err.response.data.message));       
+        if (item === "stamp") {
+            createStamp(value)
+                .then(() => {
+                    setValue('');
+                    onHide();
+                    navigate(ADD_AUTO_ROUTE);
+                })
+                .catch(err => alert(err.response.data.message));
+        } else if (item === "model") {
+            createModel(value)
+                .then(() => {
+                    setValue('');
+                    onHide();
+                    navigate(ADD_AUTO_ROUTE);
+                })
+                .catch(err => alert(err.response.data.message));  
+        }        
     };
 
     const removeStamp = () => {
@@ -52,11 +63,19 @@ const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) =
         //     }
         // }                
 
-        // deleteStamp(value).then(() => {
-        //     setValue('');
-        //     onHide();
-        //     navigate(ADD_AUTO_ROUTE);
-        // });
+        if (item === "stamp") {
+            deleteStamp(value).then(() => {
+                setValue('');
+                onHide();
+                navigate(ADD_AUTO_ROUTE);
+            });
+        } else if (item === "model") {
+            deleteModel(value).then(() => {
+                setValue('');
+                onHide();
+                navigate(ADD_AUTO_ROUTE);
+            });
+        }
     };
 
     const keyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
