@@ -5,8 +5,9 @@ import { observer } from 'mobx-react-lite';
 
 import { Context } from '../../index';
 import { IStamp, IModel } from '../../types/types';
-// import { fetchCountries } from '../http/countryAPI';
-// import { AUTHORS_ROUTE } from '../utils/consts';
+import { fetchModels } from '../../http/modelsAPI';
+import { fetchStamps } from '../../http/stampsAPI';
+import { AUTOS_ROUTE } from '../../utils/consts';
 import ModalStampModel from '../Modals/ModalStampModel';
 
 interface CUAutoProps {
@@ -33,89 +34,49 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, own
     const [visible, setVisible] = useState<boolean>(false);
     const [item, setItem] = useState<string>('');
 
-    const stamps: IStamp[] = [
-        {
-            id: 1,
-            stamp: 'Reno',
-            userId: 1
-        },
-        {
-            id: 2,
-            stamp: 'Toyota',
-            userId: 1
-        },
-        {
-            id: 3,
-            stamp: 'Лада',
-            userId: 1
-        },
-    ];
-
-    const models: IModel[] = [
-        {
-            id: 1,
-            model: 'Logan',
-            userId: 1
-        },
-        {
-            id: 2,
-            model: 'Camrry',
-            userId: 1
-        },
-        {
-            id: 3,
-            model: 'Калина',
-            userId: 1
-        },
-    ];
-
     useEffect(() => {
-        // fetchStamps().then(data => service.setStamps(data));
-        // fetchModels().then(data => service.setModels(data));
-        service.setStamps(stamps);
-        service.setModels(models);
+        fetchStamps().then(data => service.setStamps(data));
+        fetchModels().then(data => service.setModels(data));
     }, [visible]);
 
 
     const onClick = () => {
-        // if (!name.trim() || !description.trim()) {
-        //     return alert('Все поля обязательны для заполнения');
-        // } else if (!file) {
-        //     return alert('Фото необходимо загрузить');
-        // } else if (!library.selectedCountry.id) {
-        //     return alert('Страну необходимо указать');        
-        // }
+        if (!stateNumber.trim() || !owner.trim() || !phone.trim()) {
+            return alert('Поля: гос.номер, владелец и телефон обязательны для заполнения');
+        } else if (!service.selectedStamp.id) {
+            return alert('Марку необходимо указать');        
+        } else if (!service.selectedModel.id) {
+            return alert('Модель необходимо указать');        
+        }
 
-        // const formData = new FormData();
-        // formData.append('name', name);
-        // formData.append('description', description);
-        // formData.append('photo', file);
-        // formData.append('countryId', `${library.selectedCountry.id}`);
+        const formData = new FormData();
+        formData.append('year', `${year}`);
+            // @ts-ignore 
+        formData.append('vin', vin);
+        formData.append('stateNumber', stateNumber);
+        formData.append('owner', owner);
+        formData.append('phone', phone);
+        formData.append('stampId', `${service.selectedStamp.id}`);
+        formData.append('modelId', `${service.selectedModel.id}`);
 
-        // if (btnName === 'Добавить') {
-        //     // @ts-ignore 
-        //     handler(formData)
-        //         .then(() => {
-        //             library.setSelectedCountry({
-        //                 id: 0,
-        //                 name: '',
-        //                 userId: 0
-        //             });
-        //             navigate(AUTHORS_ROUTE);
-        //         })
-        //         .catch(err => alert(err.response.data.message));
-        // } else {
-        //     handler(id, formData)
-        //         .then(() => {
-        //             library.setSelectedCountry({
-        //                 id: 0,
-        //                 name: '',
-        //                 userId: 0
-        //             });
-        //             navigate(AUTHORS_ROUTE);
-        //         })
-        //         .catch(err => alert(err.response.data.message));
-        // }
+        if (btnName === 'Добавить') {
+            // @ts-ignore 
+            handler(formData)
+                .then(() => {
+                    service.setSelectedStamp({} as IStamp);
+                    service.setSelectedModel({} as IModel);
+                    navigate(AUTOS_ROUTE);
+                })
+                .catch(err => alert(err.response.data.message));
+        } else {
+            handler(id, formData)
+                .then(() => {
+                    service.setSelectedStamp({} as IStamp);
+                    service.setSelectedModel({} as IModel);
+                    navigate(AUTOS_ROUTE);
+                })
+                .catch(err => alert(err.response.data.message));
+        }
     };
 
     const showStamp = () => {

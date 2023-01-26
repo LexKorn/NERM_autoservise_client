@@ -6,7 +6,7 @@ import {AxiosError} from 'axios';
 import {Helmet} from "react-helmet";
 
 import { LOGIN_ROUTE, REGISTER_ROUTE, MAIN_ROUTE } from '../utils/consts';
-// import { login, registration } from '../http/userAPI';
+import { login, registration } from '../http/userAPI';
 import {Context} from '../index';
 
 
@@ -20,15 +20,15 @@ const AuthPage: React.FC = observer(() => {
 
     const click = async () => {
         try {
-            // let data;
-            // if (isLogin) {
-            //     data = await login(username, password);
-            // } else {
-            //     data = await registration(username, password);
-            // }
+            if (isLogin) {
+                await login(username, password);
+            } else {
+                await registration(username, password);
+            }
 
             user.setIsAuth(true);
             navigate(MAIN_ROUTE);
+            
         } catch(err: unknown) {
             const error = err as AxiosError;
             alert(JSON.parse(error.request.response).message);
