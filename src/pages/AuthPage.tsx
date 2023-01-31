@@ -31,7 +31,9 @@ const AuthPage: React.FC = observer(() => {
             
         } catch(err: unknown) {
             const error = err as AxiosError;
-            alert(JSON.parse(error.request.response).message);
+            // alert(JSON.parse(error.request.response).message);
+            console.log(error.request.response);
+            
         }        
     };
 

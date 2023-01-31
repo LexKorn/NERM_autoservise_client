@@ -8,98 +8,32 @@ import List from '../components/List/List';
 import OrderItem from '../components/OrderItem/OrderItem';
 import Statistics from '../components/Statistics/Statistics';
 import SearchPanelOrders from '../components/SearchPanel/SearchPanelOrders';
-import { IOrder, IStamp, IModel } from '../types/types';
+import { IOrder } from '../types/types';
 import { Context } from '../index';
-// import { fetchOrders } from '../http/orderAPI';
-// import { fetchAutos } from '../http/autoAPI';
+import { fetchOrders } from '../http/ordersAPI';
+import { fetchStamps } from '../http/stampsAPI';
+import { fetchModels } from '../http/modelsAPI';
 
 
 const MainPage: React.FC = observer(() => {
     const {service} = useContext(Context);
-    const [loading, setLoading] = useState<boolean>(false);
-    // const [value, setValue] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(true);
     const navigate = useNavigate();
 
-    const orders: IOrder[] = [
-        {
-            id: 1,
-            opened: '07.01.2023',
-            closed: '09.01.2023',
-            cost: 2000,
-            income: 2000,
-            profit: 1300,
-            comment: 'Ну и дела',
-            userId: 1,
-            autoId: 1
-        },
-        {
-            id: 2,
-            opened: '05.01.2023',
-            cost: 2500,
-            income: 2500,
-            profit: 2000,
-            userId: 1,
-            autoId: 2
-        },
-        {
-            id: 3,
-            opened: '08.01.2023',
-            userId: 1,
-            autoId: 3
-        }
-    ];
-
-    const stamps: IStamp[] = [
-        {
-            id: 1,
-            stamp: "Reno",
-            userId: 1
-        },
-        {
-            id: 2,
-            stamp: "Toyota",
-            userId: 1
-        },
-        {
-            id: 3,
-            stamp: "Лада",
-            userId: 1
-        }
-    ];
-
-    const models: IModel[] = [
-        {
-            id: 1,
-            model: "Logan",
-            userId: 1
-        },
-        {
-            id: 2,
-            model: "Camrry",
-            userId: 1
-        },
-        {
-            id: 3,
-            model: "Калина",
-            userId: 1
-        }
-    ];
-
     useEffect(() => {
-        service.setOrders(orders);
-    }, []);
+        fetchOrders()
+            .then(data => service.setOrders(data))
+            .catch(err => alert(err.message))
+            .finally(() => setLoading(false));
 
-    // useEffect(() => {
-    //     getOrders();
-    //     fetchAuthors().then(data => library.setAuthors(data));
-    // }, []);
-  
-    // function getOrders() {
-    //     fetchOrders()
-    //         .then(data => library.setOrders(data))
-    //         .catch(err => alert(err.message))
-    //         .finally(() => setLoading(false));
-    // }
+        fetchStamps()
+            .then(data => service.setStamps(data))
+            .catch(err => alert(err.message));
+
+        fetchModels()
+            .then(data => service.setModels(data))
+            .catch(err => alert(err.message));
+    }, []);
 
 
     return (        
@@ -111,7 +45,7 @@ const MainPage: React.FC = observer(() => {
 
             <Statistics />
             {/* @ts-ignore */}
-            <SearchPanelOrders orders={orders} stamps={stamps} models={models} />
+            <SearchPanelOrders orders={service.orders} stamps={service.stamps} models={service.models} />
             <h1 style={{textAlign: 'center'}}>Список заказов:</h1>
             {loading ? <Spinner animation={"border"}/> :
                 <List 
