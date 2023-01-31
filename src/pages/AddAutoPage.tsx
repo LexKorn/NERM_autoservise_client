@@ -7,8 +7,8 @@ import { createAuto } from '../http/autosAPI';
 const AddAutoPage: React.FC = () => {
     const [stamp, setStamp] = useState<string>('');
     const [model, setModel] = useState<string>('');
-    const [year, setYear] = useState<number | undefined>(undefined);
-    const [vin, setVin] = useState<string | undefined>('');
+    const [year, setYear] = useState<number>(2000);
+    const [vin, setVin] = useState<string>('');
     const [stateNumber, setStateNumber] = useState<string>('');
     const [owner, setOwner] = useState<string>('');
     const [phone, setPhone] = useState<string>('');

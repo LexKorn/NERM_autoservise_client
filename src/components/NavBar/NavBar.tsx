@@ -9,7 +9,7 @@ import { MAIN_ROUTE, ADD_AUTO_ROUTE, AUTOS_ROUTE, CALC_ROUTE } from "../../utils
 import './navBar.sass';
 
 
-const NavBar = observer(() => {
+const NavBar: React.FC = observer(() => {
     const {user} = useContext(Context);
     const navigate = useNavigate();
 

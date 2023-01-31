@@ -6,24 +6,24 @@ import { Spinner } from "react-bootstrap";
 import AppRouter from "./components/AppRouter";
 import NavBar from "./components/NavBar/NavBar";
 import { Context } from "./index";
-// import { check } from "./http/userAPI";
+import { check } from "./http/userAPI";
 
 
 const App = observer(() => {
     const {user} = useContext(Context);
-    // const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    // useEffect(() => {
-    //     check()
-    //         .then(() => {
-    //             user.setIsAuth(true);
-    //         })
-    //         .finally(() => setLoading(false));
-    // }, []);
+    useEffect(() => {
+        check()
+            .then(() => {
+                user.setIsAuth(true);
+            })
+            .finally(() => setLoading(false));
+    }, []);
 
-    // if (loading) {
-    //     return <Spinner animation={"border"}/>
-    // }
+    if (loading) {
+        return <Spinner animation={"border"}/>
+    }
 
     return (
         <BrowserRouter>

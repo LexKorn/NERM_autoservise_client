@@ -3,7 +3,7 @@ import {Routes, Route, Navigate} from 'react-router-dom';
 import {observer} from "mobx-react-lite";
 
 import { authRoutes, publicRoutes } from '../routes';
-import { REGISTER_ROUTE, MAIN_ROUTE } from '../utils/consts';
+import { LOGIN_ROUTE, MAIN_ROUTE } from '../utils/consts';
 import { Context } from '../index';
 
 
@@ -23,7 +23,7 @@ const AppRouter: React.FC = observer(() => {
             {user.isAuth ?
                 <Route path='*' element={<Navigate to={MAIN_ROUTE} />} />
                 :
-                <Route path='*' element={<Navigate to={REGISTER_ROUTE} />} />
+                <Route path='*' element={<Navigate to={LOGIN_ROUTE} />} />
             }
         </Routes>
     );

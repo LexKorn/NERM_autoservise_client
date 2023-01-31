@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
+import {useParams} from 'react-router-dom';
 import {Modal, Button} from 'react-bootstrap';
 
-// import { updateOrder } from '../../http/orderAPI';
-import { IOrder } from '../../types/types';
+import { createOrder } from '../../http/ordersAPI';
 import CUOrder from '../CreateUpdate/CUOrder';
 
 interface ModalOrderAddProps {
     show: boolean;
     onHide: () => void;
 };
-
-const createOrder = (order: FormData) => {};
 
 
 const ModalOrderAdd: React.FC<ModalOrderAddProps> = ({show, onHide}) => {
@@ -20,6 +18,7 @@ const ModalOrderAdd: React.FC<ModalOrderAddProps> = ({show, onHide}) => {
     const [income, setIncome] = useState<number | undefined>(undefined);
     const [profit, setProfit] = useState<number | undefined>(undefined);
     const [comment, setComment] = useState<string | undefined>('');
+    const {id} = useParams<{id: string}>();
     
     return (
         <Modal
@@ -44,6 +43,7 @@ const ModalOrderAdd: React.FC<ModalOrderAddProps> = ({show, onHide}) => {
                     setIncome={setIncome}
                     setProfit={setProfit}
                     setComment={setComment}
+                    autoId={id}
                     // @ts-ignore
                     handler={createOrder}
                     title='Добавить заказ'

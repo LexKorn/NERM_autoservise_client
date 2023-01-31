@@ -24,14 +24,14 @@ const AutoBlock: React.FunctionComponent = () => {
 
     const auto: IAuto = {
             id: 1,
-            stampId: 1,
-            modelId: 1,
+            stampId: 3,
+            modelId: 3,
             year: 2006,
             vin: "XXLSRAG00276SRAG222",
             stateNumber: "АБ123В190",
             owner: "Лёха",
             phone: '+7 123 456 78 90',
-            userId: 1
+            userId: 2
     };
 
     const stamps: IStamp[] = [{

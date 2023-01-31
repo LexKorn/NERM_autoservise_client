@@ -1,12 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {Container, Button, Form, Dropdown} from 'react-bootstrap';
-import { observer } from 'mobx-react-lite';
-
-// import { Context } from '../index';
-// import { fetchCountries } from '../http/countryAPI';
-// import { AUTHORS_ROUTE } from '../utils/consts';
-// import ModalCountry from './Modals/ModalCountry';
+// import { useNavigate } from 'react-router-dom';
+import {Container, Button, Form} from 'react-bootstrap';
+// import { observer } from 'mobx-react-lite';
 
 interface CUOrderProps {
     id: number;
@@ -16,6 +11,7 @@ interface CUOrderProps {
     income?: number;
     profit?: number;
     comment?: string;
+    autoId: string | undefined;
     setOpened: (opened: string) => void;
     setClosed: (closed: string) => void;
     setCost: (cost: number) => void;
@@ -28,55 +24,38 @@ interface CUOrderProps {
 };
 
 
-const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, cost, income, profit, comment, setOpened, setClosed, setCost, setIncome, setProfit, setComment, handler, title, btnName}) => {
-    // const {library} = useContext(Context);
-    const navigate = useNavigate();
-    const [visible, setVisible] = useState<boolean>(false);
-
-    // useEffect(() => {
-    //     fetchCountries().then(data => library.setCountries(data));
-    // }, [visible]);
+const CUOrder: React.FC<CUOrderProps> = ({id, opened, closed, cost, income, profit, comment, autoId, setOpened, setClosed, setCost, setIncome, setProfit, setComment, handler, title, btnName}) => {
+    // const navigate = useNavigate();
+    // const [visible, setVisible] = useState<boolean>(false);
 
 
     const onClick = () => {
-        // if (!name.trim() || !description.trim()) {
-        //     return alert('Все поля обязательны для заполнения');
-        // } else if (!file) {
-        //     return alert('Фото необходимо загрузить');
-        // } else if (!library.selectedCountry.id) {
-        //     return alert('Страну необходимо указать');        
-        // }
+        if (!opened.trim()) {
+            return alert('Дата открытия заказа обязательна для заполнения');
+        }
 
-        // const formData = new FormData();
-        // formData.append('name', name);
-        // formData.append('description', description);
-        // formData.append('photo', file);
-        // formData.append('countryId', `${library.selectedCountry.id}`);
+        const formData = new FormData();
+        formData.append('opened', opened);
+        // @ts-ignore 
+        formData.append('closed', closed);
+        formData.append('cost', `${cost}`);
+        formData.append('income', `${income}`);
+        formData.append('profit', `${profit}`);
+        // @ts-ignore 
+        formData.append('comment', comment);
+        // @ts-ignore 
+        formData.append('autoId', autoId);
 
-        // if (btnName === 'Добавить') {
-        //     // @ts-ignore 
-        //     handler(formData)
-        //         .then(() => {
-        //             library.setSelectedCountry({
-        //                 id: 0,
-        //                 name: '',
-        //                 userId: 0
-        //             });
-        //             navigate(AUTHORS_ROUTE);
-        //         })
-        //         .catch(err => alert(err.response.data.message));
-        // } else {
-        //     handler(id, formData)
-        //         .then(() => {
-        //             library.setSelectedCountry({
-        //                 id: 0,
-        //                 name: '',
-        //                 userId: 0
-        //             });
-        //             navigate(AUTHORS_ROUTE);
-        //         })
-        //         .catch(err => alert(err.response.data.message));
-        // }
+        if (btnName === 'Добавить') {
+            // @ts-ignore 
+            handler(formData)
+                // .then(() => onHide())
+                .catch(err => alert(err.response.data.message));
+        } else {
+            handler(id, formData)
+                // .then(() => onHide())
+                .catch(err => alert(err.response.data.message));
+        }
     };
 
 
@@ -124,27 +103,12 @@ const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, cost, inc
                         onChange={e => setComment(e.target.value)}
                         placeholder="Комментарий"
                         maxLength={700}
-                    /> 
-                                      
-                    <Dropdown className="mt-3 mb-3">
-                        {/* <Dropdown.Toggle variant={"outline-dark"}>{library.selectedCountry.name || 'Выберите страну'}</Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {library.countries.map(country => 
-                                <Dropdown.Item 
-                                    onClick={() => library.setSelectedCountry(country)} 
-                                    key={country.id} >
-                                        {country.name}
-                                </Dropdown.Item>                                
-                            )}
-                            <Dropdown.Item onClick={() => setVisible(true)} >Добавить / удалить страну</Dropdown.Item>
-                        </Dropdown.Menu> */}
-                    </Dropdown>            
+                    />       
                 </Form>
                 <Button variant={"outline-dark"} onClick={onClick} className="mt-3">{btnName}</Button>           
-            </div>   
-            {/* <ModalCountry show={visible} onHide={() => setVisible(false)} /> */}
+            </div>
         </Container>
     );
-});
+};
 
 export default CUOrder;
