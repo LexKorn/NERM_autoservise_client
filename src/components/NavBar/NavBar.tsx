@@ -4,7 +4,7 @@ import {Navbar, Container, Button} from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 
 import {Context} from '../../index';
-import { MAIN_ROUTE, ADD_AUTO_ROUTE, AUTOS_ROUTE, CALC_ROUTE } from "../../utils/consts";
+import { MAIN_ROUTE, ADD_AUTO_ROUTE, AUTOS_ROUTE, CALC_ROUTE, ADD_TEST_ROUTE } from "../../utils/consts";
 
 import './navBar.sass';
 
@@ -34,13 +34,19 @@ const NavBar: React.FC = observer(() => {
                                         className="me-2 nav-btn"
                                         onClick={() => navigate(ADD_AUTO_ROUTE)}
                                         >Добавить авто
-                                    </Button>       
+                                    </Button>
                                     <Button
                                         variant={"outline-light"}
                                         className="me-2 nav-btn"
                                         onClick={() => navigate(CALC_ROUTE)}
                                         >Калькулятор
-                                    </Button>          
+                                    </Button>
+                                    <Button
+                                        variant={"outline-light"}
+                                        className="me-2 nav-btn"
+                                        onClick={() => navigate(ADD_TEST_ROUTE)}
+                                        >Добавить тест
+                                    </Button>
                                 </div> 
                                 <Button 
                                     variant={"outline-light"} 

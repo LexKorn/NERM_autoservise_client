@@ -61,7 +61,8 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, own
 
         if (btnName === 'Добавить') {
             // @ts-ignore 
-            handler(formData)
+            // handler(formData)
+            handler(year, vin, stateNumber, owner, phone, service.selectedStamp.id, service.selectedModel.id)
                 .then(() => {
                     service.setSelectedStamp({} as IStamp);
                     service.setSelectedModel({} as IModel);

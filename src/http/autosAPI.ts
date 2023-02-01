@@ -1,7 +1,12 @@
 import { $authHost } from ".";
 
-export const createAuto = async (auto: FormData) => {
-    const {data} = await $authHost.post('api/autos', auto);
+// export const createAuto = async (auto: FormData) => {
+//     const {data} = await $authHost.post('api/autos', auto);
+//     return data;
+// };
+
+export const createAuto = async (year: number, vin: string, stateNumber: string, owner: string, phone: string, stampId: number, modelId: number) => {
+    const {data} = await $authHost.post('api/autos', {year, vin, stateNumber, owner, phone, stampId, modelId});
     return data;
 };
 
