@@ -16,7 +16,8 @@ const AutoPage: React.FC = () => {
             profit: 1300,
             comment: 'Ну и дела',
             userId: 1,
-            autoId: 1
+            autoId: 1,
+            masterId: 1
         },
         {
             id: 2,
@@ -25,13 +26,15 @@ const AutoPage: React.FC = () => {
             income: 2500,
             profit: 2000,
             userId: 1,
-            autoId: 2
+            autoId: 2,
+            masterId: 1
         },
         {
             id: 3,
             opened: '08.01.2023',
             userId: 1,
-            autoId: 3
+            autoId: 3,
+            masterId: 1
         }
     ];
 

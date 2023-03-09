@@ -1,48 +1,58 @@
 import {makeAutoObservable} from 'mobx';
 
-import { IAuto, IActivity, IAutopart, IOrder, IStamp, IModel } from '../types/types';
+import { IAuto, IActivity, IAutopart, IOrder, IStamp, IModel, IMaster } from '../types/types';
 
 export default class ServiceStore {
-    _stamps: IStamp[];
-    _models: IModel[];
     _autos: IAuto[];
+    _masters: IMaster[];
+    _models: IModel[];
+    _stamps: IStamp[];
     _orders: IOrder[];
-    _selectedStamp: IStamp;
+    _selectedMaster: IMaster;
     _selectedModel: IModel;
+    _selectedStamp: IStamp;
     _visibleAutos: IAuto[];
     _visibleOrders: IOrder[];
 
     constructor() {
-       this._stamps = [];
-       this._models = [];
        this._autos = [];
+       this._masters = [];
+       this._models = [];
+       this._stamps = [];
        this._orders = [];
-       this._selectedStamp = {} as IStamp;
+       this._selectedMaster = {} as IMaster;
        this._selectedModel = {} as IModel;
+       this._selectedStamp = {} as IStamp;
        this._visibleAutos = [];
        this._visibleOrders = [];
 
        makeAutoObservable(this); 
     };
 
-    setStamps(stamps: IStamp[]) {
-        this._stamps = stamps;
+    setAutos(autos: IAuto[]) {
+        this._autos = autos;
+    };
+    setMasters(masters: IMaster[]) {
+        this._masters = masters;
     };
     setModels(models: IModel[]) {
         this._models = models;
     };
-    setAutos(autos: IAuto[]) {
-        this._autos = autos;
-    };
+    setStamps(stamps: IStamp[]) {
+        this._stamps = stamps;
+    };  
     setOrders(orders: IOrder[]) {
         this._orders = orders;
     };
-    setSelectedStamp(stamp: IStamp) {
-        this._selectedStamp = stamp;
+    setSelectedMaster(master: IMaster) {
+        this._selectedMaster = master;
     };
     setSelectedModel(model: IModel) {
         this._selectedModel = model;
     };
+    setSelectedStamp(stamp: IStamp) {
+        this._selectedStamp = stamp;
+    };    
     setVisibleAutos(visibleAutos: IAuto[]) {
         this._visibleAutos = visibleAutos;
     };
@@ -50,25 +60,30 @@ export default class ServiceStore {
         this._visibleOrders = visibleOrders;
     };
 
-
-    get stamps() {
-        return this._stamps;
+    get autos() {
+        return this._autos;
+    };
+    get masters() {
+        return this._masters;
     };
     get models() {
         return this._models;
     };
-    get autos() {
-        return this._autos;
-    };
+    get stamps() {
+        return this._stamps;
+    };   
     get orders() {
         return this._orders;
     };
-    get selectedStamp() {
-        return this._selectedStamp;
+    get selectedMaster() {
+        return this._selectedMaster;
     };
     get selectedModel() {
         return this._selectedModel;
     };
+    get selectedStamp() {
+        return this._selectedStamp;
+    };    
     get visibleAutos() {
         return this._visibleAutos;
     };

@@ -20,7 +20,7 @@ const SearchPanel: React.FC<SearchPanelProps> = ({autos, stamps, models}) => {
 
     useEffect(() => {
         service.setVisibleAutos(sortHandler(search(autos, value)));
-    }, [value, directionSort]);
+    }, [value, directionSort, autos]);
 
 
     function search(items: (IAuto)[], term: string) {   

@@ -38,6 +38,12 @@ export interface IAutopart {
     userId: number;
 };
 
+export interface IMaster {
+    id: number;
+    master: string;
+    userId: number;
+};
+
 export interface IOrder {
     id: number;
     opened: string;
@@ -48,4 +54,5 @@ export interface IOrder {
     comment?: string;
     userId: number;
     autoId: number;
+    masterId: number;
 };

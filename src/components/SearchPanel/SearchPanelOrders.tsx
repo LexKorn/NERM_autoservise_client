@@ -22,7 +22,7 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = ({orders, stamps, mo
 
     useEffect(() => {
         service.setVisibleOrders(sortHandler(filterPost(search(orders, value), filter)));
-        }, [value, directionSort, filter]);
+    }, [value, directionSort, filter, orders]);
 
     const autos: IAuto[] = [
         {

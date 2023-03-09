@@ -1,7 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import {Container, Button, Form} from 'react-bootstrap';
-// import { observer } from 'mobx-react-lite';
+import { useNavigate } from 'react-router-dom';
+import {Container, Button, Form, Dropdown} from 'react-bootstrap';
+import { observer } from 'mobx-react-lite';
+
+import { Context } from '../../index';
 
 interface CUOrderProps {
     id: number;
@@ -25,9 +27,10 @@ interface CUOrderProps {
 
 
 const CUOrder: React.FC<CUOrderProps> = ({id, opened, closed, cost, income, profit, comment, autoId, setOpened, setClosed, setCost, setIncome, setProfit, setComment, handler, title, btnName}) => {
-    // const navigate = useNavigate();
-    // const [visible, setVisible] = useState<boolean>(false);
-
+    const {service} = useContext(Context);
+    const navigate = useNavigate();
+    const [visible, setVisible] = useState<boolean>(false);
+    const [item, setItem] = useState<string>('');
 
     const onClick = () => {
         if (!opened.trim()) {
@@ -48,7 +51,8 @@ const CUOrder: React.FC<CUOrderProps> = ({id, opened, closed, cost, income, prof
 
         if (btnName === 'Добавить') {
             // @ts-ignore 
-            handler(formData)
+            // handler(formData)
+            handler(opened, closed, cost, income, profit, comment, autoId)
                 // .then(() => onHide())
                 .catch(err => alert(err.response.data.message));
         } else {
@@ -56,6 +60,11 @@ const CUOrder: React.FC<CUOrderProps> = ({id, opened, closed, cost, income, prof
                 // .then(() => onHide())
                 .catch(err => alert(err.response.data.message));
         }
+    };
+
+    const showMaster = () => {
+        setVisible(true);
+        setItem('model');
     };
 
 
@@ -75,7 +84,20 @@ const CUOrder: React.FC<CUOrderProps> = ({id, opened, closed, cost, income, prof
                         value={closed}
                         onChange={e => setClosed(e.target.value)}
                         placeholder="Когда закрыт заказ"
-                    />  
+                    />
+                    <Dropdown className="mt-3 mb-3">
+                        <Dropdown.Toggle variant={"outline-dark"}>{service.selectedMaster.master || 'Мастер'}</Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {service.masters.map(master => 
+                                <Dropdown.Item 
+                                    onClick={() => service.setSelectedMaster(master)} 
+                                    key={master.id} >
+                                        {master.master}
+                                </Dropdown.Item>                                
+                            )}
+                            <Dropdown.Item onClick={showMaster} >Добавить / удалить мастера</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                     <label htmlFor="cost" className="mt-3">Стоимость</label> 
                     <Form.Control
                         value={cost}

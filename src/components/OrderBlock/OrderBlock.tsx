@@ -31,7 +31,8 @@ const OrderBlock: React.FunctionComponent = () => {
         profit: 1300,
         comment: 'Ну и дела',
         userId: 1,
-        autoId: 1
+        autoId: 1,
+        masterId: 1
     };
 
     const auto: IAuto = {
@@ -95,6 +96,7 @@ const OrderBlock: React.FunctionComponent = () => {
                 </div>
                 <div className="order__description">заказ открыт: {order.opened}</div>
                 {order.closed && <div className="order__description">заказ закрыт: {order.closed}</div>}
+                <div className="order__description">мастер: {order.masterId}</div>
                 {order.cost && <div className="order__description">стоимость: {order.cost}p</div>}
                 {order.income && <div className="order__description">оплачено: {order.income}p</div>}
                 {order.profit && <div className="order__description">прибыль: {order.profit}p</div>}

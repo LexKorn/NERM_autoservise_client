@@ -1,7 +1,12 @@
 import { $authHost } from ".";
 
-export const createOrder = async (order: FormData) => {
-    const {data} = await $authHost.post('api/orders', order);
+// export const createOrder = async (order: FormData) => {
+//     const {data} = await $authHost.post('api/orders', order);
+//     return data;
+// };
+
+export const createOrder = async (opened: string, closed: string, cost: number, income: number, profit: number, comment: string, autoId: number, masterId: number) => {
+    const {data} = await $authHost.post('api/orders', {opened, closed, cost, income, profit, comment, autoId, masterId});
     return data;
 };
 

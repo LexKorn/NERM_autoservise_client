@@ -17,12 +17,17 @@ import { fetchModels } from '../http/modelsAPI';
 
 const MainPage: React.FC = observer(() => {
     const {service} = useContext(Context);
+    const [orders, setOrders] = useState<IOrder[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const navigate = useNavigate();
 
     useEffect(() => {
         fetchOrders()
-            .then(data => service.setOrders(data))
+            .then(data => {
+                setOrders(data);
+                service.setOrders(data);
+            })
+            // .then(data => service.setOrders(data))
             .catch(err => alert(err.message))
             .finally(() => setLoading(false));
 
@@ -49,7 +54,7 @@ const MainPage: React.FC = observer(() => {
             <h1 style={{textAlign: 'center'}}>Список заказов:</h1>
             {loading ? <Spinner animation={"border"}/> :
                 <List 
-                    items={service.visibleOrders} 
+                    items={service.visibleOrders || orders} 
                     renderItem={(order: IOrder) => 
                         <OrderItem 
                             order={order} 
