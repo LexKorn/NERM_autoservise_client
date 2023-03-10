@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {Container, Button, Form, Dropdown} from 'react-bootstrap';
+import {Container, Button, Form, Dropdown, Modal} from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 
 import { Context } from '../../index';
+import ModalStampModel from '../Modals/ModalStampModel';
+import { fetchMasters } from '../../http/mastersAPI';
 
 interface CUOrderProps {
     id: number;
@@ -13,24 +15,30 @@ interface CUOrderProps {
     income?: number;
     profit?: number;
     comment?: string;
-    autoId: string | undefined;
+    autoId: number;
     setOpened: (opened: string) => void;
     setClosed: (closed: string) => void;
     setCost: (cost: number) => void;
     setIncome: (income: number) => void;
     setProfit: (profit: number) => void;
     setComment: (comment: string) => void;
-    handler: (id: number, auto: FormData) => Promise<unknown>;
+    handler: (opened: string, closed: string | undefined, cost: number | undefined, income: number | undefined, profit: number | undefined, comment: string | undefined, autoId: number, masterId: number) => Promise<unknown>;
     title: string;
     btnName: string;
+    show: boolean;
+    onHide: () => void;
 };
 
 
-const CUOrder: React.FC<CUOrderProps> = ({id, opened, closed, cost, income, profit, comment, autoId, setOpened, setClosed, setCost, setIncome, setProfit, setComment, handler, title, btnName}) => {
+const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, cost, income, profit, comment, autoId, setOpened, setClosed, setCost, setIncome, setProfit, setComment, handler, title, btnName, show, onHide}) => {
     const {service} = useContext(Context);
     const navigate = useNavigate();
     const [visible, setVisible] = useState<boolean>(false);
     const [item, setItem] = useState<string>('');
+
+    useEffect(() => {
+        fetchMasters().then(data => service.setMasters(data));
+    }, [visible]);
 
     const onClick = () => {
         if (!opened.trim()) {
@@ -48,89 +56,104 @@ const CUOrder: React.FC<CUOrderProps> = ({id, opened, closed, cost, income, prof
         formData.append('comment', comment);
         // @ts-ignore 
         formData.append('autoId', autoId);
+        formData.append('masterId', `${service.selectedMaster.id}`);
 
         if (btnName === 'Добавить') {
-            // @ts-ignore 
-            // handler(formData)
-            handler(opened, closed, cost, income, profit, comment, autoId)
-                // .then(() => onHide())
+            handler(opened, closed, cost, income, profit, comment, autoId, service.selectedMaster.id)
+                .then(() => onHide())
                 .catch(err => alert(err.response.data.message));
         } else {
+            // @ts-ignore 
             handler(id, formData)
-                // .then(() => onHide())
+                .then(() => onHide())
                 .catch(err => alert(err.response.data.message));
         }
     };
 
     const showMaster = () => {
         setVisible(true);
-        setItem('model');
+        setItem('master');
     };
 
 
     return (
-        <Container className="d-flex justify-content-center">
-            <div>
-                <h1>{title}</h1>
-                <Form>
-                    <label htmlFor="opened" className="mt-3">Открытие</label> 
-                    <Form.Control
-                        value={opened}
-                        onChange={e => setOpened(e.target.value)}
-                        placeholder="Когда открыт заказ"
-                    />
-                    <label htmlFor="closed" className="mt-3">Закрытие</label> 
-                    <Form.Control
-                        value={closed}
-                        onChange={e => setClosed(e.target.value)}
-                        placeholder="Когда закрыт заказ"
-                    />
-                    <Dropdown className="mt-3 mb-3">
-                        <Dropdown.Toggle variant={"outline-dark"}>{service.selectedMaster.master || 'Мастер'}</Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {service.masters.map(master => 
-                                <Dropdown.Item 
-                                    onClick={() => service.setSelectedMaster(master)} 
-                                    key={master.id} >
-                                        {master.master}
-                                </Dropdown.Item>                                
-                            )}
-                            <Dropdown.Item onClick={showMaster} >Добавить / удалить мастера</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <label htmlFor="cost" className="mt-3">Стоимость</label> 
-                    <Form.Control
-                        value={cost}
-                        type="number"
-                        onChange={e => setCost(+e.target.value)}
-                        placeholder="Стоимость"
-                    />
-                    <label htmlFor="income" className="mt-3">Оплачено</label> 
-                    <Form.Control
-                        value={income}
-                        type="number"
-                        onChange={e => setIncome(+e.target.value)}
-                        placeholder="Оплачено"
-                    />
-                    <label htmlFor="profit" className="mt-3">Прибыль</label> 
-                    <Form.Control
-                        value={profit}
-                        type="number"
-                        onChange={e => setProfit(+e.target.value)}
-                        placeholder="Прибыль"
-                    />
-                    <label htmlFor="comment" className="mt-3">Комментарий</label> 
-                    <Form.Control as="textarea"
-                        value={comment}
-                        onChange={e => setComment(e.target.value)}
-                        placeholder="Комментарий"
-                        maxLength={700}
-                    />       
-                </Form>
-                <Button variant={"outline-dark"} onClick={onClick} className="mt-3">{btnName}</Button>           
-            </div>
-        </Container>
+        <Modal
+            show={show}
+            onHide={onHide}
+            // @ts-ignore
+            size="md"
+            centered
+            >
+            <Modal.Body>
+                <Container className="d-flex justify-content-center">
+                    <div>
+                        <h1>{title}</h1>
+                        <Form>
+                            <label htmlFor="opened" className="mt-3">Открытие</label> 
+                            <Form.Control
+                                value={opened}
+                                onChange={e => setOpened(e.target.value)}
+                                placeholder="Когда открыт заказ"
+                            />
+                            <label htmlFor="closed" className="mt-3">Закрытие</label> 
+                            <Form.Control
+                                value={closed}
+                                onChange={e => setClosed(e.target.value)}
+                                placeholder="Когда закрыт заказ"
+                            />
+                            <Dropdown className="mt-3 mb-3">
+                                <Dropdown.Toggle variant={"outline-dark"}>{service.selectedMaster.master || 'Мастер'}</Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    {service.masters.map(master => 
+                                        <Dropdown.Item 
+                                            onClick={() => service.setSelectedMaster(master)} 
+                                            key={master.id} >
+                                                {master.master}
+                                        </Dropdown.Item>                                
+                                    )}
+                                    <Dropdown.Item onClick={showMaster} >Добавить / удалить мастера</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                            <label htmlFor="cost" className="mt-3">Стоимость</label> 
+                            <Form.Control
+                                value={cost}
+                                type="number"
+                                onChange={e => setCost(+e.target.value)}
+                                placeholder="Стоимость"
+                            />
+                            <label htmlFor="income" className="mt-3">Оплачено</label> 
+                            <Form.Control
+                                value={income}
+                                type="number"
+                                onChange={e => setIncome(+e.target.value)}
+                                placeholder="Оплачено"
+                            />
+                            <label htmlFor="profit" className="mt-3">Прибыль</label> 
+                            <Form.Control
+                                value={profit}
+                                type="number"
+                                onChange={e => setProfit(+e.target.value)}
+                                placeholder="Прибыль"
+                            />
+                            <label htmlFor="comment" className="mt-3">Комментарий</label> 
+                            <Form.Control as="textarea"
+                                value={comment}
+                                onChange={e => setComment(e.target.value)}
+                                placeholder="Комментарий"
+                                maxLength={700}
+                            />       
+                        </Form>
+                        <Button variant={"outline-dark"} onClick={onClick} className="mt-3">{btnName}</Button>           
+                    </div>
+                    <ModalStampModel show={visible} onHide={() => setVisible(false)} item={item} />
+                </Container>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant={"outline-secondary "} onClick={onHide}>Закрыть</Button>
+            </Modal.Footer>
+        </Modal>
+        
     );
-};
+});
 
 export default CUOrder;

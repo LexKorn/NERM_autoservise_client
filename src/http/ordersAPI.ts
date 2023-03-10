@@ -15,7 +15,7 @@ export const fetchOrders = async () => {
     return data;
 };
 
-export const fetchOneOrder = async (id: number) => {
+export const fetchOneOrder = async (id: string | undefined) => {
     const {data} = await $authHost.get('api/orders/' + id);
     return data;
 };

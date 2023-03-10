@@ -4,6 +4,7 @@ import {Modal, Button, Form} from 'react-bootstrap';
 
 import { createStamp, deleteStamp, fetchStamps } from '../../http/stampsAPI';
 import { createModel, deleteModel, fetchModels } from '../../http/modelsAPI';
+import { createMaster, deleteMaster, fetchMasters } from '../../http/mastersAPI';
 import { fetchAutos } from '../../http/autosAPI';
 import { ADD_AUTO_ROUTE } from '../../utils/consts';
 import { IAuto, IStamp, IModel } from '../../types/types';
@@ -47,7 +48,14 @@ const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) =
                     navigate(ADD_AUTO_ROUTE);
                 })
                 .catch(err => alert(err.response.data.message));  
-        }        
+        } else if (item === "master") {
+            createMaster(value)
+                .then(() => {
+                    setValue('');
+                    onHide();
+                })
+                .catch(err => alert(err.response.data.message));  
+        }
     };
 
     const removeStamp = () => {
@@ -75,6 +83,11 @@ const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) =
                 onHide();
                 navigate(ADD_AUTO_ROUTE);
             });
+        } else if (item === "master") {
+            deleteMaster(value).then(() => {
+                setValue('');
+                onHide();
+            });
         }
     };
 
@@ -94,7 +107,7 @@ const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) =
             >
             <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Выберите действие с {item === 'stamp' ? 'маркой' : 'моделью'}
+                    Выберите действие с {item === 'stamp' ? 'маркой' : item === 'model' ? 'моделью' : 'мастером'}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -104,7 +117,7 @@ const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) =
                         onChange={e => setValue(e.target.value)}
                         // @ts-ignore
                         onKeyPress={e => keyPress(e)}
-                        placeholder={item === 'stamp' ? 'Введите название марки' : 'Введите название модели'}
+                        placeholder={item === 'stamp' ? 'Введите название марки' : item === 'model' ? 'Введите название модели' : 'Введите мастера'}
                     />
                 </Form>
             </Modal.Body>

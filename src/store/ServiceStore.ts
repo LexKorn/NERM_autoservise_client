@@ -3,6 +3,7 @@ import {makeAutoObservable} from 'mobx';
 import { IAuto, IActivity, IAutopart, IOrder, IStamp, IModel, IMaster } from '../types/types';
 
 export default class ServiceStore {
+    _activities: IActivity[];
     _autos: IAuto[];
     _masters: IMaster[];
     _models: IModel[];
@@ -15,6 +16,7 @@ export default class ServiceStore {
     _visibleOrders: IOrder[];
 
     constructor() {
+       this._activities = [];
        this._autos = [];
        this._masters = [];
        this._models = [];
@@ -29,6 +31,9 @@ export default class ServiceStore {
        makeAutoObservable(this); 
     };
 
+    setActivities(activities: IActivity[]) {
+        this._activities = activities;
+    };
     setAutos(autos: IAuto[]) {
         this._autos = autos;
     };
@@ -60,6 +65,9 @@ export default class ServiceStore {
         this._visibleOrders = visibleOrders;
     };
 
+    get activities() {
+        return this._activities;
+    };
     get autos() {
         return this._autos;
     };

@@ -1,11 +1,12 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { Card } from 'react-bootstrap';
 import {observer} from 'mobx-react-lite';
 
-import { IAuto, IOrder, IActivity, IStamp, IModel } from '../../types/types';
+import { IAuto, IOrder, IActivity, IStamp, IModel, IMaster } from '../../types/types';
 import { Context } from '../../index';
 
 import './orderItem.sass';
+import { fetchMasters } from '../../http/mastersAPI';
 
 interface OrderItemProps {
     order: IOrder;
@@ -15,53 +16,51 @@ interface OrderItemProps {
 
 const OrderItem: React.FC<OrderItemProps> = observer(({order, onClick}) => {    
     const {service} = useContext(Context);
-    // const autoOrder: IAuto[] = service.autos.filter(auto => auto.id === order.autoId);
-    
+    const [modelAuto, setModelAuto] = useState<IModel[]>([]);
+    const [stampAuto, setStampAuto] = useState<IStamp[]>([]);
+    const [autoOrder, setAutoOrder] = useState<IAuto[]>([]);
+    const [activitiesOrder, setActivitiesOrder] = useState<IActivity[]>([]);
 
-    const autoOrder: IAuto[] = [
-        {
-            id: 1,
-            stampId: 1,
-            modelId: 1,
-            year: 2006,
-            vin: "XXLSRAG00276SRAG222",
-            stateNumber: "АБ123В190",
-            owner: "Лёха",
-            phone: '+7 123 456 78 90',
-            userId: 1
+    useEffect(() => {
+        setAutoOrder(service.autos.filter(auto => auto.id === order.autoId));
+        setActivitiesOrder(service.activities.filter(activity => activity.orderId === order.id));
+        fetchMasters().then(data => service.setMasters(data));
+    }, []);
+
+    useEffect(() => {
+        if (autoOrder.length) {
+            setModelAuto(service.models.filter(model => model.id === autoOrder[0].modelId));
+            setStampAuto(service.stamps.filter(stamp => stamp.id === autoOrder[0].stampId));
         }
-    ];
+    }, [autoOrder]);
 
-    const activitiesOrder: IActivity[] = [
-        {
-            id: 1,
-            name: 'ремонт тормоза',
-            price: 1000,
-            orderId: 1,
-            userId: 1
-        },
-        {
-            id: 2,
-            name: 'замена колодки',
-            price: 500,
-            orderId: 1,
-            userId: 1
-        },
-    ];
+    const masterOrder: IMaster[] = service.masters.filter(master => master.id === order.masterId);
 
-    const stampAuto: IStamp[] = service.stamps.filter(stamp => stamp.id === autoOrder[0].stampId);
-    const modelAuto: IModel[] = service.models.filter(model => model.id === autoOrder[0].modelId);
+    // const activitiesOrder: IActivity[] = [
+    //     {
+    //         id: 1,
+    //         name: 'ремонт тормоза',
+    //         price: 1000,
+    //         orderId: 1,
+    //         userId: 1
+    //     },
+    //     {
+    //         id: 2,
+    //         name: 'замена колодки',
+    //         price: 500,
+    //         orderId: 1,
+    //         userId: 1
+    //     },
+    // ];
 
-    if (stampAuto.length && modelAuto.length) {
+    if (stampAuto.length && modelAuto.length && masterOrder.length) {
         return (
             <Card 
                 className="order-card shadow"
                 onClick={() => onClick(order)}
             >
-                {/* {order.opened} - {stampAuto[0].stamp} {modelAuto[0].model} - {Array.isArray(activitiesOrder) && activitiesOrder[0].name}... ..  {order.cost} / {order.profit} */}
-                {order.opened} - {stampAuto[0].stamp} {modelAuto[0].model} - {Array.isArray(activitiesOrder) && activitiesOrder[0].name}... мастер: {order.masterId}
+                {order.opened} - {stampAuto[0].stamp} {modelAuto[0].model} - {activitiesOrder.length && activitiesOrder[0].name}... | {masterOrder[0].master}
                 <b>{order.closed}</b>
-                {/* {autoOrder[0].owner} */}
             </Card>        
         );
     } else {

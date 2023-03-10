@@ -6,8 +6,10 @@ import {Helmet} from "react-helmet";
 
 import { IOrder, IAuto, IStamp, IModel } from '../../types/types';
 import { AUTO_ROUTE, AUTOS_ROUTE, NOTFOUND_ROUTE } from '../../utils/consts';
-// import { deleteOrder, fetchOneOrder } from '../../http/orderAPI';
-// import { fetchCountries } from '../../http/countryAPI';
+import { fetchOneOrder, deleteOrder } from '../../http/ordersAPI';
+import { fetchOneAuto } from '../../http/autosAPI';
+// import { fetchModels } from '../../http/modelsAPI';
+// import { fetchStamps } from '../../http/stampsAPI';
 import {Context} from '../../index';
 import ModalOrderUpdate from '../Modals/ModalOrderUpdate';
 
@@ -16,58 +18,34 @@ import './orderBlock.sass';
 
 const OrderBlock: React.FunctionComponent = () => {
     const {service} = useContext(Context);
-    // const [order, setOrder] = useState<IOrder>({} as IOrder);    
+    const [order, setOrder] = useState<IOrder>({} as IOrder);
+    const [auto, setAuto] = useState<IAuto>({} as IAuto);
+    const [modelAuto, setModelAuto] = useState<IModel[]>([]);
+    const [stampAuto, setStampAuto] = useState<IStamp[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const {id} = useParams<{id: string}>();
     const navigate = useNavigate();
     const [visible, setVisible] = useState<boolean>(false);
 
-    const order: IOrder = {
-        id: 1,
-        opened: '07.01.2023',
-        closed: '09.01.2023',
-        cost: 2000,
-        income: 2000,
-        profit: 1300,
-        comment: 'Ну и дела',
-        userId: 1,
-        autoId: 1,
-        masterId: 1
-    };
-
-    const auto: IAuto = {
-            id: 1,
-            stampId: 1,
-            modelId: 1,
-            year: 2006,
-            vin: "XXLSRAG00276SRAG222",
-            stateNumber: "АБ123В190",
-            owner: "Лёха",
-            phone: '+7 123 456 78 90',
-            userId: 1
-    };
-    
-    // useEffect(() => {
-    //     fetchCountries().then(data => library.setCountries(data));
-    //     fetchOneOrder(id)
-    //         .then(data => setOrder(data))
-    //         .catch(() => navigate(NOTFOUND_ROUTE))
-    //         .finally(() => setLoading(false));
-    // }, []);
-
-    // useEffect(() => {
-    //     library.setSelectedCountry(countryOrder[0]);
-    // }, [order]);
-
-    // const countryOrder: ICountry[] = library.countries.filter(country => country.id === order.countryId);
-
-    const stampAuto: IStamp[] = service.stamps.filter(stamp => stamp.id === auto.stampId);
-    const modelAuto: IModel[] = service.models.filter(model => model.id === auto.modelId);
+    useEffect(() => {
+        fetchOneOrder(id).then(data => setOrder(data));
+    }, []);
 
     useEffect(() => {
-        service.setSelectedStamp(stampAuto[0]);
-        service.setSelectedModel(modelAuto[0]);
-    }, [stampAuto, modelAuto]); 
+        if (order) {
+            fetchOneAuto(order.autoId).then(data => {
+                setAuto(data);
+            });
+        }
+    }, [order]);
+
+    useEffect(() => {
+        if (auto) {
+            setModelAuto(service.models.filter(model => model.id === auto.modelId));
+            setStampAuto(service.stamps.filter(stamp => stamp.id === auto.stampId));
+            setLoading(false);
+        }
+    }, [auto]);
 
     const removeOrder = () => {
         if (window.confirm('Вы действительно хотите заказ?')) {
@@ -76,15 +54,15 @@ const OrderBlock: React.FunctionComponent = () => {
         }        
     };
 
-    // if (loading) {
-    //     return <Spinner animation={"border"}/>
-    // }
+    if (loading) {
+        return <Spinner animation={"border"}/>
+    }
 
     return (
         <div>
             <Helmet>
-                <title>{`${order.opened} ${service.selectedStamp && service.selectedStamp.stamp} ${service.selectedModel && service.selectedModel.model}`}</title>
-                <meta name="description" content={`${order.opened} ${service.selectedStamp && service.selectedStamp.stamp} ${service.selectedModel && service.selectedModel.model}`} />
+                <title>{`${order.opened} ${stampAuto.length && stampAuto[0].stamp} ${modelAuto.length && modelAuto[0].model}`}</title>
+                <meta name="description" content={`${order.opened} ${stampAuto.length && stampAuto[0].stamp} ${modelAuto.length && modelAuto[0].model}`} />
             </Helmet>
 
             <div className="order">
@@ -92,7 +70,7 @@ const OrderBlock: React.FunctionComponent = () => {
                     className="order__name"
                     onClick={() => {navigate(AUTO_ROUTE + `/${order.autoId}`)}}  // (AUTO_ROUTE + `/${authorBook[0].id}`)
                 >
-                    {`${service.selectedStamp && service.selectedStamp.stamp} ${service.selectedModel && service.selectedModel.model} ${auto.stateNumber}`}
+                    {`${stampAuto.length && stampAuto[0].stamp} ${modelAuto.length && modelAuto[0].model} ${auto && auto.stateNumber}`}
                 </div>
                 <div className="order__description">заказ открыт: {order.opened}</div>
                 {order.closed && <div className="order__description">заказ закрыт: {order.closed}</div>}

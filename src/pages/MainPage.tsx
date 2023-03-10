@@ -13,6 +13,8 @@ import { Context } from '../index';
 import { fetchOrders } from '../http/ordersAPI';
 import { fetchStamps } from '../http/stampsAPI';
 import { fetchModels } from '../http/modelsAPI';
+import { fetchAutos } from '../http/autosAPI';
+import { fetchActivities } from '../http/activitiesAPI';
 
 
 const MainPage: React.FC = observer(() => {
@@ -37,6 +39,14 @@ const MainPage: React.FC = observer(() => {
 
         fetchModels()
             .then(data => service.setModels(data))
+            .catch(err => alert(err.message));
+
+        fetchAutos()
+            .then(data => service.setAutos(data))
+            .catch(err => alert(err.message));
+
+        fetchActivities()
+            .then(data => service.setActivities(data))
             .catch(err => alert(err.message));
     }, []);
 
