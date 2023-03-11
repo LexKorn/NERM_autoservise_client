@@ -4,12 +4,10 @@ import { useParams } from 'react-router-dom';
 import { Spinner, Button } from 'react-bootstrap';
 import {Helmet} from "react-helmet";
 
-import { IOrder, IAuto, IStamp, IModel } from '../../types/types';
-import { AUTO_ROUTE, AUTOS_ROUTE, NOTFOUND_ROUTE } from '../../utils/consts';
+import { IOrder, IAuto, IStamp, IModel, IMaster } from '../../types/types';
+import { AUTO_ROUTE, MAIN_ROUTE } from '../../utils/consts';
 import { fetchOneOrder, deleteOrder } from '../../http/ordersAPI';
 import { fetchOneAuto } from '../../http/autosAPI';
-// import { fetchModels } from '../../http/modelsAPI';
-// import { fetchStamps } from '../../http/stampsAPI';
 import {Context} from '../../index';
 import ModalOrderUpdate from '../Modals/ModalOrderUpdate';
 
@@ -23,9 +21,9 @@ const OrderBlock: React.FunctionComponent = () => {
     const [modelAuto, setModelAuto] = useState<IModel[]>([]);
     const [stampAuto, setStampAuto] = useState<IStamp[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [visible, setVisible] = useState<boolean>(false);
     const {id} = useParams<{id: string}>();
     const navigate = useNavigate();
-    const [visible, setVisible] = useState<boolean>(false);
 
     useEffect(() => {
         fetchOneOrder(id).then(data => setOrder(data));
@@ -35,6 +33,7 @@ const OrderBlock: React.FunctionComponent = () => {
         if (order) {
             fetchOneAuto(order.autoId).then(data => {
                 setAuto(data);
+                setLoading(false);
             });
         }
     }, [order]);
@@ -43,16 +42,17 @@ const OrderBlock: React.FunctionComponent = () => {
         if (auto) {
             setModelAuto(service.models.filter(model => model.id === auto.modelId));
             setStampAuto(service.stamps.filter(stamp => stamp.id === auto.stampId));
-            setLoading(false);
         }
     }, [auto]);
 
     const removeOrder = () => {
         if (window.confirm('Вы действительно хотите заказ?')) {
-            // deleteOrder(order.id);
-            // navigate(AUTHORS_ROUTE);
+            deleteOrder(order.id);
+            navigate(MAIN_ROUTE);
         }        
     };
+
+    const masterOrder: IMaster[] = service.masters.filter(master => master.id === order.masterId);
 
     if (loading) {
         return <Spinner animation={"border"}/>
@@ -61,20 +61,20 @@ const OrderBlock: React.FunctionComponent = () => {
     return (
         <div>
             <Helmet>
-                <title>{`${order.opened} ${stampAuto.length && stampAuto[0].stamp} ${modelAuto.length && modelAuto[0].model}`}</title>
-                <meta name="description" content={`${order.opened} ${stampAuto.length && stampAuto[0].stamp} ${modelAuto.length && modelAuto[0].model}`} />
+                <title>{`${order.opened} ${stampAuto.length ? stampAuto[0].stamp : ''} ${modelAuto.length ? modelAuto[0].model : ''}`}</title>
+                <meta name="description" content={`${order.opened} ${stampAuto.length ? stampAuto[0].stamp : ''} ${modelAuto.length ? modelAuto[0].model : ''}`} />
             </Helmet>
 
             <div className="order">
                 <div 
                     className="order__name"
-                    onClick={() => {navigate(AUTO_ROUTE + `/${order.autoId}`)}}  // (AUTO_ROUTE + `/${authorBook[0].id}`)
+                    onClick={() => {navigate(AUTO_ROUTE + `/${order.autoId}`)}} 
                 >
-                    {`${stampAuto.length && stampAuto[0].stamp} ${modelAuto.length && modelAuto[0].model} ${auto && auto.stateNumber}`}
+                    {`${stampAuto.length ? stampAuto[0].stamp : ''} ${modelAuto.length ? modelAuto[0].model : ''} ${auto ? auto.stateNumber : ''}`}
                 </div>
                 <div className="order__description">заказ открыт: {order.opened}</div>
                 {order.closed && <div className="order__description">заказ закрыт: {order.closed}</div>}
-                <div className="order__description">мастер: {order.masterId}</div>
+                <div className="order__description">мастер: {masterOrder ? masterOrder[0].master : ''}</div>
                 {order.cost && <div className="order__description">стоимость: {order.cost}p</div>}
                 {order.income && <div className="order__description">оплачено: {order.income}p</div>}
                 {order.profit && <div className="order__description">прибыль: {order.profit}p</div>}

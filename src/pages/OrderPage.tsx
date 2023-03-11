@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import { useParams } from 'react-router-dom';
+import {Spinner} from 'react-bootstrap';
 
 import OrderBlock from '../components/OrderBlock/OrderBlock';
 import OrderList from '../components/OrderList/OrderList';
@@ -9,52 +11,42 @@ import { fetchAutoparts } from '../http/autopartsAPI';
 
 const OrderPage: React.FC = () => {
     const [activities, setActivities] = useState<IActivity[]>([]);
+    const [activitiesOrder, setActivitiesOrder] = useState<IActivity[]>([]);
     const [autoparts, setAutoparts] = useState<IAutopart[]>([]);
+    const [autopartsOrder, setAutopartsOrder] = useState<IAutopart[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const {id} = useParams();
 
     useEffect(() => {
         fetchActivities().then(data => setActivities(data));
-        fetchAutoparts().then(data => setAutoparts(data));
+        fetchAutoparts().then(data => {
+            setAutoparts(data);
+            setLoading(false);
+        });
     }, []);
 
-    // const activities: IActivity[] = [
-    //     {
-    //         id: 1,
-    //         name: 'ремонт тормоза',
-    //         price: 1000,
-    //         orderId: 1,
-    //         userId: 1
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'замена колодки',
-    //         price: 500,
-    //         orderId: 1,
-    //         userId: 1
-    //     },
-    // ];
+    useEffect(() => {
+        if (activities.length) {
+            setActivitiesOrder(activities.filter(activity => activity.orderId === Number(id)));
+        }
+    }, [activities]);
 
-    // const autoparts: IAutopart[] = [
-    //     {
-    //         id: 1,
-    //         name: 'тормоз',
-    //         price: 800,
-    //         orderId: 1,
-    //         userId: 1
-    //     },
-    //     {
-    //         id: 2,
-    //         name: '2 колодки',
-    //         price: 1000,
-    //         orderId: 1,
-    //         userId: 1
-    //     },
-    // ];
+    useEffect(() => {
+        if (autoparts.length) {
+            setAutopartsOrder(autoparts.filter(autopart => autopart.orderId === Number(id)));
+        }
+    }, [autoparts]);
+
 
     return (
         <div>
             <OrderBlock />
-            <OrderList title="Работы:" orderItem={activities} />
-            <OrderList title="Запчасти:" orderItem={autoparts} />
+            {loading ? <Spinner /> : 
+                <div>
+                    <OrderList title="Работы:" orderItems={activitiesOrder} />
+                    <OrderList title="Запчасти:" orderItems={autopartsOrder} />
+                </div>
+            }
         </div>
     );
 };

@@ -36,22 +36,6 @@ const OrderItem: React.FC<OrderItemProps> = observer(({order, onClick}) => {
 
     const masterOrder: IMaster[] = service.masters.filter(master => master.id === order.masterId);
 
-    // const activitiesOrder: IActivity[] = [
-    //     {
-    //         id: 1,
-    //         name: 'ремонт тормоза',
-    //         price: 1000,
-    //         orderId: 1,
-    //         userId: 1
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'замена колодки',
-    //         price: 500,
-    //         orderId: 1,
-    //         userId: 1
-    //     },
-    // ];
 
     if (stampAuto.length && modelAuto.length && masterOrder.length) {
         return (
@@ -59,7 +43,7 @@ const OrderItem: React.FC<OrderItemProps> = observer(({order, onClick}) => {
                 className="order-card shadow"
                 onClick={() => onClick(order)}
             >
-                {order.opened} - {stampAuto[0].stamp} {modelAuto[0].model} - {activitiesOrder.length && activitiesOrder[0].name}... | {masterOrder[0].master}
+                {order.opened} - {stampAuto[0].stamp} {modelAuto[0].model} - {activitiesOrder.length ? activitiesOrder[0].name : ''}... | {masterOrder[0].master}
                 <b>{order.closed}</b>
             </Card>        
         );

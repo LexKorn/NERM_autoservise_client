@@ -18,7 +18,7 @@ import './orderList.sass';
 // };
 
 // @ts-ignore
-export default function OrderList<T> ({title, orderItem}) {
+export default function OrderList<T> ({title, orderItems}) {
     const [activity, setActivity] = useState<IActivity>({} as IActivity);
     const [activitys, setActivitys] = useState<IActivity[]>([]);
     const [order, setOrder] = useState<IOrder>({} as IOrder);
@@ -45,7 +45,7 @@ export default function OrderList<T> ({title, orderItem}) {
 
 
     const removeItem = (item: IAutopart | IActivity) => {
-        if (window.confirm('Вы действительно хотите удалить цитату?')) {
+        if (window.confirm('Вы действительно хотите удалить?')) {
             // deleteActivity(item.id);
             setToggle(!toggle);
         }
@@ -70,7 +70,7 @@ export default function OrderList<T> ({title, orderItem}) {
                 <i className="bi bi-plus-circle activities__title_icon" onClick={() => setVisibleActivity(true)}></i>
             </div>}
             <List 
-                items={orderItem}
+                items={orderItems}
                 renderItem={(item: IAutopart | IActivity) => 
                     <ListItem 
                         onDelete={() => removeItem(item)} 
