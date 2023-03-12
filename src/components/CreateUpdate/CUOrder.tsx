@@ -4,8 +4,9 @@ import {Container, Button, Form, Dropdown, Modal} from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 
 import { Context } from '../../index';
-import ModalStampModel from '../Modals/ModalStampModel';
 import { fetchMasters } from '../../http/mastersAPI';
+import {MAIN_ROUTE} from '../../utils/consts';
+import ModalStampModel from '../Modals/ModalStampModel';
 
 interface CUOrderProps {
     id: number;
@@ -45,27 +46,14 @@ const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, cost, inc
             return alert('Дата открытия заказа обязательна для заполнения');
         }
 
-        const formData = new FormData();
-        formData.append('opened', opened);
-        // @ts-ignore 
-        formData.append('closed', closed);
-        formData.append('cost', `${cost}`);
-        formData.append('income', `${income}`);
-        formData.append('profit', `${profit}`);
-        // @ts-ignore 
-        formData.append('comment', comment);
-        // @ts-ignore 
-        formData.append('autoId', autoId);
-        formData.append('masterId', `${service.selectedMaster.id}`);
-
         if (btnName === 'Добавить') {
             handler(opened, closed, cost, income, profit, comment, autoId, service.selectedMaster.id)
-                .then(() => onHide())
+                .then(() => navigate(MAIN_ROUTE))
                 .catch(err => alert(err.response.data.message));
         } else {
             // @ts-ignore 
-            handler(id, formData)
-                .then(() => onHide())
+            handler(id, opened, closed, cost, income, profit, comment, autoId, service.selectedMaster.id)
+                .then(() => navigate(MAIN_ROUTE))
                 .catch(err => alert(err.response.data.message));
         }
     };

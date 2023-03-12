@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import { Card } from 'react-bootstrap';
 
-import { IOrder, IActivity } from '../../types/types';
+import { IOrder, IActivity, IMaster } from '../../types/types';
+import { Context } from '../../index';
 
 import './listItem.sass';
 
@@ -12,32 +13,21 @@ interface ListItemOrderProps {
 
 
 const ListItemOrder: React.FC<ListItemOrderProps> = ({item, onClick}) => {
-    const activitiesOrder: IActivity[] = [
-        {
-            id: 1,
-            name: 'ремонт тормоза',
-            price: 1000,
-            orderId: 1,
-            userId: 1
-        },
-        {
-            id: 2,
-            name: 'замена колодки',
-            price: 500,
-            orderId: 1,
-            userId: 1
-        },
-    ];
+    const {service} = useContext(Context);
+    const [activitiesOrder, setActivitiesOrder] = useState<IActivity[]>([]);
 
+    useEffect(() => {
+        setActivitiesOrder(service.activities.filter(activity => activity.orderId === item.id));
+    }, []);
+
+    const masterOrder: IMaster[] = service.masters.filter(master => master.id === item.masterId);
 
     return (
         <Card 
             className="list-item order-card shadow"
             onClick={() => onClick(item)}
         >
-            {item.opened} - {Array.isArray(activitiesOrder) && activitiesOrder[0].name}... - мастер: {item.masterId} <b>{item.closed}</b>
-            {/* {item.opened} - {Array.isArray(activitiesOrder) && activitiesOrder[0].name}... - {item.cost} / {item.profit}  <b>{item.closed}</b> */}
-            {/* <div>{item.opened} - {Array.isArray(item.activities) && item.activities[0].name}... {item.cost}</div> */}
+            {item.opened} - {activitiesOrder.length ? activitiesOrder[0].name : ''}... | {masterOrder[0].master} <b>{item.closed}</b>
         </Card>      
     );
 };

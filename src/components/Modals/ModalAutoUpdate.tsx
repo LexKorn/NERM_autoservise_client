@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 
-// import { updateAuto } from '../../http/autoAPI';
+import { updateAuto } from '../../http/autosAPI';
 import { IAuto } from '../../types/types';
 import CUAuto from '../CreateUpdate/CUAuto';
 
@@ -10,8 +10,6 @@ interface ModalAutoUpdateProps {
     onHide: () => void;
     auto: IAuto;
 };
-
-const updateAuto = (id: number, auto: FormData) => {};
 
 
 const ModalAutoUpdate: React.FC<ModalAutoUpdateProps> = ({show, onHide, auto}) => {

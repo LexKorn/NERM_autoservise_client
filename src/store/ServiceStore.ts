@@ -14,6 +14,7 @@ export default class ServiceStore {
     _selectedStamp: IStamp;
     _visibleAutos: IAuto[];
     _visibleOrders: IOrder[];
+    _toggle: boolean;
 
     constructor() {
        this._activities = [];
@@ -27,6 +28,7 @@ export default class ServiceStore {
        this._selectedStamp = {} as IStamp;
        this._visibleAutos = [];
        this._visibleOrders = [];
+       this._toggle = false;
 
        makeAutoObservable(this); 
     };
@@ -64,6 +66,9 @@ export default class ServiceStore {
     setVisibleOrders(visibleOrders: IOrder[]) {
         this._visibleOrders = visibleOrders;
     };
+    setToggle(bool: boolean) {
+        this._toggle = bool;
+    }
 
     get activities() {
         return this._activities;
@@ -98,4 +103,7 @@ export default class ServiceStore {
     get visibleOrders() {
         return this._visibleOrders;
     };
+    get toggle() {
+        return this._toggle;
+    }
 };

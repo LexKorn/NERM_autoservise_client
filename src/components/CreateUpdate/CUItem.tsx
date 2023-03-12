@@ -61,6 +61,7 @@ const CUItem: React.FC<CUItemProps> = ({id, name, setName, price, setPrice, orde
                 <label htmlFor="name" className="mt-3">Стоимость</label> 
                 <Form.Control
                     value={price}
+                    type="number"
                     onChange={e => setPrice(+e.target.value)}
                     placeholder={toggle ? 'Введите стоимость работы' : 'Введите стоимость запчасти'}
                 />

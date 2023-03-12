@@ -13,6 +13,7 @@ import { Context } from '../index';
 import { fetchAutos } from '../http/autosAPI';
 import { fetchStamps } from '../http/stampsAPI';
 import { fetchModels } from '../http/modelsAPI';
+import { fetchOrders } from '../http/ordersAPI';
 
 
 const AutosPage: React.FC = observer(() => {
@@ -33,6 +34,10 @@ const AutosPage: React.FC = observer(() => {
         fetchModels()
             .then(data => service.setModels(data))
             .catch(err => alert(err.message));
+
+        fetchOrders()
+            .then(data => service.setOrders(data))
+            .catch(err => alert(err.message))
     }, []);
     
 

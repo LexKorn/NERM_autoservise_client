@@ -64,9 +64,9 @@ const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) =
 		}
 
         // const stamp: IStamp[] = stamps.filter(stamp => stamp.name == value);
-        // if (stamp.length > 0) {
+        // if (stamp.length) {
         //     const authorStamp: IAuthor[] = authors.filter(author => author.stampId == stamp[0].id);
-        //     if (authorStamp.length > 0) {
+        //     if (authorStamp.length) {
         //         return alert('Марку нельзя удалить, пока на неё ссылается автомобиль');
         //     }
         // }                

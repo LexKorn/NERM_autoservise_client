@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 
-// import { createName } from '../../http/nameAPI';
 import CUItem from '../CreateUpdate/CUItem';
+import { createActivity } from '../../http/activitiesAPI';
+import { createAutopart } from '../../http/autopartsAPI';
 
 interface ModalItemAddProps {
     show: boolean;
@@ -11,20 +12,10 @@ interface ModalItemAddProps {
     title: string;
 };
 
-const createActivity = () => {console.log('сработал РАбота')};
-
 
 const ModalItemAdd: React.FC<ModalItemAddProps> = ({show, onHide, orderId, title}) => {
     const [name, setName] = useState<string>('');
     const [price, setPrice] = useState<number>(0);
-
-    const handler = () => {
-        if (title === 'Работы:') {
-            createActivity();
-        } else if (title === 'Заказы:') {
-            alert('Тут должны быть заказы');
-        }
-    }
     
     return (
         <Modal
@@ -43,7 +34,7 @@ const ModalItemAdd: React.FC<ModalItemAddProps> = ({show, onHide, orderId, title
                     setPrice={setPrice}
                     orderId={orderId}
                     // @ts-ignore
-                    handler={handler}
+                    handler={title === 'Работы:' ? createActivity : createAutopart}
                     title={title === 'Работы:' ? 'Добавить работу' : 'Добавить запчасть'}
                     btnName='Добавить'
                     onHide={onHide}

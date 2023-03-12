@@ -1,12 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react';
 
 import { IAuto, IOrder, IStamp, IModel } from '../../types/types';
+import { fetchAutos } from '../../http/autosAPI';
 import { Context } from '../../index';
 
 import './searchPanel.sass';
 
 interface SearchPanelOrdersProps {
-    // autos: IAuto[];
     orders: IOrder[];
     stamps: IStamp[];
     models: IModel[];
@@ -24,39 +24,11 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = ({orders, stamps, mo
         service.setVisibleOrders(sortHandler(filterPost(search(orders, value), filter)));
     }, [value, directionSort, filter, orders]);
 
-    const autos: IAuto[] = [
-        {
-            id: 1,
-            stampId: 1,
-            modelId: 1,
-            year: 2006,
-            vin: "XXLSRAG",
-            stateNumber: "АБ123В190",
-            owner: "Лёха",
-            phone: '+7 123 456 78 90',
-            userId: 1
-        },
-        {
-            id: 2,
-            stampId: 2,
-            modelId: 2,
-            year: 2011,
-            vin: "XXLSRAG",
-            stateNumber: "МН456К190",
-            owner: "Иван",
-            phone: '+7 985 766 78 90',
-            userId: 1
-        },
-        {
-            id: 3,
-            stampId: 3,
-            modelId: 3,
-            stateNumber: "ЛК789К150",
-            owner: "Саня",
-            phone: '+7 903 123 78 94',
-            userId: 1
-        },
-    ];
+    useEffect(() => {
+        fetchAutos()
+            .then(data => service.setAutos(data))
+            .catch(err => alert(err.message));
+    }, []);
 
     function search(items: (IOrder)[], term: string) {   
         if (term.length === 0) {
@@ -64,7 +36,7 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = ({orders, stamps, mo
         }
 
         return items.filter(item => {
-            const orderAuto: IAuto[] = autos.filter(auto => auto.id === item.autoId);
+            const orderAuto: IAuto[] = service.autos.filter(auto => auto.id === item.autoId);
 
             return (
                 stamps.filter(stamp => stamp.id === orderAuto[0].stampId)[0].stamp.toLowerCase().indexOf(term.toLowerCase()) > -1 ||

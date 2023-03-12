@@ -3,10 +3,10 @@ import { Card } from 'react-bootstrap';
 import {observer} from 'mobx-react-lite';
 
 import { IAuto, IOrder, IActivity, IStamp, IModel, IMaster } from '../../types/types';
+import { fetchMasters } from '../../http/mastersAPI';
 import { Context } from '../../index';
 
 import './orderItem.sass';
-import { fetchMasters } from '../../http/mastersAPI';
 
 interface OrderItemProps {
     order: IOrder;

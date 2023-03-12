@@ -22,7 +22,7 @@ interface CUAutoProps {
     setStateNumber: (stateNumber: string) => void;
     setOwner: (owner: string) => void;
     setPhone: (phone: string) => void;
-    handler: (id: number, auto: FormData) => Promise<unknown>;
+    handler: (id: number, year: number | undefined, vin: string | undefined, stateNumber: string, owner: string, phone: string, stampId: number, modelId: number) => Promise<unknown>;
     title: string;
     btnName: string;
 };
@@ -49,19 +49,8 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, own
             return alert('Модель необходимо указать');        
         }
 
-        const formData = new FormData();
-        formData.append('year', `${year}`);
-            // @ts-ignore 
-        formData.append('vin', vin);
-        formData.append('stateNumber', stateNumber);
-        formData.append('owner', owner);
-        formData.append('phone', phone);
-        formData.append('stampId', `${service.selectedStamp.id}`);
-        formData.append('modelId', `${service.selectedModel.id}`);
-
         if (btnName === 'Добавить') {
             // @ts-ignore 
-            // handler(formData)
             handler(year, vin, stateNumber, owner, phone, service.selectedStamp.id, service.selectedModel.id)
                 .then(() => {
                     service.setSelectedStamp({} as IStamp);
@@ -70,7 +59,7 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, own
                 })
                 .catch(err => alert(err.response.data.message));
         } else {
-            handler(id, formData)
+            handler(id, year, vin, stateNumber, owner, phone, service.selectedStamp.id, service.selectedModel.id)
                 .then(() => {
                     service.setSelectedStamp({} as IStamp);
                     service.setSelectedModel({} as IModel);

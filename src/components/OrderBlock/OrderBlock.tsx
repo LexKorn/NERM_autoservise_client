@@ -74,7 +74,7 @@ const OrderBlock: React.FunctionComponent = () => {
                 </div>
                 <div className="order__description">заказ открыт: {order.opened}</div>
                 {order.closed && <div className="order__description">заказ закрыт: {order.closed}</div>}
-                <div className="order__description">мастер: {masterOrder ? masterOrder[0].master : ''}</div>
+                <div className="order__description">мастер: {masterOrder.length ? masterOrder[0].master : ''}</div>
                 {order.cost && <div className="order__description">стоимость: {order.cost}p</div>}
                 {order.income && <div className="order__description">оплачено: {order.income}p</div>}
                 {order.profit && <div className="order__description">прибыль: {order.profit}p</div>}

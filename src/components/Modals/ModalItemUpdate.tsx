@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {Modal, Button} from 'react-bootstrap';
 
-// import { createName } from '../../http/nameAPI';
 import CUItem from '../CreateUpdate/CUItem';
 import { IActivity } from '../../types/types';
+import { updateActivity } from '../../http/activitiesAPI';
+import { updateAutopart } from '../../http/autopartsAPI';
 
 interface ModalItemUpdateProps {
     show: boolean;
@@ -12,8 +13,6 @@ interface ModalItemUpdateProps {
     activity: IActivity;
     title: string;
 };
-
-const updateActivity = () => {};
 
 
 const ModalItemUpdate: React.FC<ModalItemUpdateProps> = ({show, onHide, orderId, activity, title}) => {
@@ -24,15 +23,6 @@ const ModalItemUpdate: React.FC<ModalItemUpdateProps> = ({show, onHide, orderId,
         setName(activity.name);
         setPrice(activity.price);
     }, [show]);
-
-    const handler = () => {
-        if (title === 'Работы:') {
-            updateActivity();
-        } else if (title === 'Заказы:') {
-            alert('Тут должны быть заказы');
-        }
-    }
-
     
     return (
         <Modal
@@ -51,7 +41,7 @@ const ModalItemUpdate: React.FC<ModalItemUpdateProps> = ({show, onHide, orderId,
                     setPrice={setPrice}
                     orderId={orderId}
                     // @ts-ignore
-                    handler={handler}
+                    handler={title === 'Работы:' ? updateActivity : updateAutopart}
                     title={title === 'Работы:' ? 'Обновить работу' : 'Обновить запчасть'}
                     btnName='Обновить'
                     onHide={onHide}
