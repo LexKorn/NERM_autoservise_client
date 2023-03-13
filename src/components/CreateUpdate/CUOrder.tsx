@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { fetchMasters } from '../../http/mastersAPI';
 import {MAIN_ROUTE} from '../../utils/consts';
-import ModalStampModel from '../Modals/ModalStampModel';
+import ModalCommon from '../Modals/ModalCommon';
 
 interface CUOrderProps {
     id: number;
@@ -133,7 +133,7 @@ const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, cost, inc
                         </Form>
                         <Button variant={"outline-dark"} onClick={onClick} className="mt-3">{btnName}</Button>           
                     </div>
-                    <ModalStampModel show={visible} onHide={() => setVisible(false)} item={item} />
+                    <ModalCommon show={visible} onHide={() => setVisible(false)} item={item} />
                 </Container>
             </Modal.Body>
             <Modal.Footer>

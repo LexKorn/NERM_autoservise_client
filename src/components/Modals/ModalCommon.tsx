@@ -1,31 +1,25 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {Modal, Button, Form} from 'react-bootstrap';
 
-import { createStamp, deleteStamp, fetchStamps } from '../../http/stampsAPI';
-import { createModel, deleteModel, fetchModels } from '../../http/modelsAPI';
-import { createMaster, deleteMaster, fetchMasters } from '../../http/mastersAPI';
-import { fetchAutos } from '../../http/autosAPI';
+import { createStamp, deleteStamp } from '../../http/stampsAPI';
+import { createModel, deleteModel } from '../../http/modelsAPI';
+import { createMaster, deleteMaster } from '../../http/mastersAPI';
 import { ADD_AUTO_ROUTE } from '../../utils/consts';
-import { IAuto, IStamp, IModel } from '../../types/types';
+import { IAuto, IStamp, IModel, IMaster, IOrder } from '../../types/types';
+import { Context } from '../..';
 
-interface ModalStampModelProps {
+interface ModalCommonProps {
     show: boolean;
     onHide: () => void;
     item: string;
 };
 
 
-const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) => {
+const ModalCommon: React.FC<ModalCommonProps> = ({show, onHide, item}) => {
     const [value, setValue] = useState<string>('');
-    // const [autos, setAutos] = useState<IAuto[]>([]);
-    // const [items, setItems] = useState<(IStamp | IModel)[]>([]);
     const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     fetchAutos().then(data => setAutos(data));
-    //     fetchStamps().then(data => setStamps(data));
-    // }, []);
+    const {service} = useContext(Context);
 
     const addStamp = () => {
         if (!value.trim()) {
@@ -40,6 +34,7 @@ const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) =
                     navigate(ADD_AUTO_ROUTE);
                 })
                 .catch(err => alert(err.response.data.message));
+
         } else if (item === "model") {
             createModel(value)
                 .then(() => {
@@ -48,6 +43,7 @@ const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) =
                     navigate(ADD_AUTO_ROUTE);
                 })
                 .catch(err => alert(err.response.data.message));  
+
         } else if (item === "master") {
             createMaster(value)
                 .then(() => {
@@ -63,27 +59,45 @@ const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) =
 			return alert('Поле обязательно для заполнения');
 		}
 
-        // const stamp: IStamp[] = stamps.filter(stamp => stamp.name == value);
-        // if (stamp.length) {
-        //     const authorStamp: IAuthor[] = authors.filter(author => author.stampId == stamp[0].id);
-        //     if (authorStamp.length) {
-        //         return alert('Марку нельзя удалить, пока на неё ссылается автомобиль');
-        //     }
-        // }                
-
         if (item === "stamp") {
+            const stamps: IStamp[] = service.stamps.filter(stamp => stamp.stamp == value);
+            if (stamps.length) {
+                const autosStamp: IAuto[] = service.autos.filter(auto => auto.stampId == stamps[0].id);
+                if (autosStamp.length) {
+                    return alert('Марку нельзя удалить, пока на неё ссылается автомобиль');
+                }
+            }
+
             deleteStamp(value).then(() => {
                 setValue('');
                 onHide();
                 navigate(ADD_AUTO_ROUTE);
             });
+
         } else if (item === "model") {
+            const models: IModel[] = service.models.filter(model => model.model == value);
+            if (models.length) {
+                const autosModel: IAuto[] = service.autos.filter(auto => auto.modelId == models[0].id);
+                if (autosModel.length) {
+                    return alert('Модель нельзя удалить, пока на неё ссылается автомобиль');
+                }
+            }
+
             deleteModel(value).then(() => {
                 setValue('');
                 onHide();
                 navigate(ADD_AUTO_ROUTE);
             });
+
         } else if (item === "master") {
+            const masters: IMaster[] = service.masters.filter(master => master.master == value);
+            if (masters.length) {
+                const ordersMaster: IOrder[] = service.orders.filter(order => order.masterId == masters[0].id);
+                if (ordersMaster.length) {
+                    return alert('Мастера нельзя удалить, пока у него есть заказы');
+                }
+            }
+
             deleteMaster(value).then(() => {
                 setValue('');
                 onHide();
@@ -130,4 +144,4 @@ const ModalStampModel: React.FC<ModalStampModelProps> = ({show, onHide, item}) =
     );
 };
 
-export default ModalStampModel;
+export default ModalCommon;

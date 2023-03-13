@@ -8,7 +8,7 @@ import { IStamp, IModel } from '../../types/types';
 import { fetchModels } from '../../http/modelsAPI';
 import { fetchStamps } from '../../http/stampsAPI';
 import { AUTOS_ROUTE } from '../../utils/consts';
-import ModalStampModel from '../Modals/ModalStampModel';
+import ModalCommon from '../Modals/ModalCommon';
 
 interface CUAutoProps {
     id: number;
@@ -145,7 +145,7 @@ const CUAuto: React.FC<CUAutoProps> = observer(({id, year, vin, stateNumber, own
                 </Form>
                 <Button variant={"outline-dark"} onClick={onClick} className="mt-3">{btnName}</Button>           
             </div>   
-            <ModalStampModel show={visible} onHide={() => setVisible(false)} item={item} />
+            <ModalCommon show={visible} onHide={() => setVisible(false)} item={item} />
         </Container>
     );
 });
