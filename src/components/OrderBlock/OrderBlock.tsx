@@ -25,6 +25,8 @@ const OrderBlock: React.FunctionComponent = () => {
     const {id} = useParams<{id: string}>();
     const navigate = useNavigate();
 
+    const masterOrder: IMaster[] = service.masters.filter(master => master.id === order.masterId);
+
     useEffect(() => {
         fetchOneOrder(id).then(data => setOrder(data));
     }, []);
@@ -45,14 +47,18 @@ const OrderBlock: React.FunctionComponent = () => {
         }
     }, [auto]);
 
+    useEffect(() => {
+        if (masterOrder.length) {
+            service.setSelectedMaster(masterOrder[0]);
+        }
+    }, [masterOrder]);
+
     const removeOrder = () => {
         if (window.confirm('Вы действительно хотите заказ?')) {
             deleteOrder(order.id);
             navigate(MAIN_ROUTE);
         }        
     };
-
-    const masterOrder: IMaster[] = service.masters.filter(master => master.id === order.masterId);
 
     if (loading) {
         return <Spinner animation={"border"}/>

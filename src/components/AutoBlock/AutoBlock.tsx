@@ -7,7 +7,7 @@ import {Helmet} from "react-helmet";
 import { IAuto, IStamp, IModel } from '../../types/types';
 import { AUTOS_ROUTE, NOTFOUND_ROUTE } from '../../utils/consts';
 import { deleteAuto, fetchOneAuto } from '../../http/autosAPI';
-// import {Context} from '../../index';
+import {Context} from '../../index';
 import ModalAutoUpdate from '../Modals/ModalAutoUpdate';
 
 import './autoBlock.sass';
@@ -16,7 +16,7 @@ import { fetchOneModel } from '../../http/modelsAPI';
 
 
 const AutoBlock: React.FunctionComponent = () => {
-    // const {service} = useContext(Context);
+    const {service} = useContext(Context);
     const [auto, setAuto] = useState<IAuto>({} as IAuto);
     const [stamp, setStamp] = useState<IStamp>({} as IStamp);
     const [model, setModel] = useState<IModel>({} as IModel);
@@ -41,6 +41,8 @@ const AutoBlock: React.FunctionComponent = () => {
     useEffect(() => {
         if (stamp.id && model.id) {
             setLoading(false);
+            service.setSelectedStamp(stamp);
+            service.setSelectedModel(model);
         }
     }, [stamp, model]);
 

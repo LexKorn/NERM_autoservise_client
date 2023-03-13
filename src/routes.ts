@@ -1,5 +1,5 @@
-import { LOGIN_ROUTE, REGISTER_ROUTE, ORDER_ROUTE, AUTO_ROUTE, AUTOS_ROUTE, MAIN_ROUTE, ADD_AUTO_ROUTE, CALC_ROUTE, NOTFOUND_ROUTE, TEST_ROUTE, ADD_TEST_ROUTE } from "./utils/consts";
-import {AddAutoPage, AddTestPage, AutoPage, AutosPage, AuthPage, OrderPage, MainPage, CalcPage, Page404} from './pages';
+import { LOGIN_ROUTE, REGISTER_ROUTE, ORDER_ROUTE, AUTO_ROUTE, AUTOS_ROUTE, MAIN_ROUTE, ADD_AUTO_ROUTE, CALC_ROUTE, NOTFOUND_ROUTE } from "./utils/consts";
+import {AddAutoPage, AutoPage, AutosPage, AuthPage, OrderPage, MainPage, CalcPage, Page404} from './pages';
 
 export const authRoutes = [
     {
@@ -29,10 +29,6 @@ export const authRoutes = [
     {
         path: NOTFOUND_ROUTE,
         Component: Page404
-    },
-    {
-        path: ADD_TEST_ROUTE,
-        Component: AddTestPage
     },
 ];
 

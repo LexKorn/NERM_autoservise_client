@@ -8,5 +8,3 @@ export const ADD_AUTO_ROUTE = '/auto';
 export const AUTOS_ROUTE = '/autos';
 export const CALC_ROUTE = '/calc';
 export const NOTFOUND_ROUTE = '/404';
-export const TEST_ROUTE = '/test';
-export const ADD_TEST_ROUTE = '/test';
