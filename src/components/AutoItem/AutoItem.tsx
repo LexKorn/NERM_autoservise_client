@@ -23,7 +23,8 @@ const AutoItem: React.FC<AutoItemProps> = ({auto, onClick}) => {
                 className="auto-card shadow"
                 onClick={() => onClick(auto)}
             >
-                <b>{stampAuto[0].stamp} {modelAuto[0].model} {auto.stateNumber}</b> {auto.owner}
+                <div className="auto-card__auto" >{stampAuto[0].stamp} {modelAuto[0].model} {auto.stateNumber}</div>
+                <div className="auto-card__owner" >{auto.owner}</div>
             </Card>
         );
     } else {

@@ -22,4 +22,4 @@ export {
 };
 
 // REACT_APP_API_URL='http://localhost:5000/'
-// REACT_APP_API_URL='https://autoservice.lexkorn.ru/'
+// REACT_APP_API_URL='https://autos.kornlex.ru/'

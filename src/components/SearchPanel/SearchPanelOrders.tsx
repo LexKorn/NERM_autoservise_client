@@ -89,9 +89,9 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = ({orders, stamps, mo
     return (
         <>  
             <div className='sort'>
-                <div className="sort__title">Сортировать по:</div>
+                {/* <div className="sort__title">Сортировать по:</div> */}
                 <div className="sort__btns">
-                    <button className='sort__btn' onClick={sortStamp}>Марка авто</button>
+                    {/* <button className='sort__btn' onClick={sortStamp}>Марка авто</button> */}
                     <button className='sort__btn' onClick={sortDate}>Время добавления</button>
 
                     <button className='sort__btn' onClick={() => setFilter('closed')}>закрыт</button>

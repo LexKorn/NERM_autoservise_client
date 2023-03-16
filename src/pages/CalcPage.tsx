@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Helmet} from "react-helmet";
 
 const CalcPage: React.FC = () => {
+    const [date, setDate] = useState();
+
+    console.log("Date", date);
+    
     return (
         <div>
             <Helmet>
@@ -9,7 +13,7 @@ const CalcPage: React.FC = () => {
                 <meta name="description" content="Калькулятор" />
             </Helmet>
 
-            Со временем здесь будет калькулятор
+            <h2>Со временем здесь будет калькулятор</h2>
         </div>
     );
 };

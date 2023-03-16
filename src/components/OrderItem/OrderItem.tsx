@@ -43,8 +43,13 @@ const OrderItem: React.FC<OrderItemProps> = observer(({order, onClick}) => {
                 className="order-card shadow"
                 onClick={() => onClick(order)}
             >
-                {order.opened} - {stampAuto[0].stamp} {modelAuto[0].model} - {activitiesOrder.length ? activitiesOrder[0].name : ''}... | {masterOrder[0].master}
-                <b>{order.closed}</b>
+                <div className="order-card__common">
+                    <div className="order-card__opened">{order.opened} <span>-</span></div>
+                    <div className="order-card__auto">{stampAuto[0].stamp} {modelAuto[0].model} <span>-</span></div>
+                    <div className="order-card__activity">{activitiesOrder.length ? activitiesOrder[0].name.substring(0, 17) : ''}...</div>
+                    <div><span>|</span> {masterOrder[0].master}</div>
+                </div>                
+                <div className="order-card__closed">{order.closed}</div>
             </Card>        
         );
     } else {

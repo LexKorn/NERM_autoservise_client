@@ -46,6 +46,10 @@ const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, cost, inc
             return alert('Дата открытия заказа обязательна для заполнения');
         }
 
+        if (!service.selectedMaster.id) {
+            return alert('Мастера необходимо указать');
+        }
+
         if (btnName === 'Добавить') {
             handler(opened, closed, cost, income, profit, comment, autoId, service.selectedMaster.id)
                 .then(() => navigate(MAIN_ROUTE))
@@ -79,12 +83,14 @@ const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, cost, inc
                         <Form>
                             <label htmlFor="opened" className="mt-3">Открытие</label> 
                             <Form.Control
+                                type="date"
                                 value={opened}
                                 onChange={e => setOpened(e.target.value)}
                                 placeholder="Когда открыт заказ"
                             />
                             <label htmlFor="closed" className="mt-3">Закрытие</label> 
                             <Form.Control
+                                type="date"
                                 value={closed}
                                 onChange={e => setClosed(e.target.value)}
                                 placeholder="Когда закрыт заказ"

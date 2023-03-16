@@ -27,7 +27,12 @@ const ListItemOrder: React.FC<ListItemOrderProps> = ({item, onClick}) => {
             className="list-item order-card shadow"
             onClick={() => onClick(item)}
         >
-            {item.opened} - {activitiesOrder.length ? activitiesOrder[0].name : ''}... | {masterOrder[0].master} <b>{item.closed}</b>
+            <div className="order-card__common">
+                <div className="order-card__opened">{item.opened} <span>-</span></div>
+                <div className="order-card__activity">{activitiesOrder.length ? activitiesOrder[0].name.substring(0, 17) : ''}...</div>
+                <div><span>|</span> {masterOrder.length ? masterOrder[0].master : ''}</div>
+            </div>                
+            <div className="order-card__closed">{item.closed}</div>
         </Card>      
     );
 };

@@ -24,8 +24,8 @@ const NavBar: React.FC = observer(() => {
             {user.isAuth ?
                 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top" >
                     <Container >
-                        <NavLink className="active" to={MAIN_ROUTE}>ЗАКАЗЫ</NavLink>
-                        <NavLink className="active ps-4" to={AUTOS_ROUTE}>АВТОМОБИЛИ</NavLink>
+                        <NavLink className="active nav-orders" to={MAIN_ROUTE}>ЗАКАЗЫ</NavLink>
+                        <NavLink className="active" to={AUTOS_ROUTE}>АВТОМОБИЛИ</NavLink>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav" className='justify-content-around'>
                                 <div className='buttons'>

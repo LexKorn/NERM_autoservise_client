@@ -1,9 +1,28 @@
 .order-card
     display: flex
     flex-direction: row
+    justify-content: space-between
     margin-top: 15px
     padding: 10px
     font-size: 18px
     line-height: 35px
-    justify-content: space-between
     cursor: pointer
+    &__common
+        display: flex
+        flex-direction: row
+    &__auto, &__activity, &__opened
+        margin-right: 10px
+    &__closed
+        font-weight: bold
+
+@media (max-width: 991px)
+    .order-card
+        font-size: 16px
+        flex-direction: column
+
+@media (max-width: 500px)
+    .order-card
+        &__common
+            flex-direction: column
+            span
+                display: none
