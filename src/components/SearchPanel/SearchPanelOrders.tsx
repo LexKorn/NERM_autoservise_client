@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react';
+import {Dropdown} from 'react-bootstrap';
+import {observer} from 'mobx-react-lite';
 
-import { IAuto, IOrder, IStamp, IModel } from '../../types/types';
+import { IAuto, IOrder, IStamp, IModel, IMaster } from '../../types/types';
 import { fetchAutos } from '../../http/autosAPI';
 import { Context } from '../../index';
 
@@ -13,7 +15,7 @@ interface SearchPanelOrdersProps {
 };
 
 
-const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = ({orders, stamps, models}) => { 
+const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = observer(({orders, stamps, models}) => { 
     const {service} = useContext(Context);
     const [directionSort, setDirectionSort] = useState<boolean>(true);
     const [condition, setCondition] = useState<string>('createdAt');
@@ -97,6 +99,20 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = ({orders, stamps, mo
                     <button className='sort__btn' onClick={() => setFilter('closed')}>закрыт</button>
                     <button className='sort__btn' onClick={() => setFilter('no-closed')}>не закрыт</button>
                     <button className='sort__btn' onClick={() => setFilter('All')}>Все</button>
+
+                    <Dropdown>
+                        <Dropdown.Toggle variant={"outline-dark"}>{service.selectedMaster.master || 'Мастер'}</Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            {service.masters.map(master => 
+                                <Dropdown.Item 
+                                    onClick={() => service.setSelectedMaster(master)} 
+                                    key={master.id} >
+                                        {master.master}
+                                </Dropdown.Item>                                
+                            )}
+                            <Dropdown.Item onClick={() => service.setSelectedMaster({} as IMaster)} >Все</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>  
                 </div>                
             </div>
             <input 
@@ -108,6 +124,6 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = ({orders, stamps, mo
             />            
         </>
     );
-};
+});
 
 export default SearchPanelOrders;

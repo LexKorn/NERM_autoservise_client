@@ -9,12 +9,19 @@ import { AUTO_ROUTE, MAIN_ROUTE } from '../../utils/consts';
 import { fetchOneOrder, deleteOrder } from '../../http/ordersAPI';
 import { fetchOneAuto } from '../../http/autosAPI';
 import {Context} from '../../index';
+import { convertNumToStr } from '../../utils/calc';
 import ModalOrderUpdate from '../Modals/ModalOrderUpdate';
 
 import './orderBlock.sass';
 
+interface OrderBlockProps {
+    cost: number;
+    activitiesPrice: number;
+    autopartsPrice: number;
+};
 
-const OrderBlock: React.FunctionComponent = () => {
+
+const OrderBlock: React.FunctionComponent<OrderBlockProps> = ({cost, activitiesPrice, autopartsPrice}) => {
     const {service} = useContext(Context);
     const [order, setOrder] = useState<IOrder>({} as IOrder);
     const [auto, setAuto] = useState<IAuto>({} as IAuto);
@@ -81,9 +88,12 @@ const OrderBlock: React.FunctionComponent = () => {
                 <div className="order__description">заказ открыт: {order.opened}</div>
                 {order.closed && <div className="order__description">заказ закрыт: {order.closed}</div>}
                 <div className="order__description">мастер: {masterOrder.length ? masterOrder[0].master : ''}</div>
-                {order.cost && <div className="order__description">стоимость: {order.cost}p</div>}
-                {order.income && <div className="order__description">оплачено: {order.income}p</div>}
-                {order.profit && <div className="order__description">прибыль: {order.profit}p</div>}
+                {cost ? <div className="order__description">стоимость: {convertNumToStr(cost)}p</div> : ''}
+                {activitiesPrice ? <div className="order__description">работы: {convertNumToStr(activitiesPrice)}p</div> : ''}
+                {autopartsPrice ? <div className="order__description">запчасти: {convertNumToStr(autopartsPrice)}p</div> : ''}
+                {order.income ? <div className="order__description">оплачено: {convertNumToStr(order.income)}p</div> : ''}
+                {/* {order.cost && <div className="order__description">стоимость: {order.cost}p</div>} */}
+                {/* {order.profit && <div className="order__description">прибыль: {order.profit}p</div>} */}
                 {order.comment && <div className="order__description">комментарий: {order.comment}</div>}
                 
                 <Button className="order__button" variant={"outline-primary"} onClick={() => setVisible(true)}>Редактировать</Button>

@@ -1,6 +1,6 @@
 import {makeAutoObservable} from 'mobx';
 
-import { IAuto, IActivity, IAutopart, IOrder, IStamp, IModel, IMaster } from '../types/types';
+import { IAuto, IActivity, IOrder, IStamp, IModel, IMaster } from '../types/types';
 
 export default class ServiceStore {
     _activities: IActivity[];

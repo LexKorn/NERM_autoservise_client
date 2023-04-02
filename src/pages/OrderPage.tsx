@@ -17,6 +17,9 @@ const OrderPage: React.FC = observer(() => {
     const [autoparts, setAutoparts] = useState<IAutopart[]>([]);
     const [autopartsOrder, setAutopartsOrder] = useState<IAutopart[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [cost, setCost] = useState<number>(0);
+    const [activitiesPrice, setActivitiesPrice] = useState<number>(0);
+    const [autopartsPrice, setAutopartsPrice] = useState<number>(0);
     const {id} = useParams();
     const {service} = useContext(Context);
 
@@ -35,15 +38,38 @@ const OrderPage: React.FC = observer(() => {
     }, [activities]);
 
     useEffect(() => {
+        if (activitiesOrder.length) {
+            setActivitiesPrice(calcSum(activitiesOrder));
+        }
+    }, [activitiesOrder]);
+
+    useEffect(() => {
+        if (autopartsOrder.length) {
+            setAutopartsPrice(calcSum(autopartsOrder));
+        }
+    }, [autopartsOrder]);
+
+    useEffect(() => {
+        setCost(activitiesPrice + autopartsPrice);
+    }, [activitiesPrice, autopartsPrice]);
+
+    useEffect(() => {
         if (autoparts.length) {
             setAutopartsOrder(autoparts.filter(autopart => autopart.orderId === Number(id)));
         }
     }, [autoparts]);
 
+    const calcSum = (arr: (IActivity | IAutopart)[]) => {
+        const result = arr.reduce((sum, current) => {
+            return sum += current.price;
+        }, 0);
+        return result;
+    };
+
 
     return (
         <div>
-            <OrderBlock />
+            <OrderBlock cost={cost} activitiesPrice={activitiesPrice} autopartsPrice={autopartsPrice} />
             {loading ? <Spinner /> : 
                 <div>
                     <OrderList title="Работы:" orderItems={activitiesOrder} />
