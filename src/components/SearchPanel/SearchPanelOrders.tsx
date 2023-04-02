@@ -20,11 +20,12 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = observer(({orders, s
     const [directionSort, setDirectionSort] = useState<boolean>(true);
     const [condition, setCondition] = useState<string>('createdAt');
     const [value, setValue] = useState<string>('');
-    const [filter, setFilter] = useState<string>('Все');
+    const [filter, setFilter] = useState<string>('All');
+    const [filMast, setFilMast] = useState<IMaster>({} as IMaster);
 
     useEffect(() => {
-        service.setVisibleOrders(sortHandler(filterPost(search(orders, value), filter)));
-    }, [value, directionSort, filter, orders]);
+        service.setVisibleOrders(sortHandler(filterMaster(filterClosed(search(orders, value), filter))));
+    }, [value, directionSort, filter, orders, filMast]);
 
     useEffect(() => {
         fetchAutos()
@@ -64,7 +65,7 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = observer(({orders, s
         return sortElems;
     };
 
-    function filterPost(items: IOrder[], filter: string) {
+    function filterClosed(items: IOrder[], filter: string) {
         switch (filter) {
             case 'closed':
                 return items.filter(item => item.closed);
@@ -77,9 +78,12 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = observer(({orders, s
         }
     };
 
-    const sortStamp = () => {
-        setDirectionSort(!directionSort);
-        setCondition('stampId');
+    function filterMaster(items: IOrder[]) {
+        if (filMast.id) {
+            return items.filter(item => item.masterId === filMast.id);
+        } else {
+            return items;
+        }
     };
 
     const sortDate = () => {
@@ -91,9 +95,7 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = observer(({orders, s
     return (
         <>  
             <div className='sort'>
-                {/* <div className="sort__title">Сортировать по:</div> */}
                 <div className="sort__btns">
-                    {/* <button className='sort__btn' onClick={sortStamp}>Марка авто</button> */}
                     <button className='sort__btn' onClick={sortDate}>Время добавления</button>
 
                     <button className='sort__btn' onClick={() => setFilter('closed')}>закрыт</button>
@@ -101,16 +103,16 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = observer(({orders, s
                     <button className='sort__btn' onClick={() => setFilter('All')}>Все</button>
 
                     <Dropdown>
-                        <Dropdown.Toggle variant={"outline-dark"}>{service.selectedMaster.master || 'Мастер'}</Dropdown.Toggle>
+                        <Dropdown.Toggle variant={"outline-dark"}>{filMast.master || 'Мастер'}</Dropdown.Toggle>
                         <Dropdown.Menu>
                             {service.masters.map(master => 
                                 <Dropdown.Item 
-                                    onClick={() => service.setSelectedMaster(master)} 
+                                    onClick={() => setFilMast(master)} 
                                     key={master.id} >
                                         {master.master}
                                 </Dropdown.Item>                                
                             )}
-                            <Dropdown.Item onClick={() => service.setSelectedMaster({} as IMaster)} >Все</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setFilMast({} as IMaster)} >Все</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>  
                 </div>                
