@@ -12,18 +12,14 @@ interface CUOrderProps {
     id: number;
     opened: string;
     closed?: string;
-    cost?: number;
     income?: number;
-    profit?: number;
     comment?: string;
     autoId: number;
     setOpened: (opened: string) => void;
     setClosed: (closed: string) => void;
-    setCost: (cost: number) => void;
     setIncome: (income: number) => void;
-    setProfit: (profit: number) => void;
     setComment: (comment: string) => void;
-    handler: (opened: string, closed: string | undefined, cost: number | undefined, income: number | undefined, profit: number | undefined, comment: string | undefined, autoId: number, masterId: number) => Promise<unknown>;
+    handler: (opened: string, closed: string | undefined, income: number | undefined, comment: string | undefined, autoId: number, masterId: number) => Promise<unknown>;
     title: string;
     btnName: string;
     show: boolean;
@@ -31,7 +27,7 @@ interface CUOrderProps {
 };
 
 
-const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, cost, income, profit, comment, autoId, setOpened, setClosed, setCost, setIncome, setProfit, setComment, handler, title, btnName, show, onHide}) => {
+const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, income, comment, autoId, setOpened, setClosed,  setIncome, setComment, handler, title, btnName, show, onHide}) => {
     const {service} = useContext(Context);
     const navigate = useNavigate();
     const [visible, setVisible] = useState<boolean>(false);
@@ -51,12 +47,12 @@ const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, cost, inc
         }
 
         if (btnName === 'Добавить') {
-            handler(opened, closed, cost, income, profit, comment, autoId, service.selectedMaster.id)
+            handler(opened, closed, income, comment, autoId, service.selectedMaster.id)
                 .then(() => navigate(MAIN_ROUTE))
                 .catch(err => alert(err.response.data.message));
         } else {
             // @ts-ignore 
-            handler(id, opened, closed, cost, income, profit, comment, autoId, service.selectedMaster.id)
+            handler(id, opened, closed, income, comment, autoId, service.selectedMaster.id)
                 .then(() => navigate(MAIN_ROUTE))
                 .catch(err => alert(err.response.data.message));
         }
@@ -108,26 +104,12 @@ const CUOrder: React.FC<CUOrderProps> = observer(({id, opened, closed, cost, inc
                                     <Dropdown.Item onClick={showMaster} >Добавить / удалить мастера</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
-                            <label htmlFor="cost" className="mt-3">Стоимость</label> 
-                            <Form.Control
-                                value={cost}
-                                type="number"
-                                onChange={e => setCost(+e.target.value)}
-                                placeholder="Стоимость"
-                            />
                             <label htmlFor="income" className="mt-3">Оплачено</label> 
                             <Form.Control
                                 value={income}
                                 type="number"
                                 onChange={e => setIncome(+e.target.value)}
                                 placeholder="Оплачено"
-                            />
-                            <label htmlFor="profit" className="mt-3">Прибыль</label> 
-                            <Form.Control
-                                value={profit}
-                                type="number"
-                                onChange={e => setProfit(+e.target.value)}
-                                placeholder="Прибыль"
                             />
                             <label htmlFor="comment" className="mt-3">Комментарий</label> 
                             <Form.Control as="textarea"

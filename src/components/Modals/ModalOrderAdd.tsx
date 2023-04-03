@@ -13,9 +13,7 @@ interface ModalOrderAddProps {
 const ModalOrderAdd: React.FC<ModalOrderAddProps> = ({show, onHide}) => {
     const [opened, setOpened] = useState<string>('');
     const [closed, setClosed] = useState<string | undefined>('');
-    const [cost, setCost] = useState<number | undefined>(undefined);
-    const [income, setIncome] = useState<number | undefined>(undefined);
-    const [profit, setProfit] = useState<number | undefined>(undefined);
+    const [income, setIncome] = useState<number | undefined>(0);
     const [comment, setComment] = useState<string | undefined>('');
     const {id} = useParams<{id: string}>();
     
@@ -24,15 +22,11 @@ const ModalOrderAdd: React.FC<ModalOrderAddProps> = ({show, onHide}) => {
             id={0}
             opened={opened}
             closed={closed}
-            cost={cost}
             income={income}
-            profit={profit}
             comment={comment}
             setOpened={setOpened}
             setClosed={setClosed}
-            setCost={setCost}
             setIncome={setIncome}
-            setProfit={setProfit}
             setComment={setComment}
             // @ts-ignore
             autoId={id}

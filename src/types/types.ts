@@ -48,9 +48,7 @@ export interface IOrder {
     id: number;
     opened: string;
     closed?: string;
-    cost?: number;
     income?: number;
-    profit?: number;
     comment?: string;
     userId: number;
     autoId: number;
