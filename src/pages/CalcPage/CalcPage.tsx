@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Container, Button, Form, Dropdown, Spinner} from 'react-bootstrap';
 import {Helmet} from "react-helmet";
 
@@ -7,13 +7,13 @@ import { fetchMasters } from '../../http/mastersAPI';
 import { fetchOrders } from '../../http/ordersAPI';
 import { fetchActivities } from '../../http/activitiesAPI';
 import { fetchAutoparts } from '../../http/autopartsAPI';
-import { Context } from '../..';
+import { calcSum } from '../../utils/calc';
+import { convertNumToStr } from '../../utils/calc';
 
 import './calcPage.sass';
 
 
 const CalcPage: React.FC = () => {
-    // const {service} = useContext(Context);
     const [dateFrom, setDateFrom] = useState<string>('');
     const [dateTo, setDateTo] = useState<string>('');
     const [visible, setVisible] = useState<boolean>(false);
@@ -22,9 +22,14 @@ const CalcPage: React.FC = () => {
     const [orders, setOrders] = useState<IOrder[]>([]);
     const [ordersDate, setOrdersDate] = useState<IOrder[]>([]);
     const [activities, setActivities] = useState<IActivity[]>([]);
+    const [activitiesOrder, setActivitiesOrder] = useState<IActivity[]>([]);
     const [autoparts, setAutoparts] = useState<IAutopart[]>([]);
+    const [autopartsOrder, setAutopartsOrder] = useState<IAutopart[]>([]);
     const [filMast, setFilMast] = useState<IMaster>({} as IMaster);
-
+    const [cost, setCost] = useState<number>(0);
+    const [activitiesPrice, setActivitiesPrice] = useState<number>(0);
+    const [autopartsPrice, setAutopartsPrice] = useState<number>(0);
+    
     useEffect(() => {
         fetchMasters().then(data => setMasters(data));
         fetchOrders().then(data => setOrders(data));
@@ -34,6 +39,39 @@ const CalcPage: React.FC = () => {
             setLoading(false);
         });
     }, []);
+
+    useEffect(() => {
+        if (ordersDate.length) {
+            let activitiesNewArr: IActivity[] = [];
+            let autopartsNewArr: IAutopart[] = [];
+
+            ordersDate.forEach(item => {
+                activitiesNewArr.push(...activities.filter(activity => activity.orderId === item.id));
+            });
+            setActivitiesOrder(activitiesNewArr);
+
+            ordersDate.forEach(item => {
+                autopartsNewArr.push(...autoparts.filter(autopart => autopart.orderId === item.id));
+            });
+            setAutopartsOrder(autopartsNewArr);
+        }
+    }, [ordersDate]);
+
+    useEffect(() => {
+        if (activitiesOrder.length) {
+            setActivitiesPrice(calcSum(activitiesOrder));
+        }        
+    }, [activitiesOrder]);
+
+    useEffect(() => {
+        if (autopartsOrder.length) {
+            setAutopartsPrice(calcSum(autopartsOrder));
+        }
+    }, [autopartsOrder]);
+
+    useEffect(() => {
+        setCost(activitiesPrice + autopartsPrice);
+    }, [activitiesPrice, autopartsPrice]);
 
     function filterMaster(items: IOrder[]) {
         if (filMast.id) {
@@ -57,7 +95,6 @@ const CalcPage: React.FC = () => {
         }
 
         setOrdersDate(filterMaster(filterDate(orders)));
-
         setVisible(true);
     };
 
@@ -83,7 +120,7 @@ const CalcPage: React.FC = () => {
                     />
                 </div>
                 <div className="calc__form_date">
-                    <label htmlFor="dateTo" className="mt-3">до какого числа</label> 
+                    <label htmlFor="dateTo" className="mt-3">до какого числа включительно</label> 
                     <Form.Control
                         type="date"
                         value={dateTo}
@@ -111,14 +148,9 @@ const CalcPage: React.FC = () => {
                 <div className="calc__result">
                     <div className="calc__result_title">За период с {dateFrom} по {dateTo} :</div>
                     <div className="calc__result_answer">количество закрытых заказов: <span>{ordersDate.length}</span></div>
-                    <div className="calc__result_answer">общая стоимость заказов: <span>{1000} р.</span></div>
-                    <div className="calc__result_answer">общая стоимость работ: <span>{1000} р.</span></div>
-                    <div className="calc__result_answer">общая стоимость запчастей: <span>{1000} р.</span></div>
-                    <ul>
-                        {ordersDate.map(order =>
-                            <li key={order.id}>{order.opened}</li>
-                        )}
-                    </ul>
+                    <div className="calc__result_answer">общая стоимость заказов: <span>{convertNumToStr(cost)} р.</span></div>
+                    <div className="calc__result_answer">общая стоимость работ: <span>{convertNumToStr(activitiesPrice)} р.</span></div>
+                    <div className="calc__result_answer">общая стоимость запчастей: <span>{convertNumToStr(autopartsPrice)} р.</span></div>
                 </div>
                 :
                 <div></div>

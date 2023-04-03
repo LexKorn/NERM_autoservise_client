@@ -8,6 +8,7 @@ import OrderList from '../components/OrderList/OrderList';
 import { IActivity, IAutopart } from '../types/types';
 import { fetchActivities } from '../http/activitiesAPI';
 import { fetchAutoparts } from '../http/autopartsAPI';
+import { calcSum } from '../utils/calc';
 import { Context } from '..';
 
 
@@ -38,6 +39,12 @@ const OrderPage: React.FC = observer(() => {
     }, [activities]);
 
     useEffect(() => {
+        if (autoparts.length) {
+            setAutopartsOrder(autoparts.filter(autopart => autopart.orderId === Number(id)));
+        }
+    }, [autoparts]);
+
+    useEffect(() => {
         if (activitiesOrder.length) {
             setActivitiesPrice(calcSum(activitiesOrder));
         }
@@ -52,19 +59,6 @@ const OrderPage: React.FC = observer(() => {
     useEffect(() => {
         setCost(activitiesPrice + autopartsPrice);
     }, [activitiesPrice, autopartsPrice]);
-
-    useEffect(() => {
-        if (autoparts.length) {
-            setAutopartsOrder(autoparts.filter(autopart => autopart.orderId === Number(id)));
-        }
-    }, [autoparts]);
-
-    const calcSum = (arr: (IActivity | IAutopart)[]) => {
-        const result = arr.reduce((sum, current) => {
-            return sum += current.price;
-        }, 0);
-        return result;
-    };
 
 
     return (
