@@ -41,32 +41,26 @@ const CalcPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (ordersDate.length) {
-            let activitiesNewArr: IActivity[] = [];
-            let autopartsNewArr: IAutopart[] = [];
+        let activitiesNewArr: IActivity[] = [];
+        let autopartsNewArr: IAutopart[] = [];
 
-            ordersDate.forEach(item => {
-                activitiesNewArr.push(...activities.filter(activity => activity.orderId === item.id));
-            });
-            setActivitiesOrder(activitiesNewArr);
+        ordersDate.forEach(item => {
+            activitiesNewArr.push(...activities.filter(activity => activity.orderId === item.id));
+        });
+        setActivitiesOrder(activitiesNewArr);
 
-            ordersDate.forEach(item => {
-                autopartsNewArr.push(...autoparts.filter(autopart => autopart.orderId === item.id));
-            });
-            setAutopartsOrder(autopartsNewArr);
-        }
+        ordersDate.forEach(item => {
+            autopartsNewArr.push(...autoparts.filter(autopart => autopart.orderId === item.id));
+        });
+        setAutopartsOrder(autopartsNewArr);
     }, [ordersDate]);
 
     useEffect(() => {
-        if (activitiesOrder.length) {
-            setActivitiesPrice(calcSum(activitiesOrder));
-        }        
+        setActivitiesPrice(calcSum(activitiesOrder));
     }, [activitiesOrder]);
 
     useEffect(() => {
-        if (autopartsOrder.length) {
-            setAutopartsPrice(calcSum(autopartsOrder));
-        }
+        setAutopartsPrice(calcSum(autopartsOrder));
     }, [autopartsOrder]);
 
     useEffect(() => {
@@ -117,6 +111,7 @@ const CalcPage: React.FC = () => {
                         type="date"
                         value={dateFrom}
                         onChange={e => setDateFrom(e.target.value)}
+                        disabled={visible ? true : false}
                     />
                 </div>
                 <div className="calc__form_date">
@@ -125,11 +120,12 @@ const CalcPage: React.FC = () => {
                         type="date"
                         value={dateTo}
                         onChange={e => setDateTo(e.target.value)}
+                        disabled={visible ? true : false}
                     />
                 </div>
                 
-                <Dropdown className="calc__form_drop">
-                    <Dropdown.Toggle variant={"outline-dark"}>{filMast.master || 'Мастер'}</Dropdown.Toggle>
+                <Dropdown className="calc__form_drop" >
+                    <Dropdown.Toggle variant={"outline-dark"} disabled={visible ? true : false}>{filMast.master || 'Мастер'}</Dropdown.Toggle>
                     <Dropdown.Menu>
                         {masters.map(master => 
                             <Dropdown.Item 
@@ -142,7 +138,7 @@ const CalcPage: React.FC = () => {
                     </Dropdown.Menu>
                 </Dropdown> 
             </Form>
-            <Button variant={"outline-dark"} onClick={onCalc} className="calc__btn">Сделать расчёт</Button> 
+            <Button variant={"outline-dark"} onClick={onCalc} className="calc__btn">Сделать расчёт</Button>
 
             {visible ? 
                 <div className="calc__result">
@@ -151,6 +147,7 @@ const CalcPage: React.FC = () => {
                     <div className="calc__result_answer">общая стоимость заказов: <span>{convertNumToStr(cost)} р.</span></div>
                     <div className="calc__result_answer">общая стоимость работ: <span>{convertNumToStr(activitiesPrice)} р.</span></div>
                     <div className="calc__result_answer">общая стоимость запчастей: <span>{convertNumToStr(autopartsPrice)} р.</span></div>
+                    <Button variant={"outline-dark"} onClick={() => setVisible(false)} className="calc__btn">Сбросить</Button>
                 </div>
                 :
                 <div></div>

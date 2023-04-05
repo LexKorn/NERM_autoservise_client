@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
 import { IOrder } from '../../types/types';
@@ -12,7 +12,6 @@ import './orderList.sass';
 // @ts-ignore
 export default function OrderList2<T> ({title, orderItems}) {
     const [visible, setVisible] = useState<boolean>(false);
-    const {id} = useParams();
     const navigate = useNavigate();
 
     return (

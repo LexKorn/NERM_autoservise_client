@@ -20,14 +20,16 @@ const AuthPage: React.FC = () => {
     const click = async () => {
         try {
             if (isLogin) {
-                await login(username, password);
+                await login(username, password).then(() => {
+                    user.setIsAuth(true);
+                    navigate(MAIN_ROUTE);
+                });
             } else {
-                await registration(username, password);
-            }
-
-            user.setIsAuth(true);
-            navigate(MAIN_ROUTE);
-            
+                await registration(username, password).then(() => {
+                    user.setIsAuth(true);
+                    navigate(MAIN_ROUTE);
+                });
+            }  
         } catch(err: unknown) {
             const error = err as AxiosError;
             alert(JSON.parse(error.request.response).message);

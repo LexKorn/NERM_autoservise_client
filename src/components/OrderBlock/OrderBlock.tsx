@@ -8,6 +8,8 @@ import { IOrder, IAuto, IStamp, IModel, IMaster } from '../../types/types';
 import { AUTO_ROUTE, MAIN_ROUTE } from '../../utils/consts';
 import { fetchOneOrder, deleteOrder } from '../../http/ordersAPI';
 import { fetchOneAuto } from '../../http/autosAPI';
+import { fetchStamps } from '../../http/stampsAPI';
+import { fetchModels } from '../../http/modelsAPI';
 import {Context} from '../../index';
 import { convertNumToStr } from '../../utils/calc';
 import ModalOrderUpdate from '../Modals/ModalOrderUpdate';
@@ -25,7 +27,9 @@ const OrderBlock: React.FunctionComponent<OrderBlockProps> = ({cost, activitiesP
     const {service} = useContext(Context);
     const [order, setOrder] = useState<IOrder>({} as IOrder);
     const [auto, setAuto] = useState<IAuto>({} as IAuto);
+    const [models, setModels] = useState<IModel[]>([]);
     const [modelAuto, setModelAuto] = useState<IModel[]>([]);
+    const [stamps, setStamps] = useState<IStamp[]>([]);
     const [stampAuto, setStampAuto] = useState<IStamp[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [visible, setVisible] = useState<boolean>(false);
@@ -35,7 +39,17 @@ const OrderBlock: React.FunctionComponent<OrderBlockProps> = ({cost, activitiesP
     const masterOrder: IMaster[] = service.masters.filter(master => master.id === order.masterId);
 
     useEffect(() => {
-        fetchOneOrder(id).then(data => setOrder(data));
+        fetchOneOrder(id)
+            .then(data => setOrder(data))
+            .catch(err => alert(err.message))
+
+        fetchStamps()
+            .then(data => setStamps(data))
+            .catch(err => alert(err.message));
+
+        fetchModels()
+            .then(data => setModels(data))
+            .catch(err => alert(err.message));
     }, []);
 
     useEffect(() => {
@@ -49,8 +63,8 @@ const OrderBlock: React.FunctionComponent<OrderBlockProps> = ({cost, activitiesP
 
     useEffect(() => {
         if (auto) {
-            setModelAuto(service.models.filter(model => model.id === auto.modelId));
-            setStampAuto(service.stamps.filter(stamp => stamp.id === auto.stampId));
+            setModelAuto(models.filter(model => model.id === auto.modelId));
+            setStampAuto(stamps.filter(stamp => stamp.id === auto.stampId));
         }
     }, [auto]);
 

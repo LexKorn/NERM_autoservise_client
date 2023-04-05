@@ -69,7 +69,6 @@ const SearchPanel: React.FC<SearchPanelProps> = ({autos, stamps, models}) => {
     return (
         <>  
             <div className='sort'>
-                {/* <div className="sort__title">Сортировать по:</div> */}
                 <div className="sort__btns">
                     <button className='sort__btn' onClick={sortStamp}>Марка авто</button>
                     <button className='sort__btn' onClick={sortDate}>Время добавления</button>

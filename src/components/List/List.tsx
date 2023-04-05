@@ -1,5 +1,4 @@
 import React from 'react';
-// import {Fade} from 'react-awesome-reveal';
 
 import './list.sass';
 
@@ -12,13 +11,10 @@ interface ListProps<T> {
 export default function List<T> (props: ListProps<T>) {
     return (
         <div className="list">
-            {props.items.length === 0 ? 
+            {!props.items.length ? 
                 <div className="list__empty">Здесь пока ничего нет...</div>
             :
                 props.items.map(props.renderItem)
-            // <Fade cascade duration={300} triggerOnce={true} direction={'down'}>
-            //     {props.items.map(props.renderItem)}
-            // </Fade>                
             }           
         </div>
     );

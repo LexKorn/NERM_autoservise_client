@@ -14,24 +14,19 @@ import { fetchOrders } from '../http/ordersAPI';
 import { fetchStamps } from '../http/stampsAPI';
 import { fetchModels } from '../http/modelsAPI';
 import { fetchAutos } from '../http/autosAPI';
+import { fetchMasters } from '../http/mastersAPI';
 import { fetchActivities } from '../http/activitiesAPI';
 
 
 const MainPage: React.FC = observer(() => {
     const {service} = useContext(Context);
-    const [orders, setOrders] = useState<IOrder[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const navigate = useNavigate();
 
     useEffect(() => {
         fetchOrders()
-            .then(data => {
-                setOrders(data);
-                service.setOrders(data);
-            })
-            // .then(data => service.setOrders(data))
+            .then(data => service.setOrders(data))
             .catch(err => alert(err.message))
-            .finally(() => setLoading(false));
 
         fetchStamps()
             .then(data => service.setStamps(data))
@@ -45,9 +40,14 @@ const MainPage: React.FC = observer(() => {
             .then(data => service.setAutos(data))
             .catch(err => alert(err.message));
 
+        fetchMasters()
+            .then(data => service.setMasters(data))
+            .catch(err => alert(err.message));
+
         fetchActivities()
             .then(data => service.setActivities(data))
-            .catch(err => alert(err.message));
+            .catch(err => alert(err.message))
+            .finally(() => setLoading(false));
     }, []);
 
 
@@ -64,7 +64,7 @@ const MainPage: React.FC = observer(() => {
             <h1 style={{textAlign: 'center'}}>Список заказов:</h1>
             {loading ? <Spinner animation={"border"}/> :
                 <List 
-                    items={service.visibleOrders || orders} 
+                    items={service.visibleOrders} 
                     renderItem={(order: IOrder) => 
                         <OrderItem 
                             order={order} 

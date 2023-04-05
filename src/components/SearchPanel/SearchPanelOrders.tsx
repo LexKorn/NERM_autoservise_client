@@ -17,6 +17,7 @@ interface SearchPanelOrdersProps {
 
 const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = observer(({orders, stamps, models}) => { 
     const {service} = useContext(Context);
+    const [autos, setAutos] = useState<IAuto[]>([]);
     const [directionSort, setDirectionSort] = useState<boolean>(true);
     const [condition, setCondition] = useState<string>('createdAt');
     const [value, setValue] = useState<string>('');
@@ -24,14 +25,14 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = observer(({orders, s
     const [filMast, setFilMast] = useState<IMaster>({} as IMaster);
 
     useEffect(() => {
-        service.setVisibleOrders(sortHandler(filterMaster(filterClosed(search(orders, value), filter))));
-    }, [value, directionSort, filter, orders, filMast]);
-
-    useEffect(() => {
         fetchAutos()
-            .then(data => service.setAutos(data))
+            .then(data => setAutos(data))
             .catch(err => alert(err.message));
     }, []);
+
+    useEffect(() => {
+        service.setVisibleOrders(sortHandler(filterMaster(filterClosed(search(orders, value), filter))));
+    }, [value, directionSort, filter, orders, filMast]);
 
     function search(items: (IOrder)[], term: string) {   
         if (term.length === 0) {
@@ -39,7 +40,7 @@ const SearchPanelOrders: React.FC<SearchPanelOrdersProps> = observer(({orders, s
         }
 
         return items.filter(item => {
-            const orderAuto: IAuto[] = service.autos.filter(auto => auto.id === item.autoId);
+            const orderAuto: IAuto[] = autos.filter(auto => auto.id === item.autoId);
 
             return (
                 stamps.filter(stamp => stamp.id === orderAuto[0].stampId)[0].stamp.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
